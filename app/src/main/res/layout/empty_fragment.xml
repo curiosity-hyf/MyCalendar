@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+
+
+    <TextView
+        android:id="@+id/empty_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="14sp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/empty_msg"
+        android:id="@+id/ll">
+        <EditText
+            android:id="@+id/login_code"
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textVisiblePassword"
+            android:hint="@string/input_curri_verify_code"/>
+        <ImageView
+            android:id="@+id/login_im"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/looo"
+        android:layout_width="wrap_content"
+        android:text="qqq"
+        android:layout_below="@id/ll"
+        android:layout_height="wrap_content" />
+
+    <Button
+    android:id="@+id/clear"
+    android:text="clear"
+    android:layout_below="@id/looo"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/show"
+        android:text="show"
+        android:layout_below="@id/clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

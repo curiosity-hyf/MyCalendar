@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- Your FAB implementation -->
+        <com.curiosity.mycalendar.customview.MenuFAB
+            android:id="@+id/fab"
+            android:src="@drawable/ic_add_white_24px"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_margin="16dp"/>
+
+        <!-- Overlay that dims the screen -->
+        <com.gordonwong.materialsheetfab.DimOverlayFrameLayout
+            android:id="@+id/dim_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- Circular reveal container for the sheet -->
+        <io.codetail.widget.RevealLinearLayout
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="end|bottom"
+            android:orientation="vertical">
+
+            <!-- Sheet that contains your items -->
+            <android.support.v7.widget.CardView
+                android:id="@+id/fab_sheet"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="16dp"
+                android:layout_width="150dp"
+                android:layout_margin="16dp"
+                android:layout_height="180dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/test1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="添加日程"
+                        android:textSize="20sp" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#000"/>
+                    <TextView
+                        android:id="@+id/test2"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:text="f2"
+                        android:textSize="20sp" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#000"/>
+                    <TextView
+                        android:id="@+id/test3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="f3"
+                        android:textSize="20sp" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </io.codetail.widget.RevealLinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

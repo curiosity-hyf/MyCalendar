@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.curiosity.mycalendar">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".sysinfo.YearSelectActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".MainActivity"
+            android:label="选择学期">
+
+        </activity>
+        <activity android:name=".sysinfo.CurriLoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".sysinfo.YearSelectActivity"
+            android:label="@string/label_login_curri">
+
+        </activity>
+        <activity android:name=".SettingCurActivity"
+            android:label="选择当前学期">
+
+        </activity>
+    </application>
+
+</manifest>
