@@ -14,9 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.curiosity.mycalendar.sysinfo.CurriLoginActivity;
+import com.curiosity.mycalendar.sysinfo.FetchInfoActivity;
 import com.curiosity.mycalendar.R;
 import com.curiosity.mycalendar.SettingCurActivity;
 import com.curiosity.mycalendar.adapter.CourseAdapter;
@@ -71,7 +70,7 @@ public class CurriculumFragment extends Fragment {
     @OnClick(R.id.btn_getCurriculum)
     public void onGetCurriculum() {
         Log.d("mytest", "click");
-        startActivityForResult(new Intent().setClass(getContext(), CurriLoginActivity.class), REQUEST_ACTIVITY_CODE);
+        startActivityForResult(new Intent().setClass(getContext(), FetchInfoActivity.class), REQUEST_ACTIVITY_CODE);
         if(materialSheetFab.isSheetVisible())
             materialSheetFab.hideSheet();
     }
@@ -112,13 +111,13 @@ public class CurriculumFragment extends Fragment {
         adapter.setOnItemClickListener(new CourseAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getActivity().getApplicationContext(), adapter.getData(position).getCourseName(),
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity().getApplicationContext(), adapter.getData(position).getCourseName(),
+//                        Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onItemLongClick(View view, int position) {
-                Toast.makeText(getActivity().getApplicationContext(), adapter.getData(position).getCourseName(),
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity().getApplicationContext(), adapter.getData(position).getCourseName(),
+//                        Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -139,9 +138,9 @@ public class CurriculumFragment extends Fragment {
                 String name = cursor.getString(cursor.getColumnIndex("courseName"));
                 String teacher_name = cursor.getString(cursor.getColumnIndex("teacherName"));
                 CourseInfo info = new CourseInfo();
-                info.setCourseName(name);
-                info.setId(id);
-                info.setTeacherName(teacher_name);
+//                info.setCourseName(name);
+//                info.setId(id);
+//                info.setTeacherName(teacher_name);
                 newInfo(info);
                 //Log.d("mytest", "" + id + " " + name + " " + teacher_name);
             }
@@ -202,8 +201,8 @@ public class CurriculumFragment extends Fragment {
                 adapter.deleteData(0);
             }
         }
-            initData(account, year, semester);
-            initView();
+//            initData(account, year, semester);
+//            initView();
 
 
         Bundle bundle = getArguments();

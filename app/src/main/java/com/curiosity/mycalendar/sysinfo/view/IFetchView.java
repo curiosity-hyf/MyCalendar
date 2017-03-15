@@ -1,5 +1,7 @@
 package com.curiosity.mycalendar.sysinfo.view;
 
+import android.os.Bundle;
+
 /**
  * Description :
  * Author : Curiosity
@@ -8,9 +10,8 @@ package com.curiosity.mycalendar.sysinfo.view;
  */
 
 public interface IFetchView {
-    void makeToast(String msg);
-    void showProgress(boolean show);
-    void onLoginFailed();
+    void showNextStep(boolean show);
 
-    void initForm(String account, String pwd, boolean isCheck);
+    void switchYearFragment(Bundle bundle);
+    void switchLoginFragment(Bundle bundle);
 }

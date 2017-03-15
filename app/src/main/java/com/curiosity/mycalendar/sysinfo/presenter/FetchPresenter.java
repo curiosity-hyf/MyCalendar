@@ -1,7 +1,10 @@
 package com.curiosity.mycalendar.sysinfo.presenter;
 
 import android.content.Context;
+import android.os.Bundle;
 
+import com.curiosity.mycalendar.R;
+import com.curiosity.mycalendar.sysinfo.FetchInfoActivity;
 import com.curiosity.mycalendar.sysinfo.model.IFetchModel;
 import com.curiosity.mycalendar.sysinfo.model.FetchModel;
 import com.curiosity.mycalendar.sysinfo.view.IFetchView;
@@ -15,54 +18,45 @@ import com.curiosity.mycalendar.utils.TextUtils;
  * E-mail : 1184581135qq@gmail.com
  */
 
-public class FetchPresenter implements IFetchPresenter, FetchModel.OnLoginListener {
+public class FetchPresenter implements IFetchPresenter {
 
     private IFetchModel mLoginModel;
     private IFetchView mLoginView;
     private Context mContext;
-
-    private String mAccount, mPwd;
-    private boolean mCheckPwd;
+    private int currentFragIdx;
 
     public FetchPresenter(IFetchView loginView, Context context) {
+        currentFragIdx = 0;
         mLoginView = loginView;
         mLoginModel = new FetchModel();
         mContext = context;
     }
 
     @Override
-    public void login(String account, String pwd, boolean checkPwd) {
-        mAccount = account;
-        mPwd = pwd;
-        mCheckPwd = checkPwd;
-        mLoginView.showProgress(true);
-        mLoginModel.login(account, pwd, this);
-    }
-
-    @Override
-    public void getSaveForm() {
-        String account = SharedPreferenceUtil.getSaveAccount(mContext);
-        boolean isCheckPwd = SharedPreferenceUtil.getCheckPwd(mContext);
-        String pwd = "";
-        if (!TextUtils.isEmpty(account) && isCheckPwd) {
-            pwd = mLoginModel.getSave(mContext, account);
+    public void switchNavigation(int id, Bundle bundle) {
+        currentFragIdx = id;
+        switch (id) {
+            case 0:
+                mLoginView.switchYearFragment(bundle);
+                mLoginView.showNextStep(true);
+                break;
+            case 1:
+                mLoginView.switchLoginFragment(bundle);
+                mLoginView.showNextStep(false);
+                break;
         }
-        mLoginView.initForm(account, pwd, true); // 策略：不论上次是否记住密码，初始化时都默认选择记住密码
     }
 
     @Override
-    public void onLoginSuccess(String msg) {
-        mLoginModel.saveLoginInfo(mContext, mAccount, mPwd, mCheckPwd);
-        mLoginView.showProgress(false);
-        mLoginView.makeToast(msg);
-
-
-    }
-
-    @Override
-    public void onLoginFailure(String msg) {
-        mLoginView.showProgress(false);
-        mLoginView.onLoginFailed();
-        mLoginView.makeToast(msg);
+    public boolean navigationBack() {
+        mLoginView.showNextStep(true);
+        if(currentFragIdx == 0) {
+            ((FetchInfoActivity)mContext).onNavigateUp();
+            return true;
+        } else {
+            currentFragIdx = 0;
+            mLoginView.switchYearFragment(null);
+            return false;
+        }
     }
 }

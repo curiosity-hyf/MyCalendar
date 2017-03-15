@@ -22,16 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".sysinfo.YearSelectActivity"
+        <activity android:name=".sysinfo.FetchInfoActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".MainActivity"
             android:label="选择学期">
-
-        </activity>
-        <activity android:name=".sysinfo.CurriLoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".sysinfo.YearSelectActivity"
-            android:label="@string/label_login_curri">
 
         </activity>
         <activity android:name=".SettingCurActivity"

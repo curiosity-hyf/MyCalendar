@@ -1,5 +1,7 @@
 package com.curiosity.mycalendar.sysinfo.presenter;
 
+import android.os.Bundle;
+
 /**
  * Description :
  * Author : Curiosity
@@ -8,10 +10,6 @@ package com.curiosity.mycalendar.sysinfo.presenter;
  */
 
 public interface IFetchPresenter {
-    void login(String account, String pwd, boolean checkPwd);
-
-    /**
-     * 获取保存的表单
-     */
-    void getSaveForm();
+    void switchNavigation(int id, Bundle bundle);
+    boolean navigationBack();
 }

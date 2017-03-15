@@ -30,12 +30,13 @@ public class FirstCurriculumInfoConverterFactory extends Converter.Factory {
                 try {
                     String responseBody = TextUtils.convertStreamToString(value.byteStream(), "gbk");
                     Document document = Jsoup.parse(responseBody);
-                    List<String> years = DomUtils.getYearsInfo(document);
-                    Collections.reverse(years);
+//                    List<String> years = DomUtils.getYearsInfo(document);
+//                    Collections.reverse(years);
 
                     String viewState = document.select("input[name=__VIEWSTATE]").get(0).attr("value");
-                    FirstgetCurriculum info = new FirstgetCurriculum(viewState, years);
-                    return info;
+//                    FirstgetCurriculum info = new FirstgetCurriculum(viewState, years);
+//                    return info;
+                    return null;
                 } finally {
                     value.close();
                 }

@@ -356,7 +356,7 @@ public class HttpMethods {
                         info.setSemester(String.valueOf(semester_index));
                         String viewState1 = info.getViewState();
 
-                        courseInfos.addAll(DomUtils.getAllCurriInfo(info));
+//                        courseInfos.addAll(DomUtils.getAllCurriInfo(info));
                         Log.d("mytest", "------------load curri info1------------");
 
                         if (semester_index == 1) {
@@ -374,11 +374,6 @@ public class HttpMethods {
                                     ContentValues values = new ContentValues();
                                     values.putNull("id");
                                     values.put("account", account);
-                                    values.put("year", courseInfo.getYear());
-                                    values.put("semester", courseInfo.getSemester());
-                                    values.put("courseName", courseInfo.getCourseName());
-                                    values.put("teacherName", courseInfo.getTeacherName());
-                                    values.put("classroom", courseInfo.getClassRoom());
                                     SQLiteHelper.executeInsert(db1, "courseInfo", values);
                                 }
                                 SharedPreferenceUtil.setHasClassFromSys(context, true);

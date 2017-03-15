@@ -28,8 +28,9 @@ public class StudentInfoConverterFactory extends Converter.Factory {
                 try {
                     String responseBody = TextUtils.convertStreamToString(value.byteStream(), "gbk");
                     Document document = Jsoup.parse(responseBody);
-                    StudentInfo info = DomUtils.getStuInfo(document);
-                    return info;
+//                    StudentInfo info = DomUtils.getStuInfo(document);
+//                    return info;
+                    return null;
                 } finally {
                     value.close();
                 }

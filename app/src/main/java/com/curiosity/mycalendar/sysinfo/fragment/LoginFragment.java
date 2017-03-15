@@ -1,21 +1,24 @@
-package com.curiosity.mycalendar.sysinfo;
+package com.curiosity.mycalendar.sysinfo.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.EditText;
 
 import com.curiosity.mycalendar.R;
-import com.curiosity.mycalendar.sysinfo.presenter.IFetchPresenter;
 import com.curiosity.mycalendar.sysinfo.presenter.FetchPresenter;
-import com.curiosity.mycalendar.sysinfo.view.IFetchView;
+import com.curiosity.mycalendar.sysinfo.presenter.ILoginPresenter;
+import com.curiosity.mycalendar.sysinfo.presenter.LoginPresenter;
+import com.curiosity.mycalendar.sysinfo.view.ILoginView;
 import com.curiosity.mycalendar.utils.TextUtils;
 import com.curiosity.mycalendar.utils.ToastUtils;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -25,17 +28,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Description : 账号密码输入界面
- * Author : Curiosity
- * Date : 2017-3-13
- * E-mail : 1184581135qq@gmail.com
+ * Created by red on 17-3-15.
  */
 
-public class CurriLoginActivity extends AppCompatActivity implements IFetchView {
-
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-
+public class LoginFragment extends Fragment implements ILoginView{
     @BindView(R.id.accountWrapper)
     TextInputLayout accountWrapper;
 
@@ -57,25 +53,33 @@ public class CurriLoginActivity extends AppCompatActivity implements IFetchView 
     @BindView(R.id.aiv)
     AVLoadingIndicatorView aiv;
 
-    private IFetchPresenter mLoginPresenter;
+    private ILoginPresenter mLoginPresenter;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.curri_login_layout);
-        ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
-        //设置是否有返回箭头
-        if(getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.curri_login_layout, container, false);
+        ButterKnife.bind(this, view);
+
+        login_account.addTextChangedListener(new LoginFragment.MyTextWatcher(login_account));
+        login_pwd.addTextChangedListener(new LoginFragment.MyTextWatcher(login_pwd));
 
 
-        login_account.addTextChangedListener(new CurriLoginActivity.MyTextWatcher(login_account));
-        login_pwd.addTextChangedListener(new CurriLoginActivity.MyTextWatcher(login_pwd));
-
-        mLoginPresenter = new FetchPresenter(this, this);
+        mLoginPresenter = new LoginPresenter(this, this.getContext());
 
         mLoginPresenter.getSaveForm();
+
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            String arg0 = bundle.getString("grade");
+            String arg1 = bundle.getString("semester");
+
+            if(arg0 != null & arg1 != null) {
+                Log.d("myd", "grade = " + arg0 + " semester = " + arg1);
+            }
+        }
+
+        return view;
     }
 
     public void setEnabled(boolean enabled) {
@@ -98,17 +102,29 @@ public class CurriLoginActivity extends AppCompatActivity implements IFetchView 
         }
     }
 
-    @Deprecated
-    public void onLoaded(boolean load) {
-        aiv.smoothToHide();
-        if(load) {
-            Intent intent = new Intent();
-            setResult(RESULT_OK, intent);
-            finish();
-        } else {
-            setEnabled(true);
-            ToastUtils.ToastShort(CurriLoginActivity.this, "课表获取失败!请稍后重试");
-        }
+    @Override
+    public void makeToast(String msg) {
+        ToastUtils.ToastLong(this.getContext(), msg);
+    }
+
+    @Override
+    public void showProgress(boolean show) {
+        if(show)
+            aiv.smoothToShow();
+        else
+            aiv.smoothToHide();
+    }
+
+    @Override
+    public void onLoginFailed() {
+        setEnabled(true);
+    }
+
+    @Override
+    public void initForm(String account, String pwd, boolean isCheck) {
+        check_pwd.setChecked(isCheck);
+        login_account.setText(account);
+        login_pwd.setText(pwd);
     }
 
     /**
@@ -151,31 +167,6 @@ public class CurriLoginActivity extends AppCompatActivity implements IFetchView 
         return true;
     }
 
-    @Override
-    public void makeToast(String msg) {
-        ToastUtils.ToastLong(this, msg);
-    }
-
-    @Override
-    public void showProgress(boolean show) {
-        if(show)
-            aiv.smoothToShow();
-        else
-            aiv.smoothToHide();
-    }
-
-    @Override
-    public void onLoginFailed() {
-        setEnabled(true);
-    }
-
-    @Override
-    public void initForm(String account, String pwd, boolean isCheck) {
-        check_pwd.setChecked(isCheck);
-        login_account.setText(account);
-        login_pwd.setText(pwd);
-    }
-
     /**
      * TextView 输入监听器
      */
@@ -211,5 +202,4 @@ public class CurriLoginActivity extends AppCompatActivity implements IFetchView 
         public void afterTextChanged(Editable s) {
         }
     }
-
 }

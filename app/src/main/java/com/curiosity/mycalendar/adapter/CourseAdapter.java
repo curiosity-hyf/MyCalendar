@@ -29,9 +29,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         CourseInfo infoBean = mData.get(position);
-        holder.getId().setText(""+infoBean.getId());
-        holder.getName().setText(infoBean.getCourseName());
-        holder.getTeacher().setText(infoBean.getTeacherName());
+//        holder.getId().setText(""+infoBean.getId());
+//        holder.getName().setText(infoBean.getCourseName());
+//        holder.getTeacher().setText(infoBean.getTeacherName());
         if(mListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -34,6 +34,15 @@ public class CourseInfo {
         private String jxcdmc;
         private String zc;
         private String pkrq;
+        private String dgksdm;
+
+        public String getDgksdm() {
+            return dgksdm;
+        }
+
+        public void setDgksdm(String dgksdm) {
+            this.dgksdm = dgksdm;
+        }
 
         public String getKcmc() {
             return kcmc;
@@ -89,6 +98,20 @@ public class CourseInfo {
 
         public void setPkrq(String pkrq) {
             this.pkrq = pkrq;
+        }
+
+        @Override
+        public String toString() {
+            return "RowsBean{" +
+                    "kcmc='" + kcmc + '\'' +
+                    ", teaxms='" + teaxms + '\'' +
+                    ", xq='" + xq + '\'' +
+                    ", jcdm='" + jcdm + '\'' +
+                    ", jxcdmc='" + jxcdmc + '\'' +
+                    ", zc='" + zc + '\'' +
+                    ", pkrq='" + pkrq + '\'' +
+                    ", dgksdm='" + dgksdm + '\'' +
+                    '}';
         }
     }
 }

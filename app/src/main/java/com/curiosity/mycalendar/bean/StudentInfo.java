@@ -17,15 +17,6 @@ public class StudentInfo implements Parcelable{
     public StudentInfo() {
     }
 
-    public StudentInfo(String admission, String stuNum, String name, String institute, String major, String clas) {
-        this.admission = admission;
-        this.stuNum = stuNum;
-        this.name = name;
-        this.institute = institute;
-        this.major = major;
-        this.clas = clas;
-    }
-
     protected StudentInfo(Parcel in) {
         admission = in.readString();
         stuNum = in.readString();

@@ -1,129 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e3e3e3"
-    android:orientation="vertical"
-    tools:context="com.curiosity.mycalendar.sysinfo.CurriLoginActivity">
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/ab_layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        android:background="#e3e3e3"
+        android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:layout_weight="1">
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:gravity="center"
+            android:text="Welcome"
+            android:textColor="#333333"
+            android:textSize="30sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#e3e3e3"
+            android:layout_height="0dp"
+            android:layout_weight="0.9"
             android:orientation="vertical">
 
-            <TextView
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/accountWrapper"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.1"
-                android:gravity="center"
-                android:text="Welcome"
-                android:textColor="#333333"
-                android:textSize="30sp" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="15"
+                app:counterOverflowTextAppearance="@style/MyOverflowText"
+                app:counterTextAppearance="@style/MyCounterText"
+                app:errorTextAppearance="@style/MyErrorStyle">
 
-            <LinearLayout
+                <EditText
+                    android:id="@+id/login_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/input_curri_account"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:text="" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/psdWrapper"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.9"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="0dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="30"
+                app:counterOverflowTextAppearance="@style/MyOverflowText"
+                app:counterTextAppearance="@style/MyCounterText"
+                app:errorTextAppearance="@style/MyErrorStyle">
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/accountWrapper"
+                <EditText
+                    android:id="@+id/login_pwd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="15"
-                    app:counterOverflowTextAppearance="@style/MyOverflowText"
-                    app:counterTextAppearance="@style/MyCounterText"
-                    app:errorTextAppearance="@style/MyErrorStyle">
+                    android:hint="@string/input_curri_password"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:text="" />
+            </android.support.design.widget.TextInputLayout>
 
-                    <EditText
-                        android:id="@+id/login_account"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/input_curri_account"
-                        android:inputType="number"
-                        android:maxLines="1"
-                        android:text="" />
-                </android.support.design.widget.TextInputLayout>
+            <Button
+                android:id="@+id/login_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:text="@string/btn_app_login" />
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/psdWrapper"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginTop="0dp"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="30"
-                    app:counterOverflowTextAppearance="@style/MyOverflowText"
-                    app:counterTextAppearance="@style/MyCounterText"
-                    app:errorTextAppearance="@style/MyErrorStyle">
-
-                    <EditText
-                        android:id="@+id/login_pwd"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/input_curri_password"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:text="" />
-                </android.support.design.widget.TextInputLayout>
-
-                <Button
-                    android:id="@+id/login_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:text="@string/btn_app_login" />
-
-                <CheckBox
-                    android:id="@+id/check_pwd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:checked="true"
-                    android:text="记住密码" />
-            </LinearLayout>
-
+            <CheckBox
+                android:id="@+id/check_pwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:checked="true"
+                android:text="记住密码" />
         </LinearLayout>
 
-        <com.wang.avi.AVLoadingIndicatorView
-            android:id="@+id/aiv"
-            style="@style/AVLoadingIndicatorView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:visibility="gone"
-            app:indicatorColor="@color/colorAccent"
-            app:indicatorName="BallPulseIndicator" />
-    </RelativeLayout>
-</LinearLayout>
+    </LinearLayout>
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/aiv"
+        style="@style/AVLoadingIndicatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"
+        app:indicatorColor="@color/colorAccent"
+        app:indicatorName="BallPulseIndicator" />
+</RelativeLayout>

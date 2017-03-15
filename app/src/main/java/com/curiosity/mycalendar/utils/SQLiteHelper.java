@@ -18,7 +18,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     public static final String USER_LOGIN_TABLE = "user_login";
 
-    public static final String COURSE_INFO_TABLE = "courseInfo";
+    public static final String COURSE_INFO_TABLE = "course_info";
+
+    public static final String STUDENT_INFO_TABLE = "student_info";
 
     public static final String GET_PWD =
             "select pwd from " +
@@ -30,34 +32,30 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             "account varchar(30) primary key not null, " +
             "pwd varchar(30) not null)";
 
-    private static final String CREATE_CURRI_BASE =
-            "create table curri_info (" +
-            "stunum varchar(15) primary key not null, " +
-            "name varchar(15) not null, " +
-            "institute varchar(15), " +
-            "major varchar(20), " +
-            "clas varchar(25)" +
-            ")";
-
     private static final String CREATE_COURSE_TABLE =
             "create table " + COURSE_INFO_TABLE + " (" +
-            "id integer primary key autoincrement, " +
-            "account varchar(30), " +
-            "year varchar(15) not null, " +
-            "semester varchar(5) not null, " +
-            "courseName varchar(30) not null, " +
-            "teacherName varchar(10), " +
-            "classroom varchar(10), " +
-            "foreign key(account) references " + USER_LOGIN_TABLE + "(account)" +
+            "id text primary key, " + /*课程编号*/
+            "year integer not null, " + /*学年*/
+            "semester integer not null, " + /*学期*/
+            "weekNum text not null, " + /*周次*/
+            "dayNum text not null, " + /*星期*/
+            "clsNum text not null, " + /*节次*/
+            "name text not null, " + /*课程名称*/
+            "teacher text not null, " + /*教师名称*/
+            "addr text not null, " + /*上课地点*/
+            "dayOfYear text not null, " + /*完整时间*/
+            "other text" + /*其他*/
             ")";
-//
-//    private static final String CREATE_USER_TRIGGER =
-//            "create trigger user_insert " +
-//            "before insert on " + USER_LOGIN_TABLE +
-//                    "for each row " +
-//                    "begin " +
-//                    "select "
 
+    private static final String CREATE_STUDENT_TABLE =
+            "create table " + STUDENT_INFO_TABLE + " (" +
+            "stuNum varchar(15) primary key, " +
+            "admission text not null, " +
+            "name text not null, " +
+            "major text not null, " +
+            "institute text not null, " +
+            "clas text not null" +
+            ")";
 
     public SQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -74,6 +72,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 //        db.execSQL(CREATE_CURRI_BASE);
 
         db.execSQL(CREATE_COURSE_TABLE);
+
+        db.execSQL(CREATE_STUDENT_TABLE);
 
     }
 

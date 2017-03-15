@@ -3,6 +3,7 @@ package com.curiosity.mycalendar.utils;
 
 import android.util.Log;
 
+import com.curiosity.mycalendar.bean.StudentInfo;
 import com.curiosity.mycalendar.retrofit.Interceptor.AddCookiesInterceptor;
 import com.curiosity.mycalendar.retrofit.Interceptor.ReceivedCookiesInterceptor;
 import com.curiosity.mycalendar.retrofit.service.RetrofitService;
@@ -75,6 +76,44 @@ public class HttpUtils2 {
         if(cookies != null)
             cookies.clear();
         getService().login(param.getParam())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        callback.onSuccess(s);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.d("myd", throwable.getMessage());
+                        callback.onFailure(new Exception(throwable));
+                    }
+                });
+    }
+
+    public static void getStuInfo(final ResultCallback<String> callback) {
+        getService().getStuInfo()
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        StudentInfo mStudentInfo = DomUtils.getStudentInfo(s);
+                        callback.onSuccess(s);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        callback.onFailure(new Exception(throwable));
+                    }
+                });
+    }
+
+    public static void getCurriculum(Param param, final ResultCallback<String> callback) {
+        getService().getCurriculum(param.getParam())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -181,66 +181,6 @@ public class TextUtils {
         return new ArrayList<>(Arrays.asList(s.split("、")));
     }
 
-    /**
-     * 获取某节一整周的课程 e.g. 周一到周日的 每天第一节
-     *
-     * @param list 未处理的 某节一整周的课程
-     * @return 处理好的 某节一整周的课程
-     */
-    public static List<CourseInfo> getCourse(List<String> list) {
-        List<CourseInfo> info = new ArrayList<>();
-        int tb = Integer.valueOf(list.get(0).substring(1, list.get(0).length() - 1)); //起始节
-        for (int i = 1; i < list.size(); ++i) { //i 表示周几
-            String s = list.get(i);
-//            System.out.println(s);
-            if (" ".equals(s)) //没课
-                continue;
-            info.addAll(getCourse(list.get(i), i, tb));
-        }
-        return info;
-    }
-
-
-    private static List<CourseInfo> getCourse(String s, int dow, int begin) {
-        List<CourseInfo> list = new ArrayList<>();
-        String str[] = s.split("\\$\\$\\$"); //以$$$分隔
-
-        for (int i = 0; i < str.length; ) {
-//            System.out.println("~~i = " +  i + " " + str[i]);
-            CourseInfo info = new CourseInfo();
-
-            info.setDayOfWeek(weekNum2weekString(dow)); //指定默认 周几
-            info.setTimeFrom(begin); //指定默认 某节起始
-            info.setTimeTo(begin + 1); //指定默认 某节终止
-
-            info.setCourseName(getName(str[i])); //设置课程名
-            //排除 诸如 {第1-9周} 而非 周一第1,2节{第7-9周} 的情况
-            if (i + 1 < str.length && !"".equals(str[i + 1]) && '{' != str[i + 1].charAt(0)) {
-                info.setDayOfWeek(getDayOfWeek(str[i + 1])); //设置 周几
-                info.setTimeFrom(getTimeFrom(str[i + 1])); //设置 起始时间
-                info.setTimeTo(getTimeTo(str[i + 1])); //设置 终止时间
-            }
-            info.setWeekFrom(getWeekFrom(str[i + 1])); //设置 起始周
-            info.setWeekTo(getWeekTo(str[i + 1])); //设置 终止周
-            info.setWeekFlag(getWeekFlag(str[i + 1])); //设置 单双周标志位
-            info.setTeacherName(getTechName(str[i + 2])); //设置 教师名称
-            info.setClassRoom(getClassNum(str[i + 3])); //设置 课时
-            if (i + 4 < str.length && !"".equals(str[i + 4])) {
-                if (Character.isDigit(str[i + 4].charAt(0)) || '第' == str[i + 4].charAt(0)) { //排除垃圾信息
-                    i += 2;
-                }
-                if (i + 4 < str.length && !"".equals(str[i + 4]) && '(' == str[i + 4].charAt(0)) { //考虑是否有课程变化情况
-                    info.setChangeFlag(1); //设置变化标志位
-                    info.setChangeType(getChangeType(str[i + 4])); //设置 变化情况
-                    i += 1;
-                }
-            }
-            i += 4;
-            list.add(info);
-        }
-        return list;
-    }
-
 //    /**
 //     * 获取周几某节的所有课程 e.g. 周三第一节
 //     *

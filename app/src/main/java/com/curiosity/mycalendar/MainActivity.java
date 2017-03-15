@@ -21,6 +21,7 @@ import com.curiosity.mycalendar.fragment.CurriculumFragment;
 import com.curiosity.mycalendar.fragment.EmptyFragment;
 import com.curiosity.mycalendar.presenter.IMainPresenter;
 import com.curiosity.mycalendar.presenter.impl.MainPresenter;
+import com.curiosity.mycalendar.sysinfo.FetchInfoActivity;
 import com.curiosity.mycalendar.sysinfo.YearSelectActivity;
 import com.curiosity.mycalendar.view.IMainView;
 
@@ -138,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     @Override
     public void login() {
         Intent intent = new Intent();
-        intent.setClass(MainActivity.this, YearSelectActivity.class);
+        intent.setClass(MainActivity.this, FetchInfoActivity.class);
         startActivityForResult(intent, FieldDefine.LOGIN_REQUEST_CODE);
     }
 
