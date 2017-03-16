@@ -25,6 +25,7 @@ import com.google.gson.Gson;
  */
 
 public class LoginModel implements ILoginModel {
+
     @Override
     public void login(final Context context, final String account, final String pwd, final boolean isCheck, final LoginModel.OnLoginListener listener) {
         HttpUtils2.ResultCallback<String> resultCallback = new HttpUtils2.ResultCallback<String>() {
@@ -37,8 +38,8 @@ public class LoginModel implements ILoginModel {
                     try {
                         saveLoginInfo(context, account, pwd, isCheck);
                         listener.onLoginSuccess(info.getMsg());
-                    } catch (SQLiteException e) {
-                        e.printStackTrace();
+                    } catch (Exception e) {
+                        Log.d("myd", e.getMessage());
                         listener.onLoginFailure("A database error occurred");
                     }
                 }
@@ -46,6 +47,7 @@ public class LoginModel implements ILoginModel {
 
             @Override
             public void onFailure(Exception e) {
+                Log.d("myd", "login fail: " + e.getMessage());
                 listener.onLoginFailure("login failed");
             }
         };
@@ -70,7 +72,7 @@ public class LoginModel implements ILoginModel {
         return pwd;
     }
 
-    private void saveLoginInfo(Context context, String account, String pwd, boolean isCheck) throws SQLiteException{
+    private void saveLoginInfo(Context context, String account, String pwd, boolean isCheck) throws Exception{
         SharedPreferenceUtil.setSaveAccount(context, account);
         if (isCheck) {
             SharedPreferenceUtil.setCheckPwd(context, true);
@@ -100,22 +102,23 @@ public class LoginModel implements ILoginModel {
                 try {
                     saveStudentInfo(context, info);
                     listener.onLoadStuInfoSuccess(info);
-                } catch (SQLiteException e) {
-                    e.printStackTrace();
-                    listener.onLoginFailure("A database error occurred");
+                } catch (Exception e) {
+                    Log.d("myd", e.getMessage());
+                    listener.onLoadStuInfoFailure("A database error occurred");
                 }
             }
 
             @Override
             public void onFailure(Exception e) {
-                listener.onLoadStuInfoFailure(e.getMessage());
+                Log.d("myd", "fetchStudentInfo fail: " + e.getMessage());
+                listener.onLoadStuInfoFailure("A server error occurred");
             }
         };
 
         HttpUtils2.getStuInfo(resultCallback);
     }
 
-    public void saveStudentInfo(Context context, StudentInfo info) throws SQLiteException{
+    private void saveStudentInfo(Context context, StudentInfo info) throws Exception {
         ContentValues values = new ContentValues();
         values.put("stuNum", info.getStuNum());
         values.put("admission", info.getAdmission());
@@ -154,15 +157,16 @@ public class LoginModel implements ILoginModel {
                     saveCurriculum(context, info, grade, semester);
                     Log.d("myd", "total = " + info.getTotal());
                     listener.onLoadCurriculumSuccess();
-                } catch (SQLiteException e) {
-                    e.printStackTrace();
-                    listener.onLoginFailure("A database error occurred");
+                } catch (Exception e) {
+                    Log.d("myd", e.getMessage());
+                    listener.onLoadCurriculumFailure("A database error occurred");
                 }
             }
 
             @Override
             public void onFailure(Exception e) {
                 Log.d("myd", "fetchCurriculum failed:" + e.getMessage());
+                listener.onLoadCurriculumFailure("A server error occurred");
             }
         };
 
@@ -172,11 +176,11 @@ public class LoginModel implements ILoginModel {
         param.addParam("page", "1");
         param.addParam("rows", "1000");
         param.addParam("sort", "zc");
-        param.addParam("order", "asc");
+        param.addParam("orde", "asc");
         HttpUtils2.getCurriculum(param, resultCallback);
     }
 
-    private void saveCurriculum(Context context, CourseInfo info, int grade, int semester) throws SQLiteException {
+    private void saveCurriculum(Context context, CourseInfo info, int grade, int semester) throws Exception {
         SQLiteDatabase db = SQLiteHelper.getWritableDatabase(context);
         SQLiteHelper.executeDelete(db, SQLiteHelper.COURSE_INFO_TABLE,
                 "type = ? and grade = ? and semester = ?",
@@ -199,7 +203,7 @@ public class LoginModel implements ILoginModel {
             values.clear();
         }
         SQLiteHelper.closeDatabase(db);
-        getCurriculum(context, grade, semester);
+//        getCurriculum(context, grade, semester);
     }
 
     private void getCurriculum(Context context, int grade, int semester) {

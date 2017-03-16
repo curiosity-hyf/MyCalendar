@@ -119,7 +119,7 @@ public class LoginFragment extends Fragment implements ILoginView{
     }
 
     @Override
-    public void onLoginFailed() {
+    public void onLoginFailure() {
         setEnabled(true);
     }
 

@@ -3,7 +3,6 @@ package com.curiosity.mycalendar.sysinfo.presenter;
 import android.content.Context;
 import android.util.Log;
 
-import com.curiosity.mycalendar.bean.CourseInfo;
 import com.curiosity.mycalendar.bean.StudentInfo;
 import com.curiosity.mycalendar.sysinfo.model.ILoginModel;
 import com.curiosity.mycalendar.sysinfo.model.LoginModel;
@@ -12,7 +11,10 @@ import com.curiosity.mycalendar.utils.SharedPreferenceUtil;
 import com.curiosity.mycalendar.utils.TextUtils;
 
 /**
- * Created by red on 17-3-15.
+ * Description :
+ * Author : Curiosity
+ * Date : 2017-3-12
+ * E-mail : 1184581135qq@gmail.com
  */
 
 public class LoginPresenter implements ILoginPresenter, LoginModel.OnLoginListener {
@@ -65,7 +67,7 @@ public class LoginPresenter implements ILoginPresenter, LoginModel.OnLoginListen
     public void onLoginFailure(String msg) {
         Log.d(TAG, "onLoginFailure: ");
         mLoginView.showProgress(false);
-        mLoginView.onLoginFailed();
+        mLoginView.onLoginFailure();
         mLoginView.makeToast(msg);
     }
 
@@ -80,7 +82,7 @@ public class LoginPresenter implements ILoginPresenter, LoginModel.OnLoginListen
     public void onLoadStuInfoFailure(String msg) {
         Log.d(TAG, "onLoadStuInfoFailure: ");
         mLoginView.showProgress(false);
-        mLoginView.onLoginFailed();
+        mLoginView.onLoginFailure();
         mLoginView.makeToast(msg);
     }
 
@@ -95,7 +97,7 @@ public class LoginPresenter implements ILoginPresenter, LoginModel.OnLoginListen
     public void onLoadCurriculumFailure(String msg) {
         Log.d(TAG, "onLoadCurriculumFailure: ");
         mLoginView.showProgress(false);
-        mLoginView.onLoginFailed();
+        mLoginView.onLoginFailure();
         mLoginView.makeToast(msg);
     }
 
