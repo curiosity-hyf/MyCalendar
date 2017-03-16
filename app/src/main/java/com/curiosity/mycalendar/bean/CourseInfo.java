@@ -3,8 +3,12 @@ package com.curiosity.mycalendar.bean;
 import java.util.List;
 
 /**
- * Created by Curiosity on 2016-9-13.
+ * Description :
+ * Author : Curiosity
+ * Date : 2016-9-13
+ * E-mail : 1184581135qq@gmail.com
  */
+
 public class CourseInfo {
 
     private int total;

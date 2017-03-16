@@ -15,7 +15,10 @@ import com.gordonwong.materialsheetfab.MaterialSheetFab;
 import butterknife.ButterKnife;
 
 /**
- * Created by Curiosity on 2016-12-25.
+ * Description :
+ * Author : Curiosity
+ * Date : 2016-12-25
+ * E-mail : 1184581135qq@gmail.com
  */
 
 public class CalendarFragment extends Fragment {

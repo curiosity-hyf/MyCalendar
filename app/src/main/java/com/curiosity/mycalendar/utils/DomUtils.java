@@ -14,9 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Curiosity on 2016-9-11.
- * 该工具类用于 Dom的处理
+ * Description : 该工具类用于 Dom的处理
+ * Author : Curiosity
+ * Date : 2016-9-11
+ * E-mail : 1184581135qq@gmail.com
  */
+
 public class DomUtils {
     public static StudentInfo getStudentInfo(String htmlString) {
         Document doc = Jsoup.parse(htmlString);

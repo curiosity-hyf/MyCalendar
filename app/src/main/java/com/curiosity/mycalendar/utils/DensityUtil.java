@@ -3,7 +3,10 @@ package com.curiosity.mycalendar.utils;
 import android.content.Context;
 
 /**
- * Created by Curiosity on 2016-12-31.
+ * Description :
+ * Author : Curiosity
+ * Date : 2016-12-31
+ * E-mail : 1184581135qq@gmail.com
  */
 
 public class DensityUtil {

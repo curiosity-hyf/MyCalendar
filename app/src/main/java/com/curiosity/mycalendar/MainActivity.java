@@ -19,15 +19,20 @@ import com.curiosity.mycalendar.config.FieldDefine;
 import com.curiosity.mycalendar.fragment.CalendarFragment;
 import com.curiosity.mycalendar.fragment.CurriculumFragment;
 import com.curiosity.mycalendar.fragment.EmptyFragment;
-import com.curiosity.mycalendar.presenter.IMainPresenter;
-import com.curiosity.mycalendar.presenter.impl.MainPresenter;
+import com.curiosity.mycalendar.main.presenter.IMainPresenter;
+import com.curiosity.mycalendar.main.presenter.MainPresenter;
+import com.curiosity.mycalendar.main.view.IMainView;
 import com.curiosity.mycalendar.sysinfo.FetchInfoActivity;
-import com.curiosity.mycalendar.sysinfo.YearSelectActivity;
-import com.curiosity.mycalendar.view.IMainView;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+/**
+ * Description :
+ * Author : Curiosity
+ * Date : 2016-12-29
+ * E-mail : 1184581135qq@gmail.com
+ */
 
 public class MainActivity extends AppCompatActivity implements IMainView {
 

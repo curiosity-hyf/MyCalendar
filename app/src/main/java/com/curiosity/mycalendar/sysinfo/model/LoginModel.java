@@ -3,36 +3,34 @@ package com.curiosity.mycalendar.sysinfo.model;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabaseCorruptException;
-import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.curiosity.mycalendar.bean.CourseInfo;
 import com.curiosity.mycalendar.bean.LoginInfo;
 import com.curiosity.mycalendar.bean.StudentInfo;
+import com.curiosity.mycalendar.http.HttpUtils;
 import com.curiosity.mycalendar.utils.DomUtils;
-import com.curiosity.mycalendar.utils.HttpUtils2;
 import com.curiosity.mycalendar.utils.SQLiteHelper;
 import com.curiosity.mycalendar.utils.SharedPreferenceUtil;
-import com.curiosity.mycalendar.utils.TextUtils;
 import com.google.gson.Gson;
 
 /**
- * Created by red on 17-3-15.
+ * Description :
+ * Author : Curiosity
+ * Date : 2017-3-12
+ * E-mail : 1184581135qq@gmail.com
  */
 
 public class LoginModel implements ILoginModel {
 
     @Override
     public void login(final Context context, final String account, final String pwd, final boolean isCheck, final LoginModel.OnLoginListener listener) {
-        HttpUtils2.ResultCallback<String> resultCallback = new HttpUtils2.ResultCallback<String>() {
+        HttpUtils.ResultCallback<String> resultCallback = new HttpUtils.ResultCallback<String>() {
             @Override
             public void onSuccess(String response) {
                 LoginInfo info = new Gson().fromJson(response, LoginInfo.class);
-                if("n".equals(info.getStatus())) {
+                if ("n".equals(info.getStatus())) {
                     listener.onLoginFailure(info.getMsg());
                 } else {
                     try {
@@ -51,10 +49,10 @@ public class LoginModel implements ILoginModel {
                 listener.onLoginFailure("login failed");
             }
         };
-        HttpUtils2.Param param = new HttpUtils2.Param();
+        HttpUtils.Param param = new HttpUtils.Param();
         param.addParam("account", account);
         param.addParam("pwd", pwd);
-        HttpUtils2.login(param, resultCallback);
+        HttpUtils.login(param, resultCallback);
     }
 
     @Override
@@ -72,7 +70,7 @@ public class LoginModel implements ILoginModel {
         return pwd;
     }
 
-    private void saveLoginInfo(Context context, String account, String pwd, boolean isCheck) throws Exception{
+    private void saveLoginInfo(Context context, String account, String pwd, boolean isCheck) throws Exception {
         SharedPreferenceUtil.setSaveAccount(context, account);
         if (isCheck) {
             SharedPreferenceUtil.setCheckPwd(context, true);
@@ -89,13 +87,9 @@ public class LoginModel implements ILoginModel {
         }
     }
 
-    /**
-     * get the student information
-     * @param listener
-     */
     @Override
     public void fetchStudentInfo(final Context context, final OnLoginListener listener) {
-        HttpUtils2.ResultCallback<String> resultCallback = new HttpUtils2.ResultCallback<String>() {
+        HttpUtils.ResultCallback<String> resultCallback = new HttpUtils.ResultCallback<String>() {
             @Override
             public void onSuccess(String response) {
                 StudentInfo info = DomUtils.getStudentInfo(response);
@@ -115,7 +109,7 @@ public class LoginModel implements ILoginModel {
             }
         };
 
-        HttpUtils2.getStuInfo(resultCallback);
+        HttpUtils.getStuInfo(resultCallback);
     }
 
     private void saveStudentInfo(Context context, StudentInfo info) throws Exception {
@@ -134,7 +128,7 @@ public class LoginModel implements ILoginModel {
         SQLiteDatabase db = SQLiteHelper.getReadableDatabase(context);
         Cursor cursor = SQLiteHelper.executeQuery(db,
                 "select * from " + SQLiteHelper.STUDENT_INFO_TABLE +
-                        " where " + whereArg +" = ?", new String[]{whereVal});
+                        " where " + whereArg + " = ?", new String[]{whereVal});
         String res = "";
         if (cursor.moveToNext()) {
             res = cursor.getString(cursor.getColumnIndex(columnName));
@@ -149,7 +143,7 @@ public class LoginModel implements ILoginModel {
     public void fetchCurriculum(final Context context, String admission, final int grade, final int semester, final OnLoginListener listener) {
         String curriculumYear = getCurriculumYear(admission, grade, semester);
 
-        HttpUtils2.ResultCallback<String> resultCallback = new HttpUtils2.ResultCallback<String>() {
+        HttpUtils.ResultCallback<String> resultCallback = new HttpUtils.ResultCallback<String>() {
             @Override
             public void onSuccess(String response) {
                 CourseInfo info = new Gson().fromJson(response, CourseInfo.class);
@@ -170,14 +164,14 @@ public class LoginModel implements ILoginModel {
             }
         };
 
-        HttpUtils2.Param param = new HttpUtils2.Param();
+        HttpUtils.Param param = new HttpUtils.Param();
         param.addParam("xnxqdm", curriculumYear);
         param.addParam("zc", "");
         param.addParam("page", "1");
         param.addParam("rows", "1000");
         param.addParam("sort", "zc");
-        param.addParam("orde", "asc");
-        HttpUtils2.getCurriculum(param, resultCallback);
+        param.addParam("order", "asc");
+        HttpUtils.getCurriculum(param, resultCallback);
     }
 
     private void saveCurriculum(Context context, CourseInfo info, int grade, int semester) throws Exception {
@@ -186,7 +180,7 @@ public class LoginModel implements ILoginModel {
                 "type = ? and grade = ? and semester = ?",
                 new String[]{"1", String.valueOf(grade), String.valueOf(semester)});
 
-        for(int i = 0; i < info.getTotal(); ++i) {
+        for (int i = 0; i < info.getTotal(); ++i) {
             CourseInfo.RowsBean bean = info.getRows().get(i);
             ContentValues values = new ContentValues();
             values.put("type", 1);
@@ -210,7 +204,7 @@ public class LoginModel implements ILoginModel {
         SQLiteDatabase db = SQLiteHelper.getReadableDatabase(context);
         Cursor cursor =
                 SQLiteHelper.executeQuery(db, "select * from " + SQLiteHelper.COURSE_INFO_TABLE, null);
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             Log.d("myd", "type = " + cursor.getInt(cursor.getColumnIndex("type")) +
                     "grade = " + cursor.getInt(cursor.getColumnIndex("grade")) +
                     "semester = " + cursor.getInt(cursor.getColumnIndex("semester")) +
@@ -233,12 +227,15 @@ public class LoginModel implements ILoginModel {
      */
     public interface OnLoginListener {
         void onLoginSuccess(String msg);
+
         void onLoginFailure(String msg);
 
         void onLoadStuInfoSuccess(StudentInfo info);
+
         void onLoadStuInfoFailure(String msg);
 
         void onLoadCurriculumSuccess();
+
         void onLoadCurriculumFailure(String msg);
     }
 

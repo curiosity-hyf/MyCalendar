@@ -9,7 +9,10 @@ import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 /**
- * Created by Curiosity on 2016-12-27.
+ * Description :
+ * Author : Curiosity
+ * Date : 2016-12-27
+ * E-mail : 1184581135qq@gmail.com
  */
 
 public class DeviceUuidFactory {

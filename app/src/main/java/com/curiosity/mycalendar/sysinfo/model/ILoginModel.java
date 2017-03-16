@@ -2,11 +2,11 @@ package com.curiosity.mycalendar.sysinfo.model;
 
 import android.content.Context;
 
-import com.curiosity.mycalendar.bean.CourseInfo;
-import com.curiosity.mycalendar.bean.StudentInfo;
-
 /**
- * Created by red on 17-3-15.
+ * Description :
+ * Author : Curiosity
+ * Date : 2017-3-15
+ * E-mail : 1184581135qq@gmail.com
  */
 
 public interface ILoginModel {

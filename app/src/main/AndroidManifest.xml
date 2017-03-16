@@ -28,10 +28,6 @@
             android:label="选择学期">
 
         </activity>
-        <activity android:name=".SettingCurActivity"
-            android:label="选择当前学期">
-
-        </activity>
     </application>
 
 </manifest>

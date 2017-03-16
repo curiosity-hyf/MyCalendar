@@ -65,9 +65,9 @@ public class LoginPresenter implements ILoginPresenter, LoginModel.OnLoginListen
 
     @Override
     public void onLoginFailure(String msg) {
-        Log.d(TAG, "onLoginFailure: ");
+        Log.d(TAG, "onLoadFailure: ");
         mLoginView.showProgress(false);
-        mLoginView.onLoginFailure();
+        mLoginView.onLoadFailure();
         mLoginView.makeToast(msg);
     }
 
@@ -82,7 +82,7 @@ public class LoginPresenter implements ILoginPresenter, LoginModel.OnLoginListen
     public void onLoadStuInfoFailure(String msg) {
         Log.d(TAG, "onLoadStuInfoFailure: ");
         mLoginView.showProgress(false);
-        mLoginView.onLoginFailure();
+        mLoginView.onLoadFailure();
         mLoginView.makeToast(msg);
     }
 
@@ -90,6 +90,7 @@ public class LoginPresenter implements ILoginPresenter, LoginModel.OnLoginListen
     public void onLoadCurriculumSuccess() {
         Log.d(TAG, "onLoadCurriculumSuccess: ");
         mLoginView.showProgress(false);
+        mLoginView.onLoadSuccess();
         mLoginView.makeToast("Load Curriculum Success");
     }
 
@@ -97,7 +98,7 @@ public class LoginPresenter implements ILoginPresenter, LoginModel.OnLoginListen
     public void onLoadCurriculumFailure(String msg) {
         Log.d(TAG, "onLoadCurriculumFailure: ");
         mLoginView.showProgress(false);
-        mLoginView.onLoginFailure();
+        mLoginView.onLoadFailure();
         mLoginView.makeToast(msg);
     }
 

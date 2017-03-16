@@ -11,7 +11,10 @@ import android.util.Log;
 import static com.curiosity.mycalendar.config.FieldDefine.DATABASE_VERSION;
 
 /**
- * Created by Curiosity on 2016-12-29.
+ * Description :
+ * Author : Curiosity
+ * Date : 2016-12-29
+ * E-mail : 1184581135qq@gmail.com
  */
 
 public class SQLiteHelper extends SQLiteOpenHelper {

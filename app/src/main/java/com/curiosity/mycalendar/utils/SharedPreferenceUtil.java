@@ -7,7 +7,10 @@ import android.preference.PreferenceManager;
 import java.util.Set;
 
 /**
- * Created by Curiosity on 2016-12-29.
+ * Description :
+ * Author : Curiosity
+ * Date : 2016-12-29
+ * E-mail : 1184581135qq@gmail.com
  */
 
 public class SharedPreferenceUtil {

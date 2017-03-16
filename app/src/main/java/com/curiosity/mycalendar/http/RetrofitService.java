@@ -1,4 +1,4 @@
-package com.curiosity.mycalendar.retrofit.service;
+package com.curiosity.mycalendar.http;
 
 import java.util.Map;
 

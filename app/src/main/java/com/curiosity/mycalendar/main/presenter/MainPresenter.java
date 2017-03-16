@@ -1,11 +1,13 @@
-package com.curiosity.mycalendar.presenter.impl;
+package com.curiosity.mycalendar.main.presenter;
 
 import com.curiosity.mycalendar.R;
-import com.curiosity.mycalendar.presenter.IMainPresenter;
-import com.curiosity.mycalendar.view.IMainView;
+import com.curiosity.mycalendar.main.view.IMainView;
 
 /**
- * Created by Curiosity on 2017-3-11.
+ * Description :
+ * Author : Curiosity
+ * Date : 2017-3-11
+ * E-mail : 1184581135qq@gmail.com
  */
 
 public class MainPresenter implements IMainPresenter {

@@ -3,7 +3,10 @@ package com.curiosity.mycalendar.bean;
 import org.jsoup.nodes.Document;
 
 /**
- * Created by Curiosity on 2017-1-1.
+ * Description :
+ * Author : Curiosity
+ * Date : 2017-1-1
+ * E-mail : 1184581135qq@gmail.com
  */
 
 public class RestgetCurriculum {

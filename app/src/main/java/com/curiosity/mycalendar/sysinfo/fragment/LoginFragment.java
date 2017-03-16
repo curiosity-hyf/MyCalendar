@@ -1,5 +1,6 @@
 package com.curiosity.mycalendar.sysinfo.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -15,6 +16,7 @@ import android.widget.Checkable;
 import android.widget.EditText;
 
 import com.curiosity.mycalendar.R;
+import com.curiosity.mycalendar.sysinfo.FetchInfoActivity;
 import com.curiosity.mycalendar.sysinfo.presenter.FetchPresenter;
 import com.curiosity.mycalendar.sysinfo.presenter.ILoginPresenter;
 import com.curiosity.mycalendar.sysinfo.presenter.LoginPresenter;
@@ -28,7 +30,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by red on 17-3-15.
+ * Description :
+ * Author : Curiosity
+ * Date : 2017-3-15
+ * E-mail : 1184581135qq@gmail.com
  */
 
 public class LoginFragment extends Fragment implements ILoginView{
@@ -119,7 +124,13 @@ public class LoginFragment extends Fragment implements ILoginView{
     }
 
     @Override
-    public void onLoginFailure() {
+    public void onLoadSuccess() {
+        setEnabled(true);
+        activity.onSuccess();
+    }
+
+    @Override
+    public void onLoadFailure() {
         setEnabled(true);
     }
 
@@ -204,5 +215,28 @@ public class LoginFragment extends Fragment implements ILoginView{
         @Override
         public void afterTextChanged(Editable s) {
         }
+    }
+
+    private OnLoadListener activity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            activity = (OnLoadListener) context;
+        } catch (ClassCastException e) {
+
+        }
+    }
+
+    public interface OnLoadListener {
+        void onSuccess();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("myd", "login destroy");
     }
 }

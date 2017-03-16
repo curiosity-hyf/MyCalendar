@@ -4,8 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by Curiosity on 2016-9-11.
+ * Description :
+ * Author : Curiosity
+ * Date : 2016-9-11
+ * E-mail : 1184581135qq@gmail.com
  */
+
 public class StudentInfo implements Parcelable{
     private String admission;
     private String stuNum;

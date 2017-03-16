@@ -1,4 +1,4 @@
-package com.curiosity.mycalendar.retrofit.Interceptor;
+package com.curiosity.mycalendar.http.Interceptor;
 
 import android.util.Log;
 
@@ -12,12 +12,11 @@ import okhttp3.Response;
 /**
  * Description :
  * Author : Curiosity
- * Date : 2017-3-12
+ * Date : 2017-3-16
  * E-mail : 1184581135qq@gmail.com
  */
 
 public class AddCookiesInterceptor implements Interceptor {
-
     private List<String> mCookies;
     public AddCookiesInterceptor(List<String> cookies) {
         mCookies = cookies;

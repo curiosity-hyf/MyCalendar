@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
  * E-mail : 1184581135qq@gmail.com
  */
 
-public class FetchInfoActivity extends AppCompatActivity implements IFetchView {
+public class FetchInfoActivity extends AppCompatActivity implements IFetchView, LoginFragment.OnLoadListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -129,5 +129,10 @@ public class FetchInfoActivity extends AppCompatActivity implements IFetchView {
     public void onBackPressed() {
         mFetchPresenter.navigationBack();
 //        super.onBackPressed();
+    }
+
+    @Override
+    public void onSuccess() {
+        finish();
     }
 }

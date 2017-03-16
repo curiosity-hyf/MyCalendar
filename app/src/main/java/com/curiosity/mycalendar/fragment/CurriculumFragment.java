@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.curiosity.mycalendar.sysinfo.FetchInfoActivity;
 import com.curiosity.mycalendar.R;
-import com.curiosity.mycalendar.SettingCurActivity;
 import com.curiosity.mycalendar.adapter.CourseAdapter;
 import com.curiosity.mycalendar.bean.CourseInfo;
 import com.curiosity.mycalendar.config.FieldDefine;
@@ -36,7 +35,10 @@ import butterknife.OnClick;
 import static android.app.Activity.RESULT_OK;
 
 /**
- * Created by Curiosity on 2016-12-30.
+ * Description :
+ * Author : Curiosity
+ * Date : 2016-12-30
+ * E-mail : 1184581135qq@gmail.com
  */
 
 public class CurriculumFragment extends Fragment {
@@ -80,7 +82,7 @@ public class CurriculumFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_ACTIVITY_CODE) {
             if(resultCode == RESULT_OK) {
-                startActivityForResult(new Intent().setClass(getContext(), SettingCurActivity.class), REQUEST_SETTING_CODE);
+//                startActivityForResult(new Intent().setClass(getContext(), SettingCurActivity.class), REQUEST_SETTING_CODE);
             }
         }
         if(requestCode == REQUEST_SETTING_CODE) {

@@ -2,7 +2,6 @@ package com.curiosity.mycalendar.fragment;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,21 +16,18 @@ import android.widget.TextView;
 
 import com.curiosity.mycalendar.R;
 import com.curiosity.mycalendar.config.FieldDefine;
-import com.curiosity.mycalendar.utils.CurriculumUtils;
-import com.curiosity.mycalendar.utils.HttpMethods;
 import com.curiosity.mycalendar.utils.SQLiteHelper;
 import com.curiosity.mycalendar.utils.SharedPreferenceUtil;
-import com.curiosity.mycalendar.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
- * Created by Curiosity on 2016-12-29.
+ * Description :
+ * Author : Curiosity
+ * Date : 2016-12-29
+ * E-mail : 1184581135qq@gmail.com
  */
 
 public class EmptyFragment extends Fragment {
@@ -129,40 +125,6 @@ public class EmptyFragment extends Fragment {
     public void test() {
         im.setImageResource(R.drawable.requirecode);
 //        HttpMethods.getVerifyCode(im);
-        HttpMethods.getViewState(im, getContext());
     }
 
-    public void getCode() {
-        CurriculumUtils.getCodeBitmap()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Bitmap>() {
-                    @Override
-                    public void call(Bitmap bitmap) {
-                        final ViewGroup.LayoutParams lp = im.getLayoutParams();
-                        ViewTreeObserver vto2 = code.getViewTreeObserver();
-                        vto2.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                            @SuppressWarnings("deprecation")
-                            @Override
-                            public void onGlobalLayout() {
-                                code.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                                Log.d("mytest", "after init :" + " height = " + code.getHeight() + " width = " + code.getWidth());
-                                lp.height = code.getHeight();
-                                im.setLayoutParams(lp);
-                            }
-                        });
-                        Log.d("mytest", "---------here---------");
-                        im.setImageBitmap(bitmap);
-
-                        Log.d("mytest", "height = " + bitmap.getHeight());
-                        Log.d("mytest", "width = " + bitmap.getWidth());
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        im.setImageResource(R.drawable.requirecode);
-                        ToastUtils.ToastShort(getContext(), R.string.text_curri_re_code_error);
-                    }
-                });
-    }
 }
