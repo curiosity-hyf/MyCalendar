@@ -34,15 +34,6 @@ public class CourseInfo {
         private String jxcdmc;
         private String zc;
         private String pkrq;
-        private String dgksdm;
-
-        public String getDgksdm() {
-            return dgksdm;
-        }
-
-        public void setDgksdm(String dgksdm) {
-            this.dgksdm = dgksdm;
-        }
 
         public String getKcmc() {
             return kcmc;
@@ -110,7 +101,6 @@ public class CourseInfo {
                     ", jxcdmc='" + jxcdmc + '\'' +
                     ", zc='" + zc + '\'' +
                     ", pkrq='" + pkrq + '\'' +
-                    ", dgksdm='" + dgksdm + '\'' +
                     '}';
         }
     }

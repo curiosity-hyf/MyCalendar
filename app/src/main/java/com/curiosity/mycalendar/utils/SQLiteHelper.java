@@ -34,8 +34,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_COURSE_TABLE =
             "create table " + COURSE_INFO_TABLE + " (" +
-            "id text primary key, " + /*课程编号*/
-            "year integer not null, " + /*学年*/
+            "type integer not null, " + /*类型 : 1 系统 2 自定义*/
+            "grade integer not null, " + /*学年*/
             "semester integer not null, " + /*学期*/
             "weekNum text not null, " + /*周次*/
             "dayNum text not null, " + /*星期*/
@@ -49,12 +49,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_STUDENT_TABLE =
             "create table " + STUDENT_INFO_TABLE + " (" +
-            "stuNum varchar(15) primary key, " +
-            "admission text not null, " +
-            "name text not null, " +
-            "major text not null, " +
-            "institute text not null, " +
-            "clas text not null" +
+            "stuNum text primary key, " + /*学号*/
+            "admission integer not null, " + /*入学年份*/
+            "name text not null, " + /*名称*/
+            "institute text not null, " + /*学院*/
+            "major text not null, " + /*专业*/
+            "clas text not null" + /*班级*/
             ")";
 
     public SQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -106,8 +106,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
      * @param values
      */
     public static void executeInsertWithCheck(Context context, String tableName, String checkColumn, ContentValues values) {
-        SQLiteHelper helper = new SQLiteHelper(context, "DB", null, DATABASE_VERSION);
-        SQLiteDatabase db1 = helper.getReadableDatabase();
+        SQLiteDatabase db1 = getReadableDatabase(context);
         String value = values.getAsString(checkColumn);
         String []strings = new String[]{value};
         Cursor cursor = executeQuery(db1,
@@ -116,12 +115,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 " where " + checkColumn + " = ?", strings);
         if(cursor.getCount() != 0) {
             Log.d("mytest", "insertCheck with update");
-            SQLiteDatabase db2 = helper.getWritableDatabase();
+            SQLiteDatabase db2 = getWritableDatabase(context);
             executeUpdate(db2, tableName, values, checkColumn + " = ?", strings);
             closeDatabase(db2);
         } else {
             Log.d("mytest", "insertCheck with insert");
-            SQLiteDatabase db3 = helper.getWritableDatabase();
+            SQLiteDatabase db3 = getWritableDatabase(context);
             executeInsert(db3, tableName, values);
             closeDatabase(db3);
         }

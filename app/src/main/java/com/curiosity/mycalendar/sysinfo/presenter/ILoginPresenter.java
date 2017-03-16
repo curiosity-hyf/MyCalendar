@@ -5,7 +5,7 @@ package com.curiosity.mycalendar.sysinfo.presenter;
  */
 
 public interface ILoginPresenter {
-    void login(String account, String pwd, boolean checkPwd);
+    void login(String account, String pwd, boolean checkPwd, int grade, int semester);
 
     /**
      * 获取保存的表单

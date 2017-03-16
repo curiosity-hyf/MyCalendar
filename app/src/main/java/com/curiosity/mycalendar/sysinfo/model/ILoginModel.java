@@ -2,6 +2,7 @@ package com.curiosity.mycalendar.sysinfo.model;
 
 import android.content.Context;
 
+import com.curiosity.mycalendar.bean.CourseInfo;
 import com.curiosity.mycalendar.bean.StudentInfo;
 
 /**
@@ -11,11 +12,13 @@ import com.curiosity.mycalendar.bean.StudentInfo;
 public interface ILoginModel {
     /**
      * 登录业务
+     * @param context 上下文
      * @param account 账号
      * @param pwd 密码
+     * @param isCheck 记住密码
      * @param listener 回调
      */
-    void login(String account, String pwd, LoginModel.OnLoginListener listener);
+    void login(Context context, String account, String pwd, boolean isCheck, LoginModel.OnLoginListener listener);
 
     /**
      * 获取记住的密码
@@ -24,32 +27,22 @@ public interface ILoginModel {
      *
      * @return 密码
      */
-    String getSave(Context context, String account);
-
-    /**
-     * 保存登录信息
-     * @param context 上下文
-     * @param account 账号
-     * @param pwd 密码
-     * @param isCheck 记住密码
-     */
-    void saveLoginInfo(Context context, String account, String pwd, boolean isCheck);
+    String getLoginInfo(Context context, String account);
 
     /**
      * 获取学生信息
      */
-    void fetchStudentInfo(final LoginModel.OnLoginListener listener);
+    void fetchStudentInfo(Context context, final LoginModel.OnLoginListener listener);
+
+    String getStudentInfo(Context context, String whereArg, String whereVal, String columnName);
 
     /**
-     * save the student's information
-     * @param info
-     */
-    void saveStudentInfo(StudentInfo info);
-    /**
      * 获取指定课表信息
-     * @param year 年份
+     * @param context
+     * @param admission 入学年份
+     * @param grade
      * @param semester 学期
-     * @param weeks 周次
      */
-    void fetchCurriculum(String year, String semester, String weeks);
+    void fetchCurriculum(Context context, String admission, int grade, int semester, LoginModel.OnLoginListener listener);
+
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatSpinner;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,34 +71,33 @@ public class YearSelectFragment extends Fragment {
         super.onAttach(context);
     }
 
-    public String getGradeValue() {
+    public int getGradeValue() {
         switch (gradePos) {
             case 0:
-                return "1";
+                return 1;
             case 1:
-                return "2";
+                return 2;
             case 2:
-                return "3";
+                return 3;
             case 3:
-                return "4";
+                return 4;
             default:
-                return "1";
+                return 1;
         }
     }
 
-    public String getSemesterValue() {
+    public int getSemesterValue() {
         switch (semesterPos) {
             case 0:
-                return "01";
+                return 1;
             case 1:
-                return "02";
+                return 2;
             default:
-                return "01";
+                return 1;
         }
     }
 
-    public String[] getSelect() {
-        String[] selection = new String[]{getGradeValue(), getSemesterValue()};
-        return selection;
+    public int[] getSelect() {
+        return new int[]{getGradeValue(), getSemesterValue()};
     }
 }

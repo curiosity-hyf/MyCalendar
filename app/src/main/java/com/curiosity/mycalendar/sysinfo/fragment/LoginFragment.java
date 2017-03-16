@@ -71,14 +71,13 @@ public class LoginFragment extends Fragment implements ILoginView{
 
         Bundle bundle = getArguments();
         if(bundle != null) {
-            String arg0 = bundle.getString("grade");
-            String arg1 = bundle.getString("semester");
+            grade = bundle.getInt("grade");
+            semester = bundle.getInt("semester");
 
-            if(arg0 != null & arg1 != null) {
-                Log.d("myd", "grade = " + arg0 + " semester = " + arg1);
+            if(grade != 0 & semester != 0) {
+                Log.d("myd", "grade = " + grade + " semester = " + semester);
             }
         }
-
         return view;
     }
 
@@ -89,6 +88,8 @@ public class LoginFragment extends Fragment implements ILoginView{
         login_btn.setEnabled(enabled);
     }
 
+    private int grade, semester;
+
     /**
      * 确认
      */
@@ -98,7 +99,9 @@ public class LoginFragment extends Fragment implements ILoginView{
             setEnabled(false);
             mLoginPresenter.login(TextUtils.getText(login_account),
                     TextUtils.getText(login_pwd),
-                    check_pwd.isChecked());
+                    check_pwd.isChecked(),
+                    grade,
+                    semester);
         }
     }
 

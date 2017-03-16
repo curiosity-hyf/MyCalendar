@@ -81,9 +81,10 @@ public class FetchInfoActivity extends AppCompatActivity implements IFetchView {
     public void switchYearFragment(Bundle bundle) {
         if(mYearSelectFragment == null) {
             mYearSelectFragment = new YearSelectFragment();
-            if(bundle != null) {
-                mYearSelectFragment.setArguments(bundle);
-            }
+
+        }
+        if(bundle != null) {
+            mYearSelectFragment.setArguments(bundle);
         }
         switchFragment(mYearSelectFragment);
     }
@@ -92,9 +93,9 @@ public class FetchInfoActivity extends AppCompatActivity implements IFetchView {
     public void switchLoginFragment(Bundle bundle) {
         if(mLoginFragment == null) {
             mLoginFragment = new LoginFragment();
-            if(bundle != null) {
-                mLoginFragment.setArguments(bundle);
-            }
+        }
+        if(bundle != null) {
+            mLoginFragment.setArguments(bundle);
         }
         switchFragment(mLoginFragment);
     }
@@ -111,10 +112,10 @@ public class FetchInfoActivity extends AppCompatActivity implements IFetchView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.next_step:
-                String args[] = mYearSelectFragment.getSelect();
+                int args[] = mYearSelectFragment.getSelect();
                 Bundle bundle = new Bundle();
-                bundle.putString("grade", args[0]);
-                bundle.putString("semester", args[1]);
+                bundle.putInt("grade", args[0]);
+                bundle.putInt("semester", args[1]);
                 mFetchPresenter.switchNavigation(1, bundle);
                 break;
             case android.R.id.home:

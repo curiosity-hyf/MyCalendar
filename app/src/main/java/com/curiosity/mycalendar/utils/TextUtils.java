@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -25,6 +26,10 @@ public class TextUtils {
     }
     public static boolean isEmpty(String s) {
         return s == null || s.equals("");
+    }
+
+    public static String getYear() {
+        return String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
     }
 
     public static byte[] convertStreamToBytes(InputStream is) {
