@@ -19,6 +19,14 @@ android {
     }
 }
 
+allprojects {
+    repositories {
+        maven {
+            url "http://10.21.71.224/repository/maven-public/"
+        }
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
