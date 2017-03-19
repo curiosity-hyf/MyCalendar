@@ -70,7 +70,7 @@ public class EmptyFragment extends Fragment {
         Log.d("mytest", "onShow");
         SQLiteDatabase db = SQLiteHelper.getReadableDatabase(getContext());
         Cursor cursor = SQLiteHelper.executeQuery(db, "select * from courseInfo", null);
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndex("id"));
             String account = cursor.getString(cursor.getColumnIndex("account"));
             String year = cursor.getString(cursor.getColumnIndex("year"));

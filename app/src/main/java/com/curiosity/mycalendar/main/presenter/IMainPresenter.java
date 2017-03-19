@@ -8,6 +8,8 @@ package com.curiosity.mycalendar.main.presenter;
  */
 
 public interface IMainPresenter {
+
     void switchNavigation(int id);
+
     void login();
 }

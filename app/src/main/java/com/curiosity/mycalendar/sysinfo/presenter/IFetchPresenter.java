@@ -11,5 +11,6 @@ import android.os.Bundle;
 
 public interface IFetchPresenter {
     void switchNavigation(int id, Bundle bundle);
+
     boolean navigationBack();
 }

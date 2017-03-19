@@ -1,27 +1,18 @@
 package com.curiosity.mycalendar.sysinfo;
 
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.Checkable;
-import android.widget.EditText;
 
 import com.curiosity.mycalendar.R;
-import com.curiosity.mycalendar.config.FieldDefine;
-import com.curiosity.mycalendar.fragment.EmptyFragment;
 import com.curiosity.mycalendar.sysinfo.fragment.LoginFragment;
 import com.curiosity.mycalendar.sysinfo.fragment.YearSelectFragment;
-import com.curiosity.mycalendar.sysinfo.presenter.IFetchPresenter;
 import com.curiosity.mycalendar.sysinfo.presenter.FetchPresenter;
+import com.curiosity.mycalendar.sysinfo.presenter.IFetchPresenter;
 import com.curiosity.mycalendar.sysinfo.view.IFetchView;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +30,9 @@ public class FetchInfoActivity extends AppCompatActivity implements IFetchView, 
     Toolbar toolbar;
 
     private IFetchPresenter mFetchPresenter;
+    private LoginFragment mLoginFragment = null;
+    private YearSelectFragment mYearSelectFragment = null;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +41,7 @@ public class FetchInfoActivity extends AppCompatActivity implements IFetchView, 
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         //设置是否有返回箭头
-        if(getSupportActionBar() != null)
+        if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mFetchPresenter = new FetchPresenter(this, this);
@@ -58,6 +52,7 @@ public class FetchInfoActivity extends AppCompatActivity implements IFetchView, 
 
     /**
      * 切换Fragment面板
+     *
      * @param fragment 需要的Fragment
      */
     private void switchFragment(Fragment fragment) {
@@ -67,11 +62,6 @@ public class FetchInfoActivity extends AppCompatActivity implements IFetchView, 
                 .commit();
     }
 
-    private LoginFragment mLoginFragment = null;
-    private YearSelectFragment mYearSelectFragment = null;
-
-
-    private Menu menu;
     @Override
     public void showNextStep(boolean show) {
         menu.getItem(0).setVisible(show);
@@ -79,11 +69,11 @@ public class FetchInfoActivity extends AppCompatActivity implements IFetchView, 
 
     @Override
     public void switchYearFragment(Bundle bundle) {
-        if(mYearSelectFragment == null) {
+        if (mYearSelectFragment == null) {
             mYearSelectFragment = new YearSelectFragment();
 
         }
-        if(bundle != null) {
+        if (bundle != null) {
             mYearSelectFragment.setArguments(bundle);
         }
         switchFragment(mYearSelectFragment);
@@ -91,10 +81,10 @@ public class FetchInfoActivity extends AppCompatActivity implements IFetchView, 
 
     @Override
     public void switchLoginFragment(Bundle bundle) {
-        if(mLoginFragment == null) {
+        if (mLoginFragment == null) {
             mLoginFragment = new LoginFragment();
         }
-        if(bundle != null) {
+        if (bundle != null) {
             mLoginFragment.setArguments(bundle);
         }
         switchFragment(mLoginFragment);
@@ -120,7 +110,7 @@ public class FetchInfoActivity extends AppCompatActivity implements IFetchView, 
                 break;
             case android.R.id.home:
                 boolean res = mFetchPresenter.navigationBack();
-                if(!res) return true;
+                if (!res) return true;
         }
         return super.onOptionsItemSelected(item);
     }

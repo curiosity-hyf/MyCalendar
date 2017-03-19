@@ -14,8 +14,6 @@ import java.util.Set;
  */
 
 public class SharedPreferenceUtil {
-    private SharedPreferenceUtil() {}
-
     public static final String ISFIRSTIN = "isFirstIn";
     public static final String GETUSER = "getUser";
     public static final String CURRINUM = "CURRINUM";
@@ -28,6 +26,8 @@ public class SharedPreferenceUtil {
     public static final String SAVE_ACCOUNT = "SAVE_ACCOUNT";
     public static final String CHECK_PWD = "CHECK_PWD";
     public static final String COOKIES = "COOKIES";
+    private SharedPreferenceUtil() {
+    }
 
     public static void setCookies(Context context, Set<String> cookies) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -153,16 +153,19 @@ public class SharedPreferenceUtil {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getString(CURRINUM, null);
     }
+
     public static void setCurriNum(Context context, String StuNum) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(CURRINUM, StuNum);
         editor.apply();
     }
+
     public static boolean hasStuInfo(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(GETSTUINFO, false);
     }
+
     public static void setStuInfo(Context context, Boolean StuNum) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();

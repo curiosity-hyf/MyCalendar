@@ -10,7 +10,7 @@ import android.os.Parcelable;
  * E-mail : 1184581135qq@gmail.com
  */
 
-public class StudentInfo implements Parcelable{
+public class StudentInfo implements Parcelable {
     private String admission;
     private String stuNum;
     private String name;
@@ -21,26 +21,6 @@ public class StudentInfo implements Parcelable{
     public StudentInfo() {
     }
 
-    protected StudentInfo(Parcel in) {
-        admission = in.readString();
-        stuNum = in.readString();
-        name = in.readString();
-        institute = in.readString();
-        major = in.readString();
-        clas = in.readString();
-    }
-
-    public static final Creator<StudentInfo> CREATOR = new Creator<StudentInfo>() {
-        @Override
-        public StudentInfo createFromParcel(Parcel in) {
-            return new StudentInfo(in);
-        }
-
-        @Override
-        public StudentInfo[] newArray(int size) {
-            return new StudentInfo[size];
-        }
-    };
 
     @Override
     public String toString() {
@@ -109,11 +89,32 @@ public class StudentInfo implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(admission);
-        dest.writeString(stuNum);
-        dest.writeString(name);
-        dest.writeString(institute);
-        dest.writeString(major);
-        dest.writeString(clas);
+        dest.writeString(this.admission);
+        dest.writeString(this.stuNum);
+        dest.writeString(this.name);
+        dest.writeString(this.institute);
+        dest.writeString(this.major);
+        dest.writeString(this.clas);
     }
+
+    protected StudentInfo(Parcel in) {
+        this.admission = in.readString();
+        this.stuNum = in.readString();
+        this.name = in.readString();
+        this.institute = in.readString();
+        this.major = in.readString();
+        this.clas = in.readString();
+    }
+
+    public static final Parcelable.Creator<StudentInfo> CREATOR = new Parcelable.Creator<StudentInfo>() {
+        @Override
+        public StudentInfo createFromParcel(Parcel source) {
+            return new StudentInfo(source);
+        }
+
+        @Override
+        public StudentInfo[] newArray(int size) {
+            return new StudentInfo[size];
+        }
+    };
 }

@@ -18,6 +18,7 @@ import okhttp3.Response;
 
 public class AddCookiesInterceptor implements Interceptor {
     private List<String> mCookies;
+
     public AddCookiesInterceptor(List<String> cookies) {
         mCookies = cookies;
     }

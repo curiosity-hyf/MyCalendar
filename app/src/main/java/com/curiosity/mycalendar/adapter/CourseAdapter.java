@@ -21,6 +21,7 @@ import java.util.List;
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHolder> {
 
     private List<CourseInfo> mData;
+    private OnItemClickListener mListener;
 
     public CourseAdapter(List<CourseInfo> infoBean) {
         mData = infoBean;
@@ -39,7 +40,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
 //        holder.getId().setText(""+infoBean.getId());
 //        holder.getName().setText(infoBean.getCourseName());
 //        holder.getTeacher().setText(infoBean.getTeacherName());
-        if(mListener != null) {
+        if (mListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -72,7 +73,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
         mData.remove(position);
         notifyDataSetChanged();
         notifyItemRemoved(position);
-        if(position != mData.size()) {
+        if (position != mData.size()) {
             notifyItemRangeChanged(position, mData.size() - position);
         }
     }
@@ -81,7 +82,17 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
         return mData.get(position);
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder{
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+
+        void onItemLongClick(View view, int position);
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView course_id;
         private TextView course_name;
@@ -106,14 +117,5 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
             return course_teacher;
         }
 
-    }
-
-    private OnItemClickListener mListener;
-    public interface OnItemClickListener {
-        void onItemClick(View view, int position);
-        void onItemLongClick(View view, int position);
-    }
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.mListener = listener;
     }
 }

@@ -1,17 +1,9 @@
 package com.curiosity.mycalendar.utils;
 
-import com.curiosity.mycalendar.bean.CourseInfo;
-import com.curiosity.mycalendar.bean.RestgetCurriculum;
 import com.curiosity.mycalendar.bean.StudentInfo;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Description : 该工具类用于 Dom的处理

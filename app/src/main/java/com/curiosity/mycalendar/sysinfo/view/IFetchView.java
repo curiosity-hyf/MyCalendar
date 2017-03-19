@@ -10,8 +10,10 @@ import android.os.Bundle;
  */
 
 public interface IFetchView {
+
     void showNextStep(boolean show);
 
     void switchYearFragment(Bundle bundle);
+
     void switchLoginFragment(Bundle bundle);
 }

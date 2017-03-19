@@ -23,6 +23,7 @@ import com.curiosity.mycalendar.main.presenter.IMainPresenter;
 import com.curiosity.mycalendar.main.presenter.MainPresenter;
 import com.curiosity.mycalendar.main.view.IMainView;
 import com.curiosity.mycalendar.sysinfo.FetchInfoActivity;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -36,28 +37,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity implements IMainView {
 
-    private MenuItem current_menuitem;
-
-    private ActionBarDrawerToggle mDrawerToggle;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
     @BindView(R.id.navigation)
     NavigationView navigationView;
-
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-
-    private View headerView;
-
     TextView username;
-
     TextView institute;
-
     TextView major;
-
     TextView clas;
-
+    private MenuItem current_menuitem;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private View headerView;
     private CircleImageView civ;
 
     private IMainPresenter mIMainPresenter;
@@ -150,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
     /**
      * 切换Fragment面板
+     *
      * @param fragment 需要的Fragment
      */
     private void switchFragment(Fragment fragment) {

@@ -16,6 +16,7 @@ import rx.Observable;
  */
 
 public interface RetrofitService {
+
     @FormUrlEncoded
     @POST("/login!doLogin.action")
     Observable<String> login(@FieldMap Map<String, String> map);

@@ -31,6 +31,7 @@ public class FieldDefine {
     public static String HOST_PREX = "192.168.43.183";
     public static String PORT = "8080";
     public static String HOST;
+
     static {
         HOST = PRO + HOST_PREX + ":" + PORT;
     }

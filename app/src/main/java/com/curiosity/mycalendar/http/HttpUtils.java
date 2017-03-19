@@ -62,9 +62,9 @@ public class HttpUtils {
     }
 
     private static RetrofitService getService() {
-        if(mInstance == null) {
+        if (mInstance == null) {
             synchronized (HttpUtils.class) {
-                if(mInstance == null) {
+                if (mInstance == null) {
                     mInstance = new HttpUtils();
                 }
             }
@@ -73,7 +73,7 @@ public class HttpUtils {
     }
 
     public static void login(Param param, final ResultCallback<String> callback) {
-        if(cookies != null)
+        if (cookies != null)
             cookies.clear();
         getService().login(param.getParam())
                 .subscribeOn(Schedulers.io())
@@ -146,6 +146,7 @@ public class HttpUtils {
     //回调接口
     public interface ResultCallback<T> {
         void onSuccess(T response);
+
         void onFailure(Exception e);
     }
 

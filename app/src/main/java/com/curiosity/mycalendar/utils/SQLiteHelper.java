@@ -27,38 +27,38 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     public static final String GET_PWD =
             "select pwd from " +
-            SQLiteHelper.USER_LOGIN_TABLE +
-            " where account = ?";
+                    SQLiteHelper.USER_LOGIN_TABLE +
+                    " where account = ?";
 
     private static final String CREATE_UEAR_TABLE =
             "create table " + USER_LOGIN_TABLE + " (" +
-            "account varchar(30) primary key not null, " +
-            "pwd varchar(30) not null)";
+                    "account varchar(30) primary key not null, " +
+                    "pwd varchar(30) not null)";
 
     private static final String CREATE_COURSE_TABLE =
             "create table " + COURSE_INFO_TABLE + " (" +
-            "type integer not null, " + /*类型 : 1 系统 2 自定义*/
-            "grade integer not null, " + /*学年*/
-            "semester integer not null, " + /*学期*/
-            "weekNum text not null, " + /*周次*/
-            "dayNum text not null, " + /*星期*/
-            "clsNum text not null, " + /*节次*/
-            "name text not null, " + /*课程名称*/
-            "teacher text not null, " + /*教师名称*/
-            "addr text not null, " + /*上课地点*/
-            "dayOfYear text not null, " + /*完整时间*/
-            "other text" + /*其他*/
-            ")";
+                    "type integer not null, " + /*类型 : 1 系统 2 自定义*/
+                    "grade integer not null, " + /*学年*/
+                    "semester integer not null, " + /*学期*/
+                    "weekNum text not null, " + /*周次*/
+                    "dayNum text not null, " + /*星期*/
+                    "clsNum text not null, " + /*节次*/
+                    "name text not null, " + /*课程名称*/
+                    "teacher text not null, " + /*教师名称*/
+                    "addr text not null, " + /*上课地点*/
+                    "dayOfYear text not null, " + /*完整时间*/
+                    "other text" + /*其他*/
+                    ")";
 
     private static final String CREATE_STUDENT_TABLE =
             "create table " + STUDENT_INFO_TABLE + " (" +
-            "stuNum text primary key, " + /*学号*/
-            "admission integer not null, " + /*入学年份*/
-            "name text not null, " + /*名称*/
-            "institute text not null, " + /*学院*/
-            "major text not null, " + /*专业*/
-            "clas text not null" + /*班级*/
-            ")";
+                    "stuNum text primary key, " + /*学号*/
+                    "admission integer not null, " + /*入学年份*/
+                    "name text not null, " + /*名称*/
+                    "institute text not null, " + /*学院*/
+                    "major text not null, " + /*专业*/
+                    "clas text not null" + /*班级*/
+                    ")";
 
     public SQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -68,27 +68,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         super(context, name, factory, version, errorHandler);
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        Log.d("mytest", "create database");
-        db.execSQL(CREATE_UEAR_TABLE);
-//        db.execSQL(CREATE_CURRI_BASE);
-
-        db.execSQL(CREATE_COURSE_TABLE);
-
-        db.execSQL(CREATE_STUDENT_TABLE);
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    }
-
-
     /**
      * 插入
+     *
      * @param tableName 表名
-     * @param values 键值对 列名-列值
+     * @param values    键值对 列名-列值
      */
     public static void executeInsert(SQLiteDatabase db, String tableName, ContentValues values) {
         db.beginTransaction();
@@ -103,6 +87,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     /**
      * 插入前先检查，若存在则更新。
+     *
      * @param context
      * @param tableName
      * @param checkColumn
@@ -111,12 +96,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public static void executeInsertWithCheck(Context context, String tableName, String checkColumn, ContentValues values) {
         SQLiteDatabase db1 = getReadableDatabase(context);
         String value = values.getAsString(checkColumn);
-        String []strings = new String[]{value};
+        String[] strings = new String[]{value};
         Cursor cursor = executeQuery(db1,
                 "select " + checkColumn +
-                " from " + tableName +
-                " where " + checkColumn + " = ?", strings);
-        if(cursor.getCount() != 0) {
+                        " from " + tableName +
+                        " where " + checkColumn + " = ?", strings);
+        if (cursor.getCount() != 0) {
             Log.d("mytest", "insertCheck with update");
             SQLiteDatabase db2 = getWritableDatabase(context);
             executeUpdate(db2, tableName, values, checkColumn + " = ?", strings);
@@ -133,10 +118,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     /**
      * 更新
-     * @param table 表名
-     * @param values 键值对 列名-列值
+     *
+     * @param table       表名
+     * @param values      键值对 列名-列值
      * @param whereClause where条件 e.g. id = ?
-     * @param whereArgs 占位符值
+     * @param whereArgs   占位符值
      */
     public static void executeUpdate(SQLiteDatabase db, String table, ContentValues values, String whereClause, String[] whereArgs) {
         db.beginTransaction();
@@ -151,9 +137,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     /**
      * 删除
-     * @param table 表名
+     *
+     * @param table       表名
      * @param whereClause where条件 e.g. id = ?
-     * @param whereArgs 占位符值
+     * @param whereArgs   占位符值
      */
     public static void executeDelete(SQLiteDatabase db, String table, String whereClause, String[] whereArgs) {
         db.beginTransaction();
@@ -167,7 +154,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     /**
      * 查询
-     * @param sql sql语句
+     *
+     * @param sql        sql语句
      * @param parameters 占位符值
      * @return 查询结果 {@link Cursor}
      */
@@ -194,8 +182,24 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public static void closeDatabase(SQLiteDatabase db) {
-        if(db.isOpen()) {
+        if (db.isOpen()) {
             db.close();
         }
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        Log.d("mytest", "create database");
+        db.execSQL(CREATE_UEAR_TABLE);
+//        db.execSQL(CREATE_CURRI_BASE);
+
+        db.execSQL(CREATE_COURSE_TABLE);
+
+        db.execSQL(CREATE_STUDENT_TABLE);
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 }

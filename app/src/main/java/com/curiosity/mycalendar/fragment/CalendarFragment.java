@@ -47,6 +47,7 @@ public class CalendarFragment extends Fragment {
         MaterialSheetFab<MenuFAB> materialSheetFab = new MaterialSheetFab<>(fab, sheetView, overlay,
                 sheetColor, fabColor);
     }
+
     @Override
     public void onStart() {
         super.onStart();

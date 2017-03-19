@@ -16,14 +16,11 @@ import android.widget.Checkable;
 import android.widget.EditText;
 
 import com.curiosity.mycalendar.R;
-import com.curiosity.mycalendar.sysinfo.FetchInfoActivity;
-import com.curiosity.mycalendar.sysinfo.presenter.FetchPresenter;
 import com.curiosity.mycalendar.sysinfo.presenter.ILoginPresenter;
 import com.curiosity.mycalendar.sysinfo.presenter.LoginPresenter;
 import com.curiosity.mycalendar.sysinfo.view.ILoginView;
 import com.curiosity.mycalendar.utils.TextUtils;
 import com.curiosity.mycalendar.utils.ToastUtils;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +33,7 @@ import butterknife.OnClick;
  * E-mail : 1184581135qq@gmail.com
  */
 
-public class LoginFragment extends Fragment implements ILoginView{
+public class LoginFragment extends Fragment implements ILoginView {
     @BindView(R.id.accountWrapper)
     TextInputLayout accountWrapper;
 
@@ -55,9 +52,6 @@ public class LoginFragment extends Fragment implements ILoginView{
     @BindView(R.id.check_pwd)
     Checkable check_pwd;
 
-    @BindView(R.id.aiv)
-    AVLoadingIndicatorView aiv;
-
     private ILoginPresenter mLoginPresenter;
 
     @Nullable
@@ -75,11 +69,11 @@ public class LoginFragment extends Fragment implements ILoginView{
         mLoginPresenter.getSaveForm();
 
         Bundle bundle = getArguments();
-        if(bundle != null) {
+        if (bundle != null) {
             grade = bundle.getInt("grade");
             semester = bundle.getInt("semester");
 
-            if(grade != 0 & semester != 0) {
+            if (grade != 0 && semester != 0) {
                 Log.d("myd", "grade = " + grade + " semester = " + semester);
             }
         }
@@ -117,10 +111,7 @@ public class LoginFragment extends Fragment implements ILoginView{
 
     @Override
     public void showProgress(boolean show) {
-        if(show)
-            aiv.smoothToShow();
-        else
-            aiv.smoothToHide();
+        //TODO
     }
 
     @Override
@@ -143,6 +134,7 @@ public class LoginFragment extends Fragment implements ILoginView{
 
     /**
      * 账号、密码、验证码合法性
+     *
      * @return 是否合法
      */
     public boolean isValid() {
@@ -151,6 +143,7 @@ public class LoginFragment extends Fragment implements ILoginView{
 
     /**
      * 账号的合法性
+     *
      * @return 是否合法
      */
     public boolean isAccountValid() {
@@ -167,6 +160,7 @@ public class LoginFragment extends Fragment implements ILoginView{
 
     /**
      * 密码的合法性
+     *
      * @return 是否合法
      */
     public boolean isPwdValid() {

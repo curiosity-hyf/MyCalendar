@@ -8,8 +8,12 @@ package com.curiosity.mycalendar.main.view;
  */
 
 public interface IMainView {
+
     void login();
+
     void switch2Test();
+
     void switch2Curriculum();
+
     void switch2Calender();
 }

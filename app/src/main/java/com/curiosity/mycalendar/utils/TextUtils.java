@@ -3,17 +3,12 @@ package com.curiosity.mycalendar.utils;
 
 import android.widget.EditText;
 
-import com.curiosity.mycalendar.bean.CourseInfo;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Description : 该工具类用于文本的处理
@@ -27,6 +22,7 @@ public class TextUtils {
     public static String getText(EditText editText) {
         return editText.getText().toString();
     }
+
     public static boolean isEmpty(String s) {
         return s == null || s.equals("");
     }

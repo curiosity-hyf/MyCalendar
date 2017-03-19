@@ -15,14 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.curiosity.mycalendar.sysinfo.FetchInfoActivity;
 import com.curiosity.mycalendar.R;
 import com.curiosity.mycalendar.adapter.CourseAdapter;
 import com.curiosity.mycalendar.bean.CourseInfo;
 import com.curiosity.mycalendar.config.FieldDefine;
+import com.curiosity.mycalendar.customview.MenuFAB;
+import com.curiosity.mycalendar.sysinfo.FetchInfoActivity;
 import com.curiosity.mycalendar.utils.SQLiteHelper;
 import com.curiosity.mycalendar.utils.SharedPreferenceUtil;
-import com.curiosity.mycalendar.customview.MenuFAB;
 import com.gordonwong.materialsheetfab.MaterialSheetFab;
 
 import java.util.ArrayList;
@@ -42,20 +42,22 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class CurriculumFragment extends Fragment {
+    static MenuFAB fab;
+    public int REQUEST_ACTIVITY_CODE = 1;
+    public int REQUEST_SETTING_CODE = 2;
+    MaterialSheetFab<MenuFAB> materialSheetFab;
+    @BindView(R.id.empty_msg)
+    TextView empty_msg;
+    @BindView(R.id.btn_getCurriculum)
+    TextView btn_getCurriculum;
+    View view;
+    View sheetView;
+    View overlay;
     private RecyclerView rv;
     private CourseAdapter adapter;
     private List<CourseInfo> mData;
-    MaterialSheetFab<MenuFAB> materialSheetFab;
-    public int REQUEST_ACTIVITY_CODE = 1;
-    public int REQUEST_SETTING_CODE = 2;
+    private String year, semester, account;
 
-    @BindView(R.id.empty_msg)
-    TextView empty_msg;
-
-    @BindView(R.id.btn_getCurriculum)
-    TextView btn_getCurriculum;
-
-    View view;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,27 +75,27 @@ public class CurriculumFragment extends Fragment {
     public void onGetCurriculum() {
         Log.d("mytest", "click");
         startActivityForResult(new Intent().setClass(getContext(), FetchInfoActivity.class), REQUEST_ACTIVITY_CODE);
-        if(materialSheetFab.isSheetVisible())
+        if (materialSheetFab.isSheetVisible())
             materialSheetFab.hideSheet();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_ACTIVITY_CODE) {
-            if(resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_ACTIVITY_CODE) {
+            if (resultCode == RESULT_OK) {
 //                startActivityForResult(new Intent().setClass(getContext(), SettingCurActivity.class), REQUEST_SETTING_CODE);
             }
         }
-        if(requestCode == REQUEST_SETTING_CODE) {
-            if(resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_SETTING_CODE) {
+            if (resultCode == RESULT_OK) {
                 Bundle bundle = data.getExtras();
                 year = bundle.getString("year");
                 semester = bundle.getString("semester");
                 account = SharedPreferenceUtil.getSaveAccount(getContext());
                 int size = mData.size();
                 Log.d("mytest", "size2 = ------------" + size);
-                for(int i = size - 1; i >= 0; --i) {
+                for (int i = size - 1; i >= 0; --i) {
                     adapter.deleteData(0);
                 }
 //                initData(account, year, semester);
@@ -116,6 +118,7 @@ public class CurriculumFragment extends Fragment {
 //                Toast.makeText(getActivity().getApplicationContext(), adapter.getData(position).getCourseName(),
 //                        Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onItemLongClick(View view, int position) {
 //                Toast.makeText(getActivity().getApplicationContext(), adapter.getData(position).getCourseName(),
@@ -128,12 +131,12 @@ public class CurriculumFragment extends Fragment {
         mData = new ArrayList<>();
         adapter = new CourseAdapter(mData);
         boolean hasCourse = SharedPreferenceUtil.getHasClassFromSys(getContext()) | SharedPreferenceUtil.getHasClassCustom(getContext());
-        if(hasCourse) {
+        if (hasCourse) {
             empty_msg.setVisibility(View.GONE);
             SQLiteDatabase db = SQLiteHelper.getReadableDatabase(getContext());
             Cursor cursor = SQLiteHelper.executeQuery(db,
                     "select * from " + SQLiteHelper.COURSE_INFO_TABLE +
-                    " where account = ? and year = ? and semester = ?", new String[]{account, year, semester});
+                            " where account = ? and year = ? and semester = ?", new String[]{account, year, semester});
             Log.d("mytest", "----------load data!!!----------------");
             while (cursor.moveToNext()) {
                 int id = cursor.getInt(cursor.getColumnIndex("id"));
@@ -166,9 +169,6 @@ public class CurriculumFragment extends Fragment {
         //rv.smoothScrollToPosition(num_msg+1);
     }
 
-    static MenuFAB fab;
-    View sheetView;
-    View overlay;
     private void initFAB() {
         fab = (MenuFAB) view.findViewById(R.id.fab);
         sheetView = view.findViewById(R.id.fab_sheet);
@@ -185,18 +185,17 @@ public class CurriculumFragment extends Fragment {
     public void onPause() {
         super.onPause();
         Log.d("mytest", "Curriculum Frag-->onPause");
-        if(materialSheetFab.isSheetVisible())
+        if (materialSheetFab.isSheetVisible())
             materialSheetFab.hideSheet();
     }
 
-    private  String year, semester, account;
     @Override
     public void onStart() {
         super.onStart();
         Log.d("mytest", "Curriculum Frag-->onStart");
 
         Log.d("mytest", year + " " + semester);
-        if(mData != null) {
+        if (mData != null) {
             int size = mData.size();
             Log.d("mytest", "size1 = ------------" + size);
             for (int i = size - 1; i >= 0; --i) {

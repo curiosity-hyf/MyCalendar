@@ -3,13 +3,10 @@ package com.curiosity.mycalendar.sysinfo.presenter;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.curiosity.mycalendar.R;
 import com.curiosity.mycalendar.sysinfo.FetchInfoActivity;
-import com.curiosity.mycalendar.sysinfo.model.IFetchModel;
 import com.curiosity.mycalendar.sysinfo.model.FetchModel;
+import com.curiosity.mycalendar.sysinfo.model.IFetchModel;
 import com.curiosity.mycalendar.sysinfo.view.IFetchView;
-import com.curiosity.mycalendar.utils.SharedPreferenceUtil;
-import com.curiosity.mycalendar.utils.TextUtils;
 
 /**
  * Description :
@@ -50,8 +47,8 @@ public class FetchPresenter implements IFetchPresenter {
     @Override
     public boolean navigationBack() {
         mLoginView.showNextStep(true);
-        if(currentFragIdx == 0) {
-            ((FetchInfoActivity)mContext).onNavigateUp();
+        if (currentFragIdx == 0) {
+            ((FetchInfoActivity) mContext).onNavigateUp();
             return true;
         } else {
             currentFragIdx = 0;

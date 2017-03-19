@@ -8,6 +8,7 @@ package com.curiosity.mycalendar.sysinfo.presenter;
  */
 
 public interface ILoginPresenter {
+
     void login(String account, String pwd, boolean checkPwd, int grade, int semester);
 
     /**

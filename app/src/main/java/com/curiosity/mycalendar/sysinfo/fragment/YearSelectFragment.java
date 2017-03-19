@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.curiosity.mycalendar.R;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -50,7 +51,8 @@ public class YearSelectFragment extends Fragment {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
 
         semesterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -60,7 +62,8 @@ public class YearSelectFragment extends Fragment {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
     }
 

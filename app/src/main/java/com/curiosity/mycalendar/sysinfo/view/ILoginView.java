@@ -8,10 +8,13 @@ package com.curiosity.mycalendar.sysinfo.view;
  */
 
 public interface ILoginView {
+
     void makeToast(String msg);
+
     void showProgress(boolean show);
 
     void onLoadSuccess();
+
     void onLoadFailure();
 
     void initForm(String account, String pwd, boolean isCheck);
