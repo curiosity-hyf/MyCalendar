@@ -12,7 +12,7 @@ import okhttp3.Response;
  * Description :
  * Author : Curiosity
  * Date : 2017-3-16
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public class ReceivedCookiesInterceptor implements Interceptor {

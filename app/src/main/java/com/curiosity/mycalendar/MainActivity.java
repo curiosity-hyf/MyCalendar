@@ -22,7 +22,7 @@ import com.curiosity.mycalendar.fragment.EmptyFragment;
 import com.curiosity.mycalendar.main.presenter.IMainPresenter;
 import com.curiosity.mycalendar.main.presenter.MainPresenter;
 import com.curiosity.mycalendar.main.view.IMainView;
-import com.curiosity.mycalendar.sysinfo.FetchInfoActivity;
+import com.curiosity.mycalendar.sysinfo.LoginActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +32,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Description :
  * Author : Curiosity
  * Date : 2016-12-29
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public class MainActivity extends AppCompatActivity implements IMainView {
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     @Override
     public void login() {
         Intent intent = new Intent();
-        intent.setClass(MainActivity.this, FetchInfoActivity.class);
+        intent.setClass(MainActivity.this, LoginActivity.class);
         startActivityForResult(intent, FieldDefine.LOGIN_REQUEST_CODE);
     }
 

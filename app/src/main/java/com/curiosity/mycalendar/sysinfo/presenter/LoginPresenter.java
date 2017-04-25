@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.curiosity.mycalendar.bean.StudentInfo;
+import com.curiosity.mycalendar.config.FieldDefine;
 import com.curiosity.mycalendar.sysinfo.model.ILoginModel;
 import com.curiosity.mycalendar.sysinfo.model.LoginModel;
 import com.curiosity.mycalendar.sysinfo.view.ILoginView;
@@ -14,7 +15,7 @@ import com.curiosity.mycalendar.utils.TextUtils;
  * Description :
  * Author : Curiosity
  * Date : 2017-3-12
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public class LoginPresenter implements ILoginPresenter, LoginModel.OnLoginListener {
@@ -46,7 +47,7 @@ public class LoginPresenter implements ILoginPresenter, LoginModel.OnLoginListen
     }
 
     @Override
-    public void getSaveForm() {
+    public void initForm() {
         String account = SharedPreferenceUtil.getSaveAccount(mContext);
         boolean isCheckPwd = SharedPreferenceUtil.getCheckPwd(mContext);
         String pwd = "";
@@ -74,7 +75,7 @@ public class LoginPresenter implements ILoginPresenter, LoginModel.OnLoginListen
     @Override
     public void onLoadStuInfoSuccess(StudentInfo info) {
         Log.d(TAG, "onLoadStuInfoSuccess: ");
-        String admission = mLoginModel.getStudentInfo(mContext, "stuNum", info.getStuNum(), "admission");
+        String admission = mLoginModel.getStudentInfo(mContext, FieldDefine.S_NUM, info.getStuNum(), FieldDefine.S_ADMISSION);
         mLoginModel.fetchCurriculum(mContext, admission, mGrade, mSemester, this);
     }
 

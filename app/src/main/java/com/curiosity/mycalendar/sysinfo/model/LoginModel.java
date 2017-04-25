@@ -9,6 +9,7 @@ import android.util.Log;
 import com.curiosity.mycalendar.bean.CourseInfo;
 import com.curiosity.mycalendar.bean.LoginInfo;
 import com.curiosity.mycalendar.bean.StudentInfo;
+import com.curiosity.mycalendar.config.FieldDefine;
 import com.curiosity.mycalendar.http.HttpUtils;
 import com.curiosity.mycalendar.utils.DomUtils;
 import com.curiosity.mycalendar.utils.SQLiteHelper;
@@ -19,7 +20,7 @@ import com.google.gson.Gson;
  * Description :
  * Author : Curiosity
  * Date : 2017-3-12
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public class LoginModel implements ILoginModel {
@@ -50,8 +51,8 @@ public class LoginModel implements ILoginModel {
             }
         };
         HttpUtils.Param param = new HttpUtils.Param();
-        param.addParam("account", account);
-        param.addParam("pwd", pwd);
+        param.addParam(FieldDefine.L_ACCOUNT, account);
+        param.addParam(FieldDefine.L_PWD, pwd);
         HttpUtils.login(param, resultCallback);
     }
 
@@ -59,32 +60,44 @@ public class LoginModel implements ILoginModel {
     public String getLoginInfo(Context context, String account) {
         SQLiteDatabase db = SQLiteHelper.getReadableDatabase(context);
         Cursor cursor = SQLiteHelper.executeQuery(db,
-                SQLiteHelper.GET_PWD,
+                "select "+ FieldDefine.U_PWD + " from " +
+                        FieldDefine.USER_LOGIN_TABLE +
+                        " where " + FieldDefine.U_ACCOUNT + " = ?",
                 new String[]{account});
         String pwd = "";
         if (cursor.moveToNext()) {
-            pwd = cursor.getString(cursor.getColumnIndex("pwd"));
+            pwd = cursor.getString(cursor.getColumnIndex(FieldDefine.U_PWD));
         }
         cursor.close();
         SQLiteHelper.closeDatabase(db);
         return pwd;
     }
 
+    /**
+     * 保存登录的表单
+     * @param context 上下文
+     * @param account 账号
+     * @param pwd 密码
+     * @param isCheck  记住密码
+     * @throws Exception
+     */
     private void saveLoginInfo(Context context, String account, String pwd, boolean isCheck) throws Exception {
         SharedPreferenceUtil.setSaveAccount(context, account);
-        if (isCheck) {
-            SharedPreferenceUtil.setCheckPwd(context, true);
-            ContentValues values = new ContentValues();
-            values.put("account", account);
-            values.put("pwd", pwd);
-            SQLiteHelper.executeInsertWithCheck(context, SQLiteHelper.USER_LOGIN_TABLE, "account", values);
+
+        ContentValues values = new ContentValues();
+
+        SharedPreferenceUtil.setCheckPwd(context, isCheck);
+        values.put(FieldDefine.U_ACCOUNT, account);
+
+        if(isCheck) {
+            values.put(FieldDefine.U_PWD, pwd);
         } else {
-            SharedPreferenceUtil.setCheckPwd(context, false);
-            ContentValues values = new ContentValues();
-            values.put("account", account);
-            values.put("pwd", "");
-            SQLiteHelper.executeInsertWithCheck(context, SQLiteHelper.USER_LOGIN_TABLE, "account", values);
+            values.put(FieldDefine.U_PWD, "");
         }
+
+        SQLiteHelper.executeInsertWithCheck(context, FieldDefine.USER_LOGIN_TABLE, FieldDefine.U_ACCOUNT, values);
+
+        values.clear();
     }
 
     @Override
@@ -112,22 +125,29 @@ public class LoginModel implements ILoginModel {
         HttpUtils.getStuInfo(resultCallback);
     }
 
+    /**
+     * 保存学生信息
+     * @param context 上下文
+     * @param info 学生信息
+     * @throws Exception
+     */
     private void saveStudentInfo(Context context, StudentInfo info) throws Exception {
         ContentValues values = new ContentValues();
-        values.put("stuNum", info.getStuNum());
-        values.put("admission", info.getAdmission());
-        values.put("name", info.getName());
-        values.put("institute", info.getInstitute());
-        values.put("major", info.getMajor());
-        values.put("clas", info.getClas());
-        SQLiteHelper.executeInsertWithCheck(context, SQLiteHelper.STUDENT_INFO_TABLE, "stuNum", values);
+        values.put(FieldDefine.S_NUM, info.getStuNum());
+        values.put(FieldDefine.S_ADMISSION, info.getAdmission());
+        values.put(FieldDefine.S_NAME, info.getName());
+        values.put(FieldDefine.S_INSTITUTE, info.getInstitute());
+        values.put(FieldDefine.S_MAJOR, info.getMajor());
+        values.put(FieldDefine.S_CLASS, info.getClas());
+        SQLiteHelper.executeInsertWithCheck(context, FieldDefine.STUDENT_INFO_TABLE, FieldDefine.S_NUM, values);
+        values.clear();
     }
 
     @Override
     public String getStudentInfo(Context context, String whereArg, String whereVal, String columnName) {
         SQLiteDatabase db = SQLiteHelper.getReadableDatabase(context);
         Cursor cursor = SQLiteHelper.executeQuery(db,
-                "select * from " + SQLiteHelper.STUDENT_INFO_TABLE +
+                "select * from " + FieldDefine.STUDENT_INFO_TABLE +
                         " where " + whereArg + " = ?", new String[]{whereVal});
         String res = "";
         if (cursor.moveToNext()) {
@@ -176,24 +196,26 @@ public class LoginModel implements ILoginModel {
 
     private void saveCurriculum(Context context, CourseInfo info, int grade, int semester) throws Exception {
         SQLiteDatabase db = SQLiteHelper.getWritableDatabase(context);
-        SQLiteHelper.executeDelete(db, SQLiteHelper.COURSE_INFO_TABLE,
-                "type = ? and grade = ? and semester = ?",
+        SQLiteHelper.executeDelete(db, FieldDefine.COURSE_INFO_TABLE,
+                        FieldDefine.C_TYPE + " = ? and " +
+                        FieldDefine.C_GRADE + " = ? and " +
+                        FieldDefine.C_SEMESTER + " = ?",
                 new String[]{"1", String.valueOf(grade), String.valueOf(semester)});
 
         for (int i = 0; i < info.getTotal(); ++i) {
             CourseInfo.RowsBean bean = info.getRows().get(i);
             ContentValues values = new ContentValues();
-            values.put("type", 1);
-            values.put("grade", grade);
-            values.put("semester", semester);
-            values.put("weekNum", bean.getZc());
-            values.put("dayNum", bean.getXq());
-            values.put("clsNum", bean.getJcdm());
-            values.put("name", bean.getKcmc());
-            values.put("teacher", bean.getTeaxms());
-            values.put("addr", bean.getJxcdmc());
-            values.put("dayOfYear", bean.getPkrq());
-            SQLiteHelper.executeInsert(db, SQLiteHelper.COURSE_INFO_TABLE, values);
+            values.put(FieldDefine.C_TYPE, 1);
+            values.put(FieldDefine.C_GRADE, grade);
+            values.put(FieldDefine.C_SEMESTER, semester);
+            values.put(FieldDefine.C_WEEK_NUM, bean.getZc());
+            values.put(FieldDefine.C_DAY_NUM, bean.getXq());
+            values.put(FieldDefine.C_CLS_NUM, bean.getJcdm());
+            values.put(FieldDefine.C_NAME, bean.getKcmc());
+            values.put(FieldDefine.C_TEACHER, bean.getTeaxms());
+            values.put(FieldDefine.C_ADDR, bean.getJxcdmc());
+            values.put(FieldDefine.C_FULL_TIME, bean.getPkrq());
+            SQLiteHelper.executeInsert(db, FieldDefine.COURSE_INFO_TABLE, values);
             values.clear();
         }
         SQLiteHelper.closeDatabase(db);
@@ -203,19 +225,17 @@ public class LoginModel implements ILoginModel {
     private void getCurriculum(Context context, int grade, int semester) {
         SQLiteDatabase db = SQLiteHelper.getReadableDatabase(context);
         Cursor cursor =
-                SQLiteHelper.executeQuery(db, "select * from " + SQLiteHelper.COURSE_INFO_TABLE, null);
+                SQLiteHelper.executeQuery(db, "select * from " + FieldDefine.COURSE_INFO_TABLE, null);
         while (cursor.moveToNext()) {
-            Log.d("myd", "type = " + cursor.getInt(cursor.getColumnIndex("type")) +
-                    "grade = " + cursor.getInt(cursor.getColumnIndex("grade")) +
-                    "semester = " + cursor.getInt(cursor.getColumnIndex("semester")) +
-                    "semester = " + cursor.getString(cursor.getColumnIndex("semester")) +
-                    "semester = " + cursor.getString(cursor.getColumnIndex("semester")) +
-                    "clsNum = " + cursor.getString(cursor.getColumnIndex("clsNum")) +
-                    "name = " + cursor.getString(cursor.getColumnIndex("name")) +
-                    "teacher = " + cursor.getString(cursor.getColumnIndex("teacher")) +
-                    "addr = " + cursor.getString(cursor.getColumnIndex("addr")) +
-                    "dayOfYear = " + cursor.getString(cursor.getColumnIndex("dayOfYear")) +
-                    "other = " + cursor.getString(cursor.getColumnIndex("other")));
+            Log.d("myd", FieldDefine.C_TYPE + " = " + cursor.getInt(cursor.getColumnIndex(FieldDefine.C_TYPE)) +
+                    FieldDefine.C_GRADE + " = " + cursor.getInt(cursor.getColumnIndex(FieldDefine.C_GRADE)) +
+                    FieldDefine.C_SEMESTER + " = " + cursor.getInt(cursor.getColumnIndex(FieldDefine.C_SEMESTER)) +
+                    FieldDefine.C_CLS_NUM + " = " + cursor.getString(cursor.getColumnIndex(FieldDefine.C_CLS_NUM)) +
+                    FieldDefine.C_NAME + " = " + cursor.getString(cursor.getColumnIndex(FieldDefine.C_NAME)) +
+                    FieldDefine.C_TEACHER + " = " + cursor.getString(cursor.getColumnIndex(FieldDefine.C_TEACHER)) +
+                    FieldDefine.C_ADDR + " = " + cursor.getString(cursor.getColumnIndex(FieldDefine.C_ADDR)) +
+                    FieldDefine.C_FULL_TIME + " = " + cursor.getString(cursor.getColumnIndex(FieldDefine.C_FULL_TIME)) +
+                    FieldDefine.C_OTHER + " = " + cursor.getString(cursor.getColumnIndex(FieldDefine.C_OTHER)));
         }
         cursor.close();
         SQLiteHelper.closeDatabase(db);
@@ -226,16 +246,39 @@ public class LoginModel implements ILoginModel {
      * 回调接口
      */
     public interface OnLoginListener {
+        /**
+         * 登录成功回调
+         * @param msg
+         */
         void onLoginSuccess(String msg);
 
+        /**
+         * 登录失败回调
+         * @param msg
+         */
         void onLoginFailure(String msg);
 
+        /**
+         * 加载学生信息成功回调
+         * @param info
+         */
         void onLoadStuInfoSuccess(StudentInfo info);
 
+        /**
+         * 加载学生信息失败回调
+         * @param msg
+         */
         void onLoadStuInfoFailure(String msg);
 
+        /**
+         * 加载课程信息成功回调
+         */
         void onLoadCurriculumSuccess();
 
+        /**
+         * 加载课程信息失败回调
+         * @param msg
+         */
         void onLoadCurriculumFailure(String msg);
     }
 

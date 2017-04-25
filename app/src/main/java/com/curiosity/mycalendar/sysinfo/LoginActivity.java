@@ -21,10 +21,10 @@ import butterknife.ButterKnife;
  * Description :
  * Author : Curiosity
  * Date : 2017-3-13
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
-public class FetchInfoActivity extends AppCompatActivity implements IFetchView, LoginFragment.OnLoadListener {
+public class LoginActivity extends AppCompatActivity implements IFetchView, LoginFragment.OnLoadListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -71,7 +71,6 @@ public class FetchInfoActivity extends AppCompatActivity implements IFetchView, 
     public void switchYearFragment(Bundle bundle) {
         if (mYearSelectFragment == null) {
             mYearSelectFragment = new YearSelectFragment();
-
         }
         if (bundle != null) {
             mYearSelectFragment.setArguments(bundle);
@@ -102,10 +101,7 @@ public class FetchInfoActivity extends AppCompatActivity implements IFetchView, 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.next_step:
-                int args[] = mYearSelectFragment.getSelect();
-                Bundle bundle = new Bundle();
-                bundle.putInt("grade", args[0]);
-                bundle.putInt("semester", args[1]);
+                Bundle bundle = mYearSelectFragment.getSelect();
                 mFetchPresenter.switchNavigation(1, bundle);
                 break;
             case android.R.id.home:

@@ -1,8 +1,6 @@
 package com.curiosity.mycalendar.fragment;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,8 +18,7 @@ import com.curiosity.mycalendar.adapter.CourseAdapter;
 import com.curiosity.mycalendar.bean.CourseInfo;
 import com.curiosity.mycalendar.config.FieldDefine;
 import com.curiosity.mycalendar.customview.MenuFAB;
-import com.curiosity.mycalendar.sysinfo.FetchInfoActivity;
-import com.curiosity.mycalendar.utils.SQLiteHelper;
+import com.curiosity.mycalendar.sysinfo.LoginActivity;
 import com.curiosity.mycalendar.utils.SharedPreferenceUtil;
 import com.gordonwong.materialsheetfab.MaterialSheetFab;
 
@@ -38,7 +35,7 @@ import static android.app.Activity.RESULT_OK;
  * Description :
  * Author : Curiosity
  * Date : 2016-12-30
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public class CurriculumFragment extends Fragment {
@@ -74,7 +71,7 @@ public class CurriculumFragment extends Fragment {
     @OnClick(R.id.btn_getCurriculum)
     public void onGetCurriculum() {
         Log.d("mytest", "click");
-        startActivityForResult(new Intent().setClass(getContext(), FetchInfoActivity.class), REQUEST_ACTIVITY_CODE);
+        startActivityForResult(new Intent().setClass(getContext(), LoginActivity.class), REQUEST_ACTIVITY_CODE);
         if (materialSheetFab.isSheetVisible())
             materialSheetFab.hideSheet();
     }
@@ -130,37 +127,7 @@ public class CurriculumFragment extends Fragment {
     private void initData(String account, String year, String semester) {
         mData = new ArrayList<>();
         adapter = new CourseAdapter(mData);
-        boolean hasCourse = SharedPreferenceUtil.getHasClassFromSys(getContext()) | SharedPreferenceUtil.getHasClassCustom(getContext());
-        if (hasCourse) {
-            empty_msg.setVisibility(View.GONE);
-            SQLiteDatabase db = SQLiteHelper.getReadableDatabase(getContext());
-            Cursor cursor = SQLiteHelper.executeQuery(db,
-                    "select * from " + SQLiteHelper.COURSE_INFO_TABLE +
-                            " where account = ? and year = ? and semester = ?", new String[]{account, year, semester});
-            Log.d("mytest", "----------load data!!!----------------");
-            while (cursor.moveToNext()) {
-                int id = cursor.getInt(cursor.getColumnIndex("id"));
-                String name = cursor.getString(cursor.getColumnIndex("courseName"));
-                String teacher_name = cursor.getString(cursor.getColumnIndex("teacherName"));
-                CourseInfo info = new CourseInfo();
-//                info.setCourseName(name);
-//                info.setId(id);
-//                info.setTeacherName(teacher_name);
-                newInfo(info);
-                //Log.d("mytest", "" + id + " " + name + " " + teacher_name);
-            }
-        }
 
-//        while(cursor.moveToNext()) {
-//            int id = cursor.getInt(cursor.getColumnIndex("id"));
-//            String year = cursor.getString(cursor.getColumnIndex("year"));
-//            String semester = cursor.getString(cursor.getColumnIndex("semester"));
-//            String courseName = cursor.getString(cursor.getColumnIndex("courseName"));
-//            String teacherName = cursor.getString(cursor.getColumnIndex("teacherName"));
-//            String classroom = cursor.getString(cursor.getColumnIndex("classroom"));
-//            Log.d("mytest", "id=" + id + " year=" + year + " semester=" + semester + " courseName=" + courseName
-//                    + " teacherName=" + teacherName + " classroom=" + classroom);
-//        }
     }
 
     public void newInfo(CourseInfo info) {

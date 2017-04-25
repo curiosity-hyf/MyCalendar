@@ -6,7 +6,7 @@ import android.os.Bundle;
  * Description :
  * Author : Curiosity
  * Date : 2017-3-12
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public interface IFetchView {

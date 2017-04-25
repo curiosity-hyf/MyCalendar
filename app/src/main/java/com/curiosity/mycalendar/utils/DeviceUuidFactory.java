@@ -12,7 +12,7 @@ import java.util.UUID;
  * Description :
  * Author : Curiosity
  * Date : 2016-12-27
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public class DeviceUuidFactory {

@@ -15,7 +15,7 @@ import java.util.List;
  * Description :
  * Author : Curiosity
  * Date : 2016-12-29
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHolder> {

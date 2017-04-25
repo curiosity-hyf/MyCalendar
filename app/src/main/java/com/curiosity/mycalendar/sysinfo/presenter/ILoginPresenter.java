@@ -4,7 +4,7 @@ package com.curiosity.mycalendar.sysinfo.presenter;
  * Description :
  * Author : Curiosity
  * Date : 2017-3-15
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public interface ILoginPresenter {
@@ -14,5 +14,5 @@ public interface ILoginPresenter {
     /**
      * 获取保存的表单
      */
-    void getSaveForm();
+    void initForm();
 }

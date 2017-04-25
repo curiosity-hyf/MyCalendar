@@ -10,7 +10,7 @@ import com.gordonwong.materialsheetfab.AnimatedFab;
  * Description :
  * Author : Curiosity
  * Date : 2016-12-29
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public class MenuFAB extends FloatingActionButton implements AnimatedFab {

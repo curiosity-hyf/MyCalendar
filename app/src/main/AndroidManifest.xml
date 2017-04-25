@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".sysinfo.FetchInfoActivity"
+        <activity android:name=".sysinfo.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".MainActivity"
             android:label="选择学期">

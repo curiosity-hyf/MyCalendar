@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.curiosity.mycalendar.R;
+import com.curiosity.mycalendar.config.FieldDefine;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,7 +20,7 @@ import butterknife.ButterKnife;
  * Description :
  * Author : Curiosity
  * Date : 2017-3-15
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public class YearSelectFragment extends Fragment {
@@ -73,7 +74,7 @@ public class YearSelectFragment extends Fragment {
         super.onAttach(context);
     }
 
-    public int getGradeValue() {
+    private int getGradeValue() {
         switch (gradePos) {
             case 0:
                 return 1;
@@ -88,7 +89,7 @@ public class YearSelectFragment extends Fragment {
         }
     }
 
-    public int getSemesterValue() {
+    private int getSemesterValue() {
         switch (semesterPos) {
             case 0:
                 return 1;
@@ -99,7 +100,10 @@ public class YearSelectFragment extends Fragment {
         }
     }
 
-    public int[] getSelect() {
-        return new int[]{getGradeValue(), getSemesterValue()};
+    public Bundle getSelect() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(FieldDefine.L_GRADE, getGradeValue());
+        bundle.putInt(FieldDefine.L_SEMESTER, getSemesterValue());
+        return bundle;
     }
 }

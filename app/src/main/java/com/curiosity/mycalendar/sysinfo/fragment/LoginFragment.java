@@ -16,6 +16,7 @@ import android.widget.Checkable;
 import android.widget.EditText;
 
 import com.curiosity.mycalendar.R;
+import com.curiosity.mycalendar.config.FieldDefine;
 import com.curiosity.mycalendar.sysinfo.presenter.ILoginPresenter;
 import com.curiosity.mycalendar.sysinfo.presenter.LoginPresenter;
 import com.curiosity.mycalendar.sysinfo.view.ILoginView;
@@ -30,7 +31,7 @@ import butterknife.OnClick;
  * Description :
  * Author : Curiosity
  * Date : 2017-3-15
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public class LoginFragment extends Fragment implements ILoginView {
@@ -63,15 +64,14 @@ public class LoginFragment extends Fragment implements ILoginView {
         login_account.addTextChangedListener(new LoginFragment.MyTextWatcher(login_account));
         login_pwd.addTextChangedListener(new LoginFragment.MyTextWatcher(login_pwd));
 
-
         mLoginPresenter = new LoginPresenter(this, this.getContext());
 
-        mLoginPresenter.getSaveForm();
+        mLoginPresenter.initForm();
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            grade = bundle.getInt("grade");
-            semester = bundle.getInt("semester");
+            grade = bundle.getInt(FieldDefine.L_GRADE);
+            semester = bundle.getInt(FieldDefine.L_SEMESTER);
 
             if (grade != 0 && semester != 0) {
                 Log.d("myd", "grade = " + grade + " semester = " + semester);
@@ -80,7 +80,7 @@ public class LoginFragment extends Fragment implements ILoginView {
         return view;
     }
 
-    public void setEnabled(boolean enabled) {
+    private void setEnabled(boolean enabled) {
         login_account.setEnabled(enabled);
         login_pwd.setEnabled(enabled);
         login_account.setClickable(enabled);
@@ -90,7 +90,7 @@ public class LoginFragment extends Fragment implements ILoginView {
     private int grade, semester;
 
     /**
-     * 确认
+     * 点击确认
      */
     @OnClick(R.id.login_btn)
     void confirm() {
@@ -137,7 +137,7 @@ public class LoginFragment extends Fragment implements ILoginView {
      *
      * @return 是否合法
      */
-    public boolean isValid() {
+    private boolean isValid() {
         return isAccountValid() && isPwdValid();
     }
 
@@ -146,7 +146,7 @@ public class LoginFragment extends Fragment implements ILoginView {
      *
      * @return 是否合法
      */
-    public boolean isAccountValid() {
+    private boolean isAccountValid() {
         String account = login_account.getText().toString().trim();
         if (TextUtils.isEmpty(account)) {
             accountWrapper.setErrorEnabled(true);
@@ -163,7 +163,7 @@ public class LoginFragment extends Fragment implements ILoginView {
      *
      * @return 是否合法
      */
-    public boolean isPwdValid() {
+    private boolean isPwdValid() {
         String password = login_pwd.getText().toString().trim();
         if (TextUtils.isEmpty(password)) {
             psdWrapper.setErrorEnabled(true);

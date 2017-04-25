@@ -9,7 +9,7 @@ import org.jsoup.nodes.Document;
  * Description : 该工具类用于 Dom的处理
  * Author : Curiosity
  * Date : 2016-9-11
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public class DomUtils {

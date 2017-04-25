@@ -4,6 +4,7 @@ package com.curiosity.mycalendar.http;
 import android.util.Log;
 
 import com.curiosity.mycalendar.bean.StudentInfo;
+import com.curiosity.mycalendar.config.FieldDefine;
 import com.curiosity.mycalendar.http.Interceptor.AddCookiesInterceptor;
 import com.curiosity.mycalendar.http.Interceptor.ReceivedCookiesInterceptor;
 import com.curiosity.mycalendar.utils.DomUtils;
@@ -27,13 +28,12 @@ import rx.schedulers.Schedulers;
  * Description :
  * Author : Curiosity
  * Date : 2017-3-12
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public class HttpUtils {
     private static final String TAG = "HttpUtils";
 
-    private static final String BASE_URL = "http://222.200.98.147/";
     private static HttpUtils mInstance;
 
     private static RetrofitService retrofitService;
@@ -51,7 +51,7 @@ public class HttpUtils {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(FieldDefine.HOST)
                 .client(mOkHttpClient)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())

@@ -7,7 +7,7 @@ import android.widget.Toast;
  * Description : Toast使用类
  * Author : Curiosity
  * Date : 2016-12-28
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public class ToastUtils {

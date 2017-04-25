@@ -6,7 +6,7 @@ import android.content.Context;
  * Description :
  * Author : Curiosity
  * Date : 2016-12-31
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public class DensityUtil {

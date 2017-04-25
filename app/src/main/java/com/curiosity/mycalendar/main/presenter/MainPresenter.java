@@ -7,7 +7,7 @@ import com.curiosity.mycalendar.main.view.IMainView;
  * Description :
  * Author : Curiosity
  * Date : 2017-3-11
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public class MainPresenter implements IMainPresenter {

@@ -6,7 +6,7 @@ import java.util.List;
  * Description :
  * Author : Curiosity
  * Date : 2016-9-13
- * E-mail : 1184581135qq@gmail.com
+ * E-mail : curiooosity.h@gmail.com
  */
 
 public class CourseInfo {
