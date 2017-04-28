@@ -1,5 +1,7 @@
 package com.curiosity.mycalendar.main.presenter;
 
+import com.curiosity.mycalendar.bean.StudentInfo;
+
 /**
  * Description :
  * Author : Curiosity
@@ -12,4 +14,6 @@ public interface IMainPresenter {
     void switchNavigation(int id);
 
     void login();
+
+    void getStudentInfo();
 }

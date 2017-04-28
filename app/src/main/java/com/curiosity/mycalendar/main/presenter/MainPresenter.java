@@ -1,6 +1,9 @@
 package com.curiosity.mycalendar.main.presenter;
 
 import com.curiosity.mycalendar.R;
+import com.curiosity.mycalendar.bean.StudentInfo;
+import com.curiosity.mycalendar.main.model.IMainModel;
+import com.curiosity.mycalendar.main.model.MainModel;
 import com.curiosity.mycalendar.main.view.IMainView;
 
 /**
@@ -14,8 +17,12 @@ public class MainPresenter implements IMainPresenter {
 
     private IMainView mIMainView;
 
+    private IMainModel mIMainModel;
+
     public MainPresenter(IMainView mIMainView) {
         this.mIMainView = mIMainView;
+
+        mIMainModel = new MainModel();
     }
 
     @Override
@@ -36,5 +43,16 @@ public class MainPresenter implements IMainPresenter {
     @Override
     public void login() {
         mIMainView.login();
+    }
+
+    @Override
+    public void getStudentInfo() {
+        StudentInfo studentInfo = mIMainModel.getStudentInfo();
+        if(studentInfo != null) {
+            mIMainView.setStudentInfo(studentInfo.getName(),
+                    studentInfo.getInstitute(),
+                    studentInfo.getMajor(),
+                    studentInfo.getClas());
+        }
     }
 }

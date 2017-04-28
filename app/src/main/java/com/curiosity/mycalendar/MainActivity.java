@@ -192,4 +192,9 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         fragment.setArguments(bundle);
         switchFragment(fragment);
     }
+
+    @Override
+    public void setStudentInfo(String stuName, String stuInstitute, String stuMajor, String stuClas) {
+
+    }
 }
