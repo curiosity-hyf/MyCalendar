@@ -8,7 +8,7 @@ package com.curiosity.mycalendar.config;
  */
 
 public final class FieldDefine {
-    public static final int LOGIN_REQUEST_CODE = 0;
+
     public static final String EMPTY_MSG = "EMPTY_MSG";
     public static final int DATABASE_VERSION = 1;
 

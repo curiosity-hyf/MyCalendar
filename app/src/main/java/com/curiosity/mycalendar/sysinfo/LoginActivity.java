@@ -1,5 +1,6 @@
 package com.curiosity.mycalendar.sysinfo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.curiosity.mycalendar.MainActivity;
 import com.curiosity.mycalendar.R;
 import com.curiosity.mycalendar.sysinfo.fragment.LoginFragment;
 import com.curiosity.mycalendar.sysinfo.fragment.YearSelectFragment;
@@ -117,8 +119,14 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
 //        super.onBackPressed();
     }
 
+    public static final int LOGIN_SUCCESS_CODE = 1;
+    public static final int LOGIN_FIALURE_CODE = 2;
+
     @Override
     public void onSuccess() {
+        Intent loginIntent = new Intent();
+        loginIntent.setClass(LoginActivity.this, MainActivity.class);
+        setResult(LOGIN_SUCCESS_CODE, loginIntent);
         finish();
     }
 }

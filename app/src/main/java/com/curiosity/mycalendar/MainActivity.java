@@ -121,10 +121,20 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         headerView.findViewById(R.id.tag).setVisibility(View.GONE);
     }
 
+    public static final int LOGIN_REQUEST_CODE = 0;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        switch (requestCode) {
+            case LOGIN_REQUEST_CODE:
+                if(resultCode == LoginActivity.LOGIN_SUCCESS_CODE) {
+                    civ.setImageResource(R.drawable.login_success);
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -133,11 +143,12 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         return super.onCreateOptionsMenu(menu);
     }
 
+
     @Override
     public void login() {
         Intent intent = new Intent();
         intent.setClass(MainActivity.this, LoginActivity.class);
-        startActivityForResult(intent, FieldDefine.LOGIN_REQUEST_CODE);
+        startActivityForResult(intent, LOGIN_REQUEST_CODE);
     }
 
     /**
