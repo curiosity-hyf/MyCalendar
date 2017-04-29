@@ -2,7 +2,7 @@ package com.curiosity.mycalendar.bean;
 
 /**
  * Description :
- * Author : Curiosity
+ * Author : curiosity-hyf
  * Date : 2017-3-12
  * E-mail : curiooosity.h@gmail.com
  */

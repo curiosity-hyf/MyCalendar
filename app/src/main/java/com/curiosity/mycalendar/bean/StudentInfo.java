@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 /**
  * Description :
- * Author : Curiosity
+ * Author : curiosity-hyf
  * Date : 2016-9-11
  * E-mail : curiooosity.h@gmail.com
  */

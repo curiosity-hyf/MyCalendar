@@ -24,13 +24,15 @@ import com.curiosity.mycalendar.main.presenter.MainPresenter;
 import com.curiosity.mycalendar.main.view.IMainView;
 import com.curiosity.mycalendar.sysinfo.LoginActivity;
 
+import org.w3c.dom.Text;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Description :
- * Author : Curiosity
+ * Author : curiosity-hyf
  * Date : 2016-12-29
  * E-mail : curiooosity.h@gmail.com
  */
@@ -43,10 +45,6 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     NavigationView navigationView;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    TextView username;
-    TextView institute;
-    TextView major;
-    TextView clas;
     private MenuItem current_menuitem;
     private ActionBarDrawerToggle mDrawerToggle;
     private View headerView;
@@ -61,29 +59,19 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
 
         initDrawer();
         switch2Curriculum();
 
-        mIMainPresenter = new MainPresenter(this);
+        mIMainPresenter = new MainPresenter(this, getApplicationContext());
     }
 
     private void initDrawer() {
         headerView = navigationView.getHeaderView(0);
-        initCirCleImage();
         initNavigation();
-    }
-
-    private void initCirCleImage() {
-        civ = (CircleImageView) headerView.findViewById(R.id.profile_image);
-
-        civ.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mIMainPresenter.login();
-            }
-        });
+        initHeaderView();
     }
 
     private void initNavigation() {
@@ -108,17 +96,28 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         });
     }
 
-    private void initHeaderView() {
-        username = (TextView) headerView.findViewById(R.id.username);
-        institute = (TextView) headerView.findViewById(R.id.institute);
-        major = (TextView) headerView.findViewById(R.id.major);
-        clas = (TextView) headerView.findViewById(R.id.clas);
+    private TextView tagName;
+    private TextView tagInstitute;
+    private TextView tagMajor;
+    private TextView tagClass;
+    private TextView tag;
 
-        username.setVisibility(View.VISIBLE);
-        institute.setVisibility(View.VISIBLE);
-        major.setVisibility(View.VISIBLE);
-        clas.setVisibility(View.VISIBLE);
-        headerView.findViewById(R.id.tag).setVisibility(View.GONE);
+    private void initHeaderView() {
+        tagName = ButterKnife.findById(headerView, R.id.tag_name);
+        tagInstitute = ButterKnife.findById(headerView, R.id.tag_institute);
+        tagMajor = ButterKnife.findById(headerView, R.id.tag_major);
+        tagClass = ButterKnife.findById(headerView, R.id.tag_class);
+        tag = ButterKnife.findById(headerView, R.id.tag);
+
+        setVisibility(View.GONE, tagName, tagInstitute, tagMajor, tagClass);
+
+        civ = (CircleImageView) headerView.findViewById(R.id.tag_image);
+        civ.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mIMainPresenter.login();
+            }
+        });
     }
 
     public static final int LOGIN_REQUEST_CODE = 0;
@@ -130,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
             case LOGIN_REQUEST_CODE:
                 if(resultCode == LoginActivity.LOGIN_SUCCESS_CODE) {
                     civ.setImageResource(R.drawable.login_success);
+                    mIMainPresenter.getStudentInfo();
                 }
                 break;
             default:
@@ -195,6 +195,19 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
     @Override
     public void setStudentInfo(String stuName, String stuInstitute, String stuMajor, String stuClas) {
+        tagName.setText(stuName);
+        tagInstitute.setText(stuInstitute);
+        tagMajor.setText(stuMajor);
+        tagClass.setText(stuClas);
 
+        tag.setText(R.string.logout);
+
+        setVisibility(View.VISIBLE, tagName, tagInstitute, tagMajor, tagClass);
+    }
+
+    private void setVisibility(int visibility, View ...views) {
+        for(View view : views) {
+            view.setVisibility(visibility);
+        }
     }
 }

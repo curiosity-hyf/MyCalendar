@@ -8,7 +8,7 @@
     <string name="usr_institute">学院</string>
     <string name="usr_major">专业</string>
     <string name="usr_class">班级</string>
-    <string name="unlogin">点击登录教务系统</string>
+    <string name="login">点击登录教务系统</string>
     <string name="logout">退出登录</string>
 
     <string name="label_login_curri">登录教务系统</string>

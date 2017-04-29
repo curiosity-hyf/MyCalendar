@@ -13,13 +13,13 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="20dp"
         android:orientation="vertical"
-        android:id="@+id/civ_tag">
+        android:id="@+id/tag_civ">
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_gravity="center_horizontal"
-            android:id="@+id/profile_image"
+            android:id="@+id/tag_image"
             android:layout_width="76dp"
             android:layout_height="76dp"
             android:src="@drawable/background_material"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_gravity="center_horizontal"
-            android:text="@string/unlogin"
+            android:text="@string/login"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp"
             android:textStyle="normal" />
@@ -41,7 +41,7 @@
 
 
     <TextView
-        android:id="@+id/username"
+        android:id="@+id/tag_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start"
@@ -49,12 +49,12 @@
         android:text="@string/usr_name"
         android:textColor="#88000000"
         android:textSize="14sp"
-        android:layout_alignTop="@+id/civ_tag"
+        android:layout_alignTop="@+id/tag_civ"
         android:layout_centerHorizontal="true"
         android:visibility="gone"/>
 
     <TextView
-        android:id="@+id/institute"
+        android:id="@+id/tag_institute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start"
@@ -62,12 +62,12 @@
         android:textColor="#88000000"
         android:textSize="14sp"
         android:paddingBottom="4dp"
-        android:layout_below="@+id/username"
-        android:layout_alignStart="@+id/username"
+        android:layout_below="@+id/tag_name"
+        android:layout_alignStart="@+id/tag_name"
         android:visibility="gone"/>
 
     <TextView
-        android:id="@+id/major"
+        android:id="@+id/tag_major"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start"
@@ -75,12 +75,12 @@
         android:textColor="#88000000"
         android:textSize="14sp"
         android:paddingBottom="4dp"
-        android:layout_below="@+id/institute"
-        android:layout_alignStart="@+id/institute"
+        android:layout_below="@+id/tag_institute"
+        android:layout_alignStart="@+id/tag_institute"
         android:visibility="gone"/>
 
     <TextView
-        android:id="@+id/clas"
+        android:id="@+id/tag_class"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start"
@@ -88,7 +88,7 @@
         android:textColor="#88000000"
         android:textSize="14sp"
         android:paddingBottom="4dp"
-        android:layout_alignStart="@+id/major"
-        android:layout_below="@+id/major"
+        android:layout_alignStart="@+id/tag_major"
+        android:layout_below="@+id/tag_major"
         android:visibility="gone" />
 </RelativeLayout>

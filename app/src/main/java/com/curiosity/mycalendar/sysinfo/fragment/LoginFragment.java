@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -29,7 +30,7 @@ import butterknife.OnClick;
 
 /**
  * Description :
- * Author : Curiosity
+ * Author : curiosity-hyf
  * Date : 2017-3-15
  * E-mail : curiooosity.h@gmail.com
  */
@@ -53,6 +54,9 @@ public class LoginFragment extends Fragment implements ILoginView {
     @BindView(R.id.check_pwd)
     Checkable check_pwd;
 
+    @BindView(R.id.loading_progress)
+    ContentLoadingProgressBar clp;
+
     private ILoginPresenter mLoginPresenter;
 
     @Nullable
@@ -63,8 +67,8 @@ public class LoginFragment extends Fragment implements ILoginView {
 
         login_account.addTextChangedListener(new LoginFragment.MyTextWatcher(login_account));
         login_pwd.addTextChangedListener(new LoginFragment.MyTextWatcher(login_pwd));
-
-        mLoginPresenter = new LoginPresenter(this, this.getContext());
+        clp.hide();
+        mLoginPresenter = new LoginPresenter(this, getContext().getApplicationContext());
 
         mLoginPresenter.initForm();
 
@@ -111,7 +115,11 @@ public class LoginFragment extends Fragment implements ILoginView {
 
     @Override
     public void showProgress(boolean show) {
-        //TODO
+        if(show) {
+            clp.show();
+        } else {
+            clp.hide();
+        }
     }
 
     @Override

@@ -4,7 +4,7 @@ import android.content.Context;
 
 /**
  * Description :
- * Author : Curiosity
+ * Author : curiosity-hyf
  * Date : 2017-3-15
  * E-mail : curiooosity.h@gmail.com
  */
@@ -34,8 +34,6 @@ public interface ILoginModel {
      * 获取学生信息
      */
     void fetchStudentInfo(Context context, final LoginModel.OnLoginListener listener);
-
-    String getStudentInfo(Context context, String whereArg, String whereVal, String columnName);
 
     /**
      * 获取指定课表信息

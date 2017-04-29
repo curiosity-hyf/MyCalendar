@@ -2,7 +2,7 @@ package com.curiosity.mycalendar.sysinfo.presenter;
 
 /**
  * Description :
- * Author : Curiosity
+ * Author : curiosity-hyf
  * Date : 2017-3-15
  * E-mail : curiooosity.h@gmail.com
  */

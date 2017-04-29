@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 
 /**
  * Description :
- * Author : Curiosity
+ * Author : curiosity-hyf
  * Date : 2016-12-25
  * E-mail : curiooosity.h@gmail.com
  */

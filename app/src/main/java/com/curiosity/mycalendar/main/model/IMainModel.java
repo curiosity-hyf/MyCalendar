@@ -1,5 +1,7 @@
 package com.curiosity.mycalendar.main.model;
 
+import android.content.Context;
+
 import com.curiosity.mycalendar.bean.StudentInfo;
 
 /**
@@ -10,5 +12,7 @@ import com.curiosity.mycalendar.bean.StudentInfo;
  */
 
 public interface IMainModel {
-    StudentInfo getStudentInfo();
+    String getLoginNum(Context context);
+
+    StudentInfo getStudentInfo(Context context, String stuNum);
 }

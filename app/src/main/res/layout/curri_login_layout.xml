@@ -89,4 +89,11 @@
 
     </LinearLayout>
 
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:id="@+id/loading_progress"
+        android:layout_centerInParent="true"/>
+
 </RelativeLayout>

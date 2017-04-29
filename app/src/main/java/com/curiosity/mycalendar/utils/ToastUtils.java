@@ -5,7 +5,7 @@ import android.widget.Toast;
 
 /**
  * Description : Toast使用类
- * Author : Curiosity
+ * Author : curiosity-hyf
  * Date : 2016-12-28
  * E-mail : curiooosity.h@gmail.com
  */

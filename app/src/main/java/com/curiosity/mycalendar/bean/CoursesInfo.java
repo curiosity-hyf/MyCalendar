@@ -4,12 +4,12 @@ import java.util.List;
 
 /**
  * Description :
- * Author : Curiosity
+ * Author : curiosity-hyf
  * Date : 2016-9-13
  * E-mail : curiooosity.h@gmail.com
  */
 
-public class CourseInfo {
+public class CoursesInfo {
 
     private int total;
     private List<RowsBean> rows;
@@ -31,13 +31,13 @@ public class CourseInfo {
     }
 
     public static class RowsBean {
-        private String kcmc;
-        private String teaxms;
-        private String xq;
-        private String jcdm;
-        private String jxcdmc;
-        private String zc;
-        private String pkrq;
+        private String kcmc;  // 课程名称
+        private String teaxms; // 教师名称
+        private String xq; // 学期
+        private String jcdm; // 节次
+        private String jxcdmc; // 上课地点
+        private String zc; // 周次
+        private String pkrq; // 完整时间 yyyy-MM-dd
 
         public String getKcmc() {
             return kcmc;
@@ -107,5 +107,13 @@ public class CourseInfo {
                     ", pkrq='" + pkrq + '\'' +
                     '}';
         }
+    }
+
+    @Override
+    public String toString() {
+        return "CoursesInfo{" +
+                "total=" + total +
+                ", rows=" + rows +
+                '}';
     }
 }

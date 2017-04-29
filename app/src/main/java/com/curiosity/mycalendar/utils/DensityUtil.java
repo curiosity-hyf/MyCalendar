@@ -4,7 +4,7 @@ import android.content.Context;
 
 /**
  * Description :
- * Author : Curiosity
+ * Author : curiosity-hyf
  * Date : 2016-12-31
  * E-mail : curiooosity.h@gmail.com
  */

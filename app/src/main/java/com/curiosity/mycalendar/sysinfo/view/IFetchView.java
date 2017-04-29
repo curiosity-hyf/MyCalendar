@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 /**
  * Description :
- * Author : Curiosity
+ * Author : curiosity-hyf
  * Date : 2017-3-12
  * E-mail : curiooosity.h@gmail.com
  */

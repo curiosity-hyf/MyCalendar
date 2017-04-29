@@ -13,7 +13,7 @@ import com.curiosity.mycalendar.utils.TextUtils;
 
 /**
  * Description :
- * Author : Curiosity
+ * Author : curiosity-hyf
  * Date : 2017-3-12
  * E-mail : curiooosity.h@gmail.com
  */
@@ -75,7 +75,7 @@ public class LoginPresenter implements ILoginPresenter, LoginModel.OnLoginListen
     @Override
     public void onLoadStuInfoSuccess(StudentInfo info) {
         Log.d(TAG, "onLoadStuInfoSuccess: ");
-        String admission = mLoginModel.getStudentInfo(mContext, FieldDefine.S_NUM, info.getStuNum(), FieldDefine.S_ADMISSION);
+        String admission = info.getAdmission();
         mLoginModel.fetchCurriculum(mContext, admission, mGrade, mSemester, this);
     }
 

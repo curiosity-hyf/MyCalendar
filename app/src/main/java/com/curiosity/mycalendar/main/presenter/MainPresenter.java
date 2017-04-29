@@ -1,5 +1,7 @@
 package com.curiosity.mycalendar.main.presenter;
 
+import android.content.Context;
+
 import com.curiosity.mycalendar.R;
 import com.curiosity.mycalendar.bean.StudentInfo;
 import com.curiosity.mycalendar.main.model.IMainModel;
@@ -8,7 +10,7 @@ import com.curiosity.mycalendar.main.view.IMainView;
 
 /**
  * Description :
- * Author : Curiosity
+ * Author : curiosity-hyf
  * Date : 2017-3-11
  * E-mail : curiooosity.h@gmail.com
  */
@@ -16,12 +18,14 @@ import com.curiosity.mycalendar.main.view.IMainView;
 public class MainPresenter implements IMainPresenter {
 
     private IMainView mIMainView;
+    private Context mContext;
 
     private IMainModel mIMainModel;
 
-    public MainPresenter(IMainView mIMainView) {
+    public MainPresenter(IMainView mIMainView, Context context) {
         this.mIMainView = mIMainView;
 
+        mContext = context;
         mIMainModel = new MainModel();
     }
 
@@ -47,7 +51,8 @@ public class MainPresenter implements IMainPresenter {
 
     @Override
     public void getStudentInfo() {
-        StudentInfo studentInfo = mIMainModel.getStudentInfo();
+        String account = mIMainModel.getLoginNum(mContext);
+        StudentInfo studentInfo = mIMainModel.getStudentInfo(mContext, account);
         if(studentInfo != null) {
             mIMainView.setStudentInfo(studentInfo.getName(),
                     studentInfo.getInstitute(),

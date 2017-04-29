@@ -12,7 +12,7 @@ import java.util.Calendar;
 
 /**
  * Description : 该工具类用于文本的处理
- * Author : Curiosity
+ * Author : curiosity-hyf
  * Date : 2016-9-13
  * E-mail : curiooosity.h@gmail.com
  */

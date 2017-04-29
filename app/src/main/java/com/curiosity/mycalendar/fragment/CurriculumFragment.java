@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.curiosity.mycalendar.R;
 import com.curiosity.mycalendar.adapter.CourseAdapter;
-import com.curiosity.mycalendar.bean.CourseInfo;
+import com.curiosity.mycalendar.bean.CoursesInfo;
 import com.curiosity.mycalendar.config.FieldDefine;
 import com.curiosity.mycalendar.customview.MenuFAB;
 import com.curiosity.mycalendar.sysinfo.LoginActivity;
@@ -33,7 +33,7 @@ import static android.app.Activity.RESULT_OK;
 
 /**
  * Description :
- * Author : Curiosity
+ * Author : curiosity-hyf
  * Date : 2016-12-30
  * E-mail : curiooosity.h@gmail.com
  */
@@ -52,7 +52,7 @@ public class CurriculumFragment extends Fragment {
     View overlay;
     private RecyclerView rv;
     private CourseAdapter adapter;
-    private List<CourseInfo> mData;
+    private List<CoursesInfo> mData;
     private String year, semester, account;
 
     @Nullable
@@ -130,7 +130,7 @@ public class CurriculumFragment extends Fragment {
 
     }
 
-    public void newInfo(CourseInfo info) {
+    public void newInfo(CoursesInfo info) {
         int num = mData.size();
         adapter.addData(info, num);
         //rv.smoothScrollToPosition(num_msg+1);

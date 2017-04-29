@@ -7,7 +7,7 @@ import org.jsoup.nodes.Document;
 
 /**
  * Description : 该工具类用于 Dom的处理
- * Author : Curiosity
+ * Author : curiosity-hyf
  * Date : 2016-9-11
  * E-mail : curiooosity.h@gmail.com
  */
