@@ -45,4 +45,5 @@ public interface ILoginModel {
      */
     void fetchCurriculum(Context context, String admission, int grade, int semester, LoginModel.OnLoginListener listener);
 
+    void saveLoginInfo(Context context, String account, String pwd, boolean isCheck);
 }

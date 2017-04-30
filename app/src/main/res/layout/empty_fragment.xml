@@ -28,7 +28,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="textVisiblePassword"
-            android:hint="@string/input_curri_verify_code"/>
+            android:hint="@string/login_verify_code"/>
         <ImageView
             android:id="@+id/login_im"
             android:layout_weight="1"

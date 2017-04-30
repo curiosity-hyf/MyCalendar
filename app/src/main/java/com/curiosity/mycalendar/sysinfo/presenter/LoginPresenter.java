@@ -90,6 +90,8 @@ public class LoginPresenter implements ILoginPresenter, LoginModel.OnLoginListen
     @Override
     public void onLoadCurriculumSuccess() {
         Log.d(TAG, "onLoadCurriculumSuccess: ");
+
+        mLoginModel.saveLoginInfo(mContext, mAccount, mPwd, mCheckPwd);
         mLoginView.showProgress(false);
         mLoginView.onLoadSuccess();
         mLoginView.makeToast("Load Curriculum Success");

@@ -43,7 +43,7 @@
                     android:id="@+id/login_account"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/input_curri_account"
+                    android:hint="@string/login_account"
                     android:inputType="number"
                     android:maxLines="1"
                     android:text="" />
@@ -65,7 +65,7 @@
                     android:id="@+id/login_pwd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/input_curri_password"
+                    android:hint="@string/login_password"
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:text="" />

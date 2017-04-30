@@ -261,12 +261,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         if (cursor.moveToNext()) {
             info = new StudentInfo();
             info.setStuNum(cursor.getString(cursor.getColumnIndex(S_NUM)));
+            info.setName(cursor.getString(cursor.getColumnIndex(S_NAME)));
             info.setInstitute(cursor.getString(cursor.getColumnIndex(S_INSTITUTE)));
             info.setMajor(cursor.getString(cursor.getColumnIndex(S_MAJOR)));
             info.setClas(cursor.getString(cursor.getColumnIndex(S_CLASS)));
             info.setAdmission(cursor.getString(cursor.getColumnIndex(S_ADMISSION)));
 
-            Log.d("mytest", "getStudentInfo: = " + info.toString());
+            Log.d("mytest", "SQLiteHelper getStudentInfo: = " + info.toString());
         }
         cursor.close();
         closeDatabase(db);

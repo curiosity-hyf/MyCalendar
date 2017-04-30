@@ -23,6 +23,10 @@ public class TextUtils {
         return editText.getText().toString();
     }
 
+    public static boolean equals(String a, String b) {
+        return a == null && b == null || !(a == null || b == null) && a.equals(b);
+    }
+
     public static boolean isEmpty(String s) {
         return s == null || s.equals("");
     }

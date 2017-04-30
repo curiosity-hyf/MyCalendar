@@ -24,8 +24,7 @@
         </activity>
         <activity android:name=".sysinfo.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".MainActivity"
-            android:label="选择学期">
+            android:parentActivityName=".MainActivity">
 
         </activity>
     </application>

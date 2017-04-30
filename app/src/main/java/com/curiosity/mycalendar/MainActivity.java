@@ -1,12 +1,16 @@
 package com.curiosity.mycalendar;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,8 +27,8 @@ import com.curiosity.mycalendar.main.presenter.IMainPresenter;
 import com.curiosity.mycalendar.main.presenter.MainPresenter;
 import com.curiosity.mycalendar.main.view.IMainView;
 import com.curiosity.mycalendar.sysinfo.LoginActivity;
-
-import org.w3c.dom.Text;
+import com.curiosity.mycalendar.utils.BitmapUtils;
+import com.curiosity.mycalendar.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,13 +63,14 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         setSupportActionBar(toolbar);
 
+        mIMainPresenter = new MainPresenter(this, getApplicationContext());
         initDrawer();
         switch2Curriculum();
 
-        mIMainPresenter = new MainPresenter(this, getApplicationContext());
+
+        checkLogin();
     }
 
     private void initDrawer() {
@@ -108,14 +113,20 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         tagMajor = ButterKnife.findById(headerView, R.id.tag_major);
         tagClass = ButterKnife.findById(headerView, R.id.tag_class);
         tag = ButterKnife.findById(headerView, R.id.tag);
-
         setVisibility(View.GONE, tagName, tagInstitute, tagMajor, tagClass);
 
         civ = (CircleImageView) headerView.findViewById(R.id.tag_image);
+
         civ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mIMainPresenter.login();
+                boolean isLogin = mIMainPresenter.getLoginStatus();
+                Log.d("mytest", "MainActivity civ.setOnClickListener: " + isLogin);
+                if (isLogin) {
+                    alert();
+                } else {
+                    mIMainPresenter.login();
+                }
             }
         });
     }
@@ -127,8 +138,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case LOGIN_REQUEST_CODE:
-                if(resultCode == LoginActivity.LOGIN_SUCCESS_CODE) {
-                    civ.setImageResource(R.drawable.login_success);
+                if (resultCode == LoginActivity.LOGIN_SUCCESS_CODE) {
                     mIMainPresenter.getStudentInfo();
                 }
                 break;
@@ -143,12 +153,54 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * 检查登录状态
+     */
+    private void checkLogin() {
+        boolean isLogin = mIMainPresenter.getLoginStatus();
+        if (isLogin) {
+            mIMainPresenter.getStudentInfo();
+        }
+    }
 
     @Override
     public void login() {
         Intent intent = new Intent();
         intent.setClass(MainActivity.this, LoginActivity.class);
         startActivityForResult(intent, LOGIN_REQUEST_CODE);
+    }
+
+    @Override
+    public void logout() {
+        tagName.setText("");
+        tagInstitute.setText("");
+        tagMajor.setText("");
+        tagClass.setText("");
+
+        tag.setText(R.string.login);
+        civ.setImageResource(R.drawable.background_material);
+
+        setVisibility(View.GONE, tagName, tagInstitute, tagMajor, tagClass);
+
+        ToastUtils.ToastShort(MainActivity.this, R.string.toast_logout);
+    }
+
+    private void alert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
+                .setTitle(R.string.logout)
+                .setMessage("退出登录将会删除当前系统课表(不含自定义)，是否继续？")
+                .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mIMainPresenter.logout();
+                    }
+                })
+                .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        builder.show();
     }
 
     /**
@@ -165,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
     @Override
     public void switch2Test() {
-        Log.d("mytest", "test fragment");
+        Log.d("mytest", "switch2Test");
         Fragment fragment = new EmptyFragment();
         Bundle bundle = new Bundle();
         bundle.putString(FieldDefine.EMPTY_MSG, "测试");
@@ -175,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
     @Override
     public void switch2Curriculum() {
-        Log.d("mytest", "R.id.curriculum_info");
+        Log.d("mytest", "switch2Curriculum");
         Fragment fragment = new CurriculumFragment();
         Bundle bundle = new Bundle();
         bundle.putString(FieldDefine.EMPTY_MSG, getString(R.string.emtpy_frag_no_curr));
@@ -185,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
     @Override
     public void switch2Calender() {
-        Log.d("mytest", "R.id.calendar_info");
+        Log.d("mytest", "switch2Calender");
         Fragment fragment = new CalendarFragment();
         Bundle bundle = new Bundle();
         bundle.putString(FieldDefine.EMPTY_MSG, getString(R.string.emtpy_frag_no_cal));
@@ -193,6 +245,13 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         switchFragment(fragment);
     }
 
+    /**
+     * 设置 header 标签
+     * @param stuName 姓名
+     * @param stuInstitute 学院
+     * @param stuMajor
+     * @param stuClas
+     */
     @Override
     public void setStudentInfo(String stuName, String stuInstitute, String stuMajor, String stuClas) {
         tagName.setText(stuName);
@@ -200,14 +259,21 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         tagMajor.setText(stuMajor);
         tagClass.setText(stuClas);
 
+        civ.setImageBitmap(BitmapUtils.getBitmapWithInSample(getResources(), R.drawable.login_success, 8));
         tag.setText(R.string.logout);
 
         setVisibility(View.VISIBLE, tagName, tagInstitute, tagMajor, tagClass);
     }
 
-    private void setVisibility(int visibility, View ...views) {
-        for(View view : views) {
+    private void setVisibility(int visibility, View... views) {
+        for (View view : views) {
             view.setVisibility(visibility);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("mytest", "MainActivity: onDestroy");
     }
 }

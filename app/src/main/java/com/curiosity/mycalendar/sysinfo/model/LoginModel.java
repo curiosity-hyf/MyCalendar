@@ -35,7 +35,6 @@ public class LoginModel implements ILoginModel {
                     listener.onLoginFailure(info.getMsg());
                 } else {
                     try {
-                        saveLoginInfo(context, account, pwd, isCheck);
                         listener.onLoginSuccess(info.getMsg());
                     } catch (Exception e) {
                         Log.d("myd", "login: " + e.getMessage());
@@ -81,11 +80,14 @@ public class LoginModel implements ILoginModel {
      * @param isCheck  记住密码
      * @throws Exception
      */
-    private void saveLoginInfo(Context context, String account, String pwd, boolean isCheck) throws Exception {
+    @Override
+    public void saveLoginInfo(Context context, String account, String pwd, boolean isCheck) {
         // 在 SharedPreference 中存入账号 和 是否记住密码
         SharedPreferenceUtil.setSaveAccount(context, account);
         SharedPreferenceUtil.setCheckPwd(context, isCheck);
 
+        // 设置当前状态为已登录
+        SharedPreferenceUtil.setLogin(context, true);
         // TODO 这里待加入 加密，防止泄露信息
         // 在数据库中存入登录的账号/密码
         ContentValues values = new ContentValues();
@@ -108,6 +110,7 @@ public class LoginModel implements ILoginModel {
             @Override
             public void onSuccess(String response) {
                 StudentInfo info = DomUtils.getStudentInfo(response);
+                Log.d("mytest", "LoginModel fetchStudentInfo: " + info.toString());
                 try {
                     SQLiteHelper.saveStudentInfo(context, info);
                     listener.onLoadStuInfoSuccess(info);

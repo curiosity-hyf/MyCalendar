@@ -11,6 +11,8 @@ public interface IMainView {
 
     void login();
 
+    void logout();
+
     void switch2Test();
 
     void switch2Curriculum();

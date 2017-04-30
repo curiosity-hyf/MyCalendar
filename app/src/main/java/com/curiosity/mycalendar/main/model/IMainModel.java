@@ -12,6 +12,11 @@ import com.curiosity.mycalendar.bean.StudentInfo;
  */
 
 public interface IMainModel {
+
+    void logout(Context context);
+
+    boolean getLoginStatus(Context context);
+
     String getLoginNum(Context context);
 
     StudentInfo getStudentInfo(Context context, String stuNum);

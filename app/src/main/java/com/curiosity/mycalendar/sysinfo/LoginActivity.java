@@ -43,8 +43,10 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         //设置是否有返回箭头
-        if (getSupportActionBar() != null)
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(R.string.action_bar_semester);
+        }
 
         mFetchPresenter = new FetchPresenter(this, this);
 
@@ -121,9 +123,15 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
             case R.id.next_step:
                 Bundle bundle = mYearSelectFragment.getSelect();
                 mFetchPresenter.switchNavigation(1, bundle);
+                if(getSupportActionBar()!=null) {
+                    getSupportActionBar().setTitle(R.string.action_bar_login);
+                }
                 break;
             case android.R.id.home:
                 boolean res = mFetchPresenter.navigationBack();
+                if(getSupportActionBar()!=null) {
+                    getSupportActionBar().setTitle(R.string.action_bar_semester);
+                }
                 if (!res) return true;
         }
         return super.onOptionsItemSelected(item);

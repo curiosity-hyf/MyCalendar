@@ -11,9 +11,13 @@ import com.curiosity.mycalendar.bean.StudentInfo;
 
 public interface IMainPresenter {
 
+    boolean getLoginStatus();
+
     void switchNavigation(int id);
 
     void login();
+
+    void logout();
 
     void getStudentInfo();
 }

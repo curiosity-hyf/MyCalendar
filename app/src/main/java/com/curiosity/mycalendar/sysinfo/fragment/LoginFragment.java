@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Checkable;
 import android.widget.EditText;
 
@@ -52,7 +53,7 @@ public class LoginFragment extends Fragment implements ILoginView {
     Button login_btn;
 
     @BindView(R.id.check_pwd)
-    Checkable check_pwd;
+    CheckBox check_pwd;
 
     @BindView(R.id.loading_progress)
     ContentLoadingProgressBar clp;
@@ -89,6 +90,7 @@ public class LoginFragment extends Fragment implements ILoginView {
         login_pwd.setEnabled(enabled);
         login_account.setClickable(enabled);
         login_btn.setEnabled(enabled);
+        check_pwd.setEnabled(enabled);
     }
 
     private int grade, semester;
