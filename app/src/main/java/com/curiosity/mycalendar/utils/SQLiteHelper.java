@@ -32,7 +32,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public static final String U_ACCOUNT = "u_account";
     public static final String U_PWD = "u_pwd";
     /* ---------- table course_info field ---------- */
-    public static final String C_TYPE = "c_type";
+    public static final String C_TYPE = "c_type"; /*类型 : 1 系统 2 自定义*/
+    public static final String C_TYPE_SYSTEM = "1";
+    public static final String C_TYPE_CUSTOM = "2";
+
     public static final String C_GRADE = "c_grade";
     public static final String C_SEMESTER = "c_semester";
     public static final String C_WEEK_NUM = "c_week_num";
