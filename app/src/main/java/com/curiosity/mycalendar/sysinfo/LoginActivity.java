@@ -2,7 +2,7 @@ package com.curiosity.mycalendar.sysinfo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -48,18 +48,34 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
 
         mFetchPresenter = new FetchPresenter(this, this);
 
-        switchYearFragment(null);
+        switchInitFragment();
 
     }
 
+    private void switchInitFragment() {
+        mYearSelectFragment = new YearSelectFragment();
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, mYearSelectFragment)
+                .commit();
+    }
     /**
      * 切换Fragment面板
      *
      * @param fragment 需要的Fragment
      */
-    private void switchFragment(Fragment fragment) {
-        getSupportFragmentManager()
+    private void switchLastFragment(Fragment fragment) {
+        getFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(R.animator.frag_last_in, R.animator.frag_last_out)
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+    }
+
+    private void switchNextFragment(Fragment fragment) {
+        getFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.animator.frag_next_in, R.animator.frag_next_out)
                 .replace(R.id.fragment_container, fragment)
                 .commit();
     }
@@ -77,7 +93,7 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
         if (bundle != null) {
             mYearSelectFragment.setArguments(bundle);
         }
-        switchFragment(mYearSelectFragment);
+        switchLastFragment(mYearSelectFragment);
     }
 
     @Override
@@ -88,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
         if (bundle != null) {
             mLoginFragment.setArguments(bundle);
         }
-        switchFragment(mLoginFragment);
+        switchNextFragment(mLoginFragment);
     }
 
 

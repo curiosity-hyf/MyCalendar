@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -68,7 +68,7 @@ public class LoginFragment extends Fragment implements ILoginView {
         login_account.addTextChangedListener(new LoginFragment.MyTextWatcher(login_account));
         login_pwd.addTextChangedListener(new LoginFragment.MyTextWatcher(login_pwd));
         clp.hide();
-        mLoginPresenter = new LoginPresenter(this, getContext().getApplicationContext());
+        mLoginPresenter = new LoginPresenter(this, getActivity().getApplicationContext());
 
         mLoginPresenter.initForm();
 
@@ -110,7 +110,7 @@ public class LoginFragment extends Fragment implements ILoginView {
 
     @Override
     public void makeToast(String msg) {
-        ToastUtils.ToastLong(this.getContext(), msg);
+        ToastUtils.ToastLong(getActivity().getApplicationContext(), msg);
     }
 
     @Override
