@@ -1,10 +1,10 @@
 package com.curiosity.mycalendar.sysinfo.fragment;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.app.Fragment;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.Checkable;
 import android.widget.EditText;
 
 import com.curiosity.mycalendar.R;
@@ -37,6 +36,7 @@ import butterknife.OnClick;
  */
 
 public class LoginFragment extends Fragment implements ILoginView {
+    private static final String TAG = "mytest";
     @BindView(R.id.accountWrapper)
     TextInputLayout accountWrapper;
 
@@ -60,10 +60,20 @@ public class LoginFragment extends Fragment implements ILoginView {
 
     private ILoginPresenter mLoginPresenter;
 
+    private View view;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.curri_login_layout, container, false);
+        Log.d(TAG, "LoginFragment onCreateView: ");
+        if (view == null) {
+            view = inflater.inflate(R.layout.curri_login_layout, container, false);
+        } else {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (parent != null) {
+                parent.removeView(view);
+            }
+        }
         ButterKnife.bind(this, view);
 
         login_account.addTextChangedListener(new LoginFragment.MyTextWatcher(login_account));
@@ -73,15 +83,6 @@ public class LoginFragment extends Fragment implements ILoginView {
 
         mLoginPresenter.initForm();
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            grade = bundle.getInt(FieldDefine.L_GRADE);
-            semester = bundle.getInt(FieldDefine.L_SEMESTER);
-
-            if (grade != 0 && semester != 0) {
-                Log.d("myd", "grade = " + grade + " semester = " + semester);
-            }
-        }
         return view;
     }
 
@@ -110,6 +111,17 @@ public class LoginFragment extends Fragment implements ILoginView {
         }
     }
 
+    public void setGradeSemester(Bundle bundle) {
+        if (bundle != null) {
+            grade = bundle.getInt(FieldDefine.L_GRADE);
+            semester = bundle.getInt(FieldDefine.L_SEMESTER);
+
+            if (grade != 0 && semester != 0) {
+                Log.d("myd", "grade = " + grade + " semester = " + semester);
+            }
+        }
+    }
+
     @Override
     public void makeToast(String msg) {
         ToastUtils.ToastLong(getActivity().getApplicationContext(), msg);
@@ -117,7 +129,7 @@ public class LoginFragment extends Fragment implements ILoginView {
 
     @Override
     public void showProgress(boolean show) {
-        if(show) {
+        if (show) {
             clp.show();
         } else {
             clp.hide();
@@ -226,7 +238,7 @@ public class LoginFragment extends Fragment implements ILoginView {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
+        Log.d(TAG, "LoginFragment onAttach: ");
         try {
             activity = (OnLoadListener) context;
         } catch (ClassCastException e) {
@@ -241,6 +253,23 @@ public class LoginFragment extends Fragment implements ILoginView {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("myd", "login destroy");
+        Log.d(TAG, "LoginFragment onDestroy: ");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "LoginFragment onStop: ");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "LoginFragment onPause: ");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }

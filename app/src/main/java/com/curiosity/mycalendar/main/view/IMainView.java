@@ -19,5 +19,5 @@ public interface IMainView {
 
     void switch2Calender();
 
-    void setStudentInfo(String stuName, String stuInstitute, String stuMajor, String stuClas);
+    void setStudentInfo(String stuName, String stuInstitute, String stuMajor, String stuClass);
 }

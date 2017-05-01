@@ -1,8 +1,8 @@
 package com.curiosity.mycalendar.sysinfo;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -36,6 +36,8 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
     private YearSelectFragment mYearSelectFragment = null;
     private Menu menu;
 
+    private Fragment currentFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,11 +58,16 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
 
     private void switchInitFragment() {
         mYearSelectFragment = new YearSelectFragment();
+        mLoginFragment = new LoginFragment();
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, mYearSelectFragment)
+                .add(R.id.fragment_container, mYearSelectFragment)
+                .add(R.id.fragment_container, mLoginFragment)
+                .hide(mLoginFragment)
                 .commit();
+        currentFragment = mYearSelectFragment;
     }
+
     /**
      * 切换Fragment面板
      *
@@ -70,16 +77,20 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
         getFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.animator.frag_last_in, R.animator.frag_last_out)
-                .replace(R.id.fragment_container, fragment)
+                .hide(currentFragment)
+                .show(fragment)
                 .commit();
+        currentFragment = fragment;
     }
 
     private void switchNextFragment(Fragment fragment) {
         getFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.animator.frag_next_in, R.animator.frag_next_out)
-                .replace(R.id.fragment_container, fragment)
+                .hide(currentFragment)
+                .show(fragment)
                 .commit();
+        currentFragment = fragment;
     }
 
     @Override
@@ -93,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
             mYearSelectFragment = new YearSelectFragment();
         }
         if (bundle != null) {
-            mYearSelectFragment.setArguments(bundle);
+//            mYearSelectFragment.setArguments(bundle);
         }
         switchLastFragment(mYearSelectFragment);
     }
@@ -104,7 +115,7 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
             mLoginFragment = new LoginFragment();
         }
         if (bundle != null) {
-            mLoginFragment.setArguments(bundle);
+            mLoginFragment.setGradeSemester(bundle);
         }
         switchNextFragment(mLoginFragment);
     }
@@ -123,13 +134,13 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
             case R.id.next_step:
                 Bundle bundle = mYearSelectFragment.getSelect();
                 mFetchPresenter.switchNavigation(1, bundle);
-                if(getSupportActionBar()!=null) {
+                if (getSupportActionBar() != null) {
                     getSupportActionBar().setTitle(R.string.action_bar_login);
                 }
                 break;
             case android.R.id.home:
                 boolean res = mFetchPresenter.navigationBack();
-                if(getSupportActionBar()!=null) {
+                if (getSupportActionBar() != null) {
                     getSupportActionBar().setTitle(R.string.action_bar_semester);
                 }
                 if (!res) return true;
@@ -146,11 +157,20 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
     public static final int LOGIN_SUCCESS_CODE = 1;
     public static final int LOGIN_FIALURE_CODE = 2;
 
+    private void removeFragment() {
+        getFragmentManager()
+                .beginTransaction()
+                .remove(mLoginFragment)
+                .remove(mYearSelectFragment)
+                .commit();
+    }
+
     @Override
     public void onSuccess() {
         Intent loginIntent = new Intent();
         loginIntent.setClass(LoginActivity.this, MainActivity.class);
         setResult(LOGIN_SUCCESS_CODE, loginIntent);
+        removeFragment();
         finish();
     }
 }

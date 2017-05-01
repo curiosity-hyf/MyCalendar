@@ -62,9 +62,6 @@ public class CurriculumFragment extends Fragment {
         view = inflater.inflate(R.layout.curriculum_list_layout, container, false);
         ButterKnife.bind(this, view);
 
-        year = SharedPreferenceUtil.getCurYear(getContext());
-        semester = SharedPreferenceUtil.getCurSemester(getContext());
-        account = SharedPreferenceUtil.getSaveAccount(getContext());
         return view;
     }
 
@@ -140,7 +137,7 @@ public class CurriculumFragment extends Fragment {
         fab = (MenuFAB) view.findViewById(R.id.fab);
         sheetView = view.findViewById(R.id.fab_sheet);
         overlay = view.findViewById(R.id.dim_overlay);
-        int sheetColor = getResources().getColor(R.color.cardview_light_background);
+        int sheetColor = getResources().getColor(R.color.white);
         int fabColor = getResources().getColor(R.color.colorAccent);
 
         // Initialize material sheet FAB
@@ -157,9 +154,9 @@ public class CurriculumFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        Log.d("mytest", "Curriculum Frag-->onStart");
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d("mytest", "Curriculum Frag-->onActivityCreated");
 
         Log.d("mytest", year + " " + semester);
         if (mData != null) {

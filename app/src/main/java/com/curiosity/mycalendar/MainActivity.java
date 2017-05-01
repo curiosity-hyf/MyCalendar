@@ -2,8 +2,6 @@ package com.curiosity.mycalendar;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -69,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         initDrawer();
         switch2Curriculum();
 
-
         checkLogin();
     }
 
@@ -123,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
                 boolean isLogin = mIMainPresenter.getLoginStatus();
                 Log.d("mytest", "MainActivity civ.setOnClickListener: " + isLogin);
                 if (isLogin) {
-                    alert();
+                    showLogoutAlert();
                 } else {
                     mIMainPresenter.login();
                 }
@@ -131,30 +128,9 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         });
     }
 
-    public static final int LOGIN_REQUEST_CODE = 0;
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case LOGIN_REQUEST_CODE:
-                if (resultCode == LoginActivity.LOGIN_SUCCESS_CODE) {
-                    mIMainPresenter.getStudentInfo();
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.curriculum_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
     /**
      * 检查登录状态
+     * 如果已经登录，则显示学生信息和课表信息
      */
     private void checkLogin() {
         boolean isLogin = mIMainPresenter.getLoginStatus();
@@ -185,17 +161,20 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         ToastUtils.ToastShort(MainActivity.this, R.string.toast_logout);
     }
 
-    private void alert() {
+    /**
+     * 弹出退出登录提示
+     */
+    private void showLogoutAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
-                .setTitle(R.string.logout)
-                .setMessage("退出登录将会删除当前系统课表(不含自定义)，是否继续？")
-                .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.logout_alert_title)
+                .setMessage(R.string.logout_alert_msg)
+                .setPositiveButton(R.string.logout_alert_pos, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mIMainPresenter.logout();
                     }
                 })
-                .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.logout_alert_neg, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }
@@ -204,9 +183,9 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     }
 
     /**
-     * 切换Fragment面板
+     * 切换 Fragment 面板
      *
-     * @param fragment 需要的Fragment
+     * @param fragment 需要的 Fragment
      */
     private void switchFragment(Fragment fragment) {
         getSupportFragmentManager()
@@ -247,17 +226,18 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
     /**
      * 设置 header 标签
-     * @param stuName 姓名
+     *
+     * @param stuName      姓名
      * @param stuInstitute 学院
-     * @param stuMajor
-     * @param stuClas
+     * @param stuMajor     专业
+     * @param stuClass     班级
      */
     @Override
-    public void setStudentInfo(String stuName, String stuInstitute, String stuMajor, String stuClas) {
+    public void setStudentInfo(String stuName, String stuInstitute, String stuMajor, String stuClass) {
         tagName.setText(stuName);
         tagInstitute.setText(stuInstitute);
         tagMajor.setText(stuMajor);
-        tagClass.setText(stuClas);
+        tagClass.setText(stuClass);
 
         civ.setImageBitmap(BitmapUtils.getBitmapWithInSample(getResources(), R.drawable.login_success, 8));
         tag.setText(R.string.logout);
@@ -265,10 +245,38 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         setVisibility(View.VISIBLE, tagName, tagInstitute, tagMajor, tagClass);
     }
 
+    /**
+     * 设置 View 的可见性
+     *
+     * @param visibility View.VISIBLE View.INVISIBLE View.GONE
+     * @param views      需要设置的 View
+     */
     private void setVisibility(int visibility, View... views) {
         for (View view : views) {
             view.setVisibility(visibility);
         }
+    }
+
+    public static final int LOGIN_REQUEST_CODE = 0;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case LOGIN_REQUEST_CODE:
+                if (resultCode == LoginActivity.LOGIN_SUCCESS_CODE) {
+                    mIMainPresenter.getStudentInfo();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.curriculum_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
