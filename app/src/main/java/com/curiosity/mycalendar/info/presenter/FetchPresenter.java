@@ -1,10 +1,10 @@
-package com.curiosity.mycalendar.sysinfo.presenter;
+package com.curiosity.mycalendar.info.presenter;
 
 import android.content.Context;
 import android.os.Bundle;
 
-import com.curiosity.mycalendar.sysinfo.LoginActivity;
-import com.curiosity.mycalendar.sysinfo.view.IFetchView;
+import com.curiosity.mycalendar.info.LoginActivity;
+import com.curiosity.mycalendar.info.view.IFetchView;
 
 /**
  * Description :

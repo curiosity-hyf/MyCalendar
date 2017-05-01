@@ -1,13 +1,12 @@
-package com.curiosity.mycalendar.sysinfo.presenter;
+package com.curiosity.mycalendar.info.presenter;
 
 import android.content.Context;
 import android.util.Log;
 
 import com.curiosity.mycalendar.bean.StudentInfo;
-import com.curiosity.mycalendar.config.FieldDefine;
-import com.curiosity.mycalendar.sysinfo.model.ILoginModel;
-import com.curiosity.mycalendar.sysinfo.model.LoginModel;
-import com.curiosity.mycalendar.sysinfo.view.ILoginView;
+import com.curiosity.mycalendar.info.model.ILoginModel;
+import com.curiosity.mycalendar.info.model.LoginModel;
+import com.curiosity.mycalendar.info.view.ILoginView;
 import com.curiosity.mycalendar.utils.SharedPreferenceUtil;
 import com.curiosity.mycalendar.utils.TextUtils;
 
@@ -54,7 +53,7 @@ public class LoginPresenter implements ILoginPresenter, LoginModel.OnLoginListen
         if (!TextUtils.isEmpty(account) && isCheckPwd) {
             pwd = mLoginModel.getLoginInfo(mContext, account);
         }
-        mLoginView.initForm(account, pwd, true); // 策略：不论上次是否记住密码，初始化时都默认选择记住密码
+        mLoginView.initLoginForm(account, pwd, true); // 策略：不论上次是否记住密码，初始化时都默认选择记住密码
     }
 
     @Override

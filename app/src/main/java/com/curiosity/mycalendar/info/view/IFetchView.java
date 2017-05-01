@@ -1,4 +1,4 @@
-package com.curiosity.mycalendar.sysinfo.view;
+package com.curiosity.mycalendar.info.view;
 
 import android.os.Bundle;
 

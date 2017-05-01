@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +19,8 @@ import com.curiosity.mycalendar.adapter.CourseAdapter;
 import com.curiosity.mycalendar.bean.CoursesInfo;
 import com.curiosity.mycalendar.config.FieldDefine;
 import com.curiosity.mycalendar.customview.MenuFAB;
-import com.curiosity.mycalendar.sysinfo.LoginActivity;
+import com.curiosity.mycalendar.customview.WeekIndicator;
+import com.curiosity.mycalendar.info.LoginActivity;
 import com.curiosity.mycalendar.utils.SharedPreferenceUtil;
 import com.gordonwong.materialsheetfab.MaterialSheetFab;
 
@@ -47,6 +49,12 @@ public class CurriculumFragment extends Fragment {
     TextView empty_msg;
     @BindView(R.id.btn_getCurriculum)
     TextView btn_getCurriculum;
+
+    @BindView(R.id.week_indicator)
+    WeekIndicator indicator;
+    @BindView(R.id.curriculum_pager)
+    ViewPager pager;
+
     View view;
     View sheetView;
     View overlay;
@@ -59,7 +67,7 @@ public class CurriculumFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d("mytest", "Curri -- > onCreateView");
-        view = inflater.inflate(R.layout.curriculum_list_layout, container, false);
+        view = inflater.inflate(R.layout.curriculum_layout, container, false);
         ButterKnife.bind(this, view);
 
         return view;
@@ -67,7 +75,6 @@ public class CurriculumFragment extends Fragment {
 
     @OnClick(R.id.btn_getCurriculum)
     public void onGetCurriculum() {
-        Log.d("mytest", "click");
         startActivityForResult(new Intent().setClass(getContext(), LoginActivity.class), REQUEST_ACTIVITY_CODE);
         if (materialSheetFab.isSheetVisible())
             materialSheetFab.hideSheet();

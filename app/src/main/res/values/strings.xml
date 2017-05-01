@@ -20,6 +20,7 @@
     <string name="logout_alert_pos">是</string>
     <string name="logout_alert_neg">否</string>
     <!-- 课程界面 -->
+    <string name="curriculum_week_empty">本周无课程</string>
     <string name="curriculum_empty">当前没有课程</string>
     <!-- 日程界面 -->
     <string name="calendar_empty">当前没有日程</string>

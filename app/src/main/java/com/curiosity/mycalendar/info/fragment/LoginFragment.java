@@ -1,4 +1,4 @@
-package com.curiosity.mycalendar.sysinfo.fragment;
+package com.curiosity.mycalendar.info.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -18,9 +18,9 @@ import android.widget.EditText;
 
 import com.curiosity.mycalendar.R;
 import com.curiosity.mycalendar.config.FieldDefine;
-import com.curiosity.mycalendar.sysinfo.presenter.ILoginPresenter;
-import com.curiosity.mycalendar.sysinfo.presenter.LoginPresenter;
-import com.curiosity.mycalendar.sysinfo.view.ILoginView;
+import com.curiosity.mycalendar.info.presenter.ILoginPresenter;
+import com.curiosity.mycalendar.info.presenter.LoginPresenter;
+import com.curiosity.mycalendar.info.view.ILoginView;
 import com.curiosity.mycalendar.utils.TextUtils;
 import com.curiosity.mycalendar.utils.ToastUtils;
 
@@ -148,7 +148,7 @@ public class LoginFragment extends Fragment implements ILoginView {
     }
 
     @Override
-    public void initForm(String account, String pwd, boolean isCheck) {
+    public void initLoginForm(String account, String pwd, boolean isCheck) {
         check_pwd.setChecked(isCheck);
         login_account.setText(account);
         login_pwd.setText(pwd);

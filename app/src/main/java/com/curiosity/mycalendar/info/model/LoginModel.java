@@ -1,4 +1,4 @@
-package com.curiosity.mycalendar.sysinfo.model;
+package com.curiosity.mycalendar.info.model;
 
 import android.content.ContentValues;
 import android.content.Context;

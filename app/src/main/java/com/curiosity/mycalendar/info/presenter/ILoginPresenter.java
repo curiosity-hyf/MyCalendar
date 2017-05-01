@@ -1,4 +1,4 @@
-package com.curiosity.mycalendar.sysinfo.presenter;
+package com.curiosity.mycalendar.info.presenter;
 
 /**
  * Description :

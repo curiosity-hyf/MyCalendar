@@ -1,4 +1,4 @@
-package com.curiosity.mycalendar.sysinfo.fragment;
+package com.curiosity.mycalendar.info.fragment;
 
 import android.app.Fragment;
 import android.content.Context;

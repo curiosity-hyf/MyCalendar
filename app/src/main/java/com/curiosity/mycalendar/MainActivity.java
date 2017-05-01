@@ -19,12 +19,12 @@ import android.widget.TextView;
 
 import com.curiosity.mycalendar.config.FieldDefine;
 import com.curiosity.mycalendar.fragment.CalendarFragment;
-import com.curiosity.mycalendar.fragment.CurriculumFragment;
 import com.curiosity.mycalendar.fragment.EmptyFragment;
 import com.curiosity.mycalendar.main.presenter.IMainPresenter;
 import com.curiosity.mycalendar.main.presenter.MainPresenter;
 import com.curiosity.mycalendar.main.view.IMainView;
-import com.curiosity.mycalendar.sysinfo.LoginActivity;
+import com.curiosity.mycalendar.page.curriculum.CurriculumFragment;
+import com.curiosity.mycalendar.info.LoginActivity;
 import com.curiosity.mycalendar.utils.BitmapUtils;
 import com.curiosity.mycalendar.utils.ToastUtils;
 

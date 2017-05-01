@@ -1,4 +1,4 @@
-package com.curiosity.mycalendar.sysinfo.view;
+package com.curiosity.mycalendar.info.view;
 
 /**
  * Description :
@@ -17,5 +17,5 @@ public interface ILoginView {
 
     void onLoadFailure();
 
-    void initForm(String account, String pwd, boolean isCheck);
+    void initLoginForm(String account, String pwd, boolean isCheck);
 }

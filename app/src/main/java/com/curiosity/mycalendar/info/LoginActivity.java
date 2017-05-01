@@ -1,4 +1,4 @@
-package com.curiosity.mycalendar.sysinfo;
+package com.curiosity.mycalendar.info;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -10,11 +10,11 @@ import android.view.MenuItem;
 
 import com.curiosity.mycalendar.MainActivity;
 import com.curiosity.mycalendar.R;
-import com.curiosity.mycalendar.sysinfo.fragment.LoginFragment;
-import com.curiosity.mycalendar.sysinfo.fragment.YearSelectFragment;
-import com.curiosity.mycalendar.sysinfo.presenter.FetchPresenter;
-import com.curiosity.mycalendar.sysinfo.presenter.IFetchPresenter;
-import com.curiosity.mycalendar.sysinfo.view.IFetchView;
+import com.curiosity.mycalendar.info.fragment.LoginFragment;
+import com.curiosity.mycalendar.info.fragment.YearSelectFragment;
+import com.curiosity.mycalendar.info.presenter.FetchPresenter;
+import com.curiosity.mycalendar.info.presenter.IFetchPresenter;
+import com.curiosity.mycalendar.info.view.IFetchView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
