@@ -122,7 +122,19 @@ public class CurriculumFragment extends Fragment {
         list.add(new WeekFragment());
         list.add(new WeekFragment());
         list.add(new WeekFragment());
+        list.add(new WeekFragment());
+        list.add(new WeekFragment());
+        list.add(new WeekFragment());
 
+        List<String> titles = new ArrayList<>();
+        titles.add("1");
+        titles.add("2");
+        titles.add("3");
+        titles.add("4");
+        titles.add("5");
+        titles.add("6");
+
+        indicator.setTabItem(titles);
         pagerAdapter = new FragmentPagerAdapter(getFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -135,5 +147,27 @@ public class CurriculumFragment extends Fragment {
             }
         };
         pager.setAdapter(pagerAdapter);
+
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                Log.d("mytest", "CurriculumFragment onPageScrolled\n" +
+                        "position: " + position + " Offset: " + positionOffset + " OffsetPixels: " + positionOffsetPixels);
+                indicator.scroll(position, positionOffset);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Log.d("mytest", "CurriculumFragment onPageSelected\n" +
+                        "position: " + position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                Log.d("mytest", "CurriculumFragment onPageScrollStateChanged\n" +
+                        "state: " + state);
+            }
+        });
+        pager.setCurrentItem(0);
     }
 }

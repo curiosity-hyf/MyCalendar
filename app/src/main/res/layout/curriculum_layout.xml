@@ -24,37 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:background="@color/colorPrimary"
+            app:tab_count="4"
             android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/msg1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="msg1"
-                android:textSize="14sp"
-                android:visibility="visible" />
-
-            <TextView
-                android:id="@+id/msg2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="msg2"
-                android:textSize="14sp"
-                android:visibility="visible" />
-
-            <TextView
-                android:id="@+id/msg3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="msg3"
-                android:textSize="14sp"
-                android:visibility="visible" />
         </com.curiosity.mycalendar.customview.WeekIndicator>
 
         <android.support.v4.view.ViewPager
