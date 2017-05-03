@@ -22,8 +22,8 @@
         <com.curiosity.mycalendar.customview.WeekIndicator
             android:id="@+id/week_indicator"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:background="@color/colorPrimary"
+            android:layout_height="48dp"
+            android:background="#3a3d3a"
             app:tab_count="4"
             android:orientation="horizontal">
         </com.curiosity.mycalendar.customview.WeekIndicator>

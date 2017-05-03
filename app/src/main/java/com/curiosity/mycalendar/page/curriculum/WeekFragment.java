@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.curiosity.mycalendar.R;
 import com.curiosity.mycalendar.adapter.CourseAdapter;
-import com.curiosity.mycalendar.bean.CoursesInfo;
+import com.curiosity.mycalendar.bean.Courses;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class WeekFragment extends Fragment {
 
     private RecyclerView rv;
     private CourseAdapter adapter;
-    private List<CoursesInfo> mData;
+    private List<Courses> mData;
     private String year, semester, account;
 
     private View view;
@@ -112,7 +112,7 @@ public class WeekFragment extends Fragment {
 
     }
 
-    public void newInfo(CoursesInfo info) {
+    public void newInfo(Courses info) {
         int num = mData.size();
         adapter.addData(info, num);
         //rv.smoothScrollToPosition(num_msg+1);

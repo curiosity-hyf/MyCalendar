@@ -127,6 +127,7 @@ public class CurriculumFragment extends Fragment {
         list.add(new WeekFragment());
 
         List<String> titles = new ArrayList<>();
+
         titles.add("1");
         titles.add("2");
         titles.add("3");

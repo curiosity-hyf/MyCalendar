@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.curiosity.mycalendar.bean.CoursesInfo;
+import com.curiosity.mycalendar.bean.Courses;
 import com.curiosity.mycalendar.bean.LoginInfo;
 import com.curiosity.mycalendar.bean.StudentInfo;
 import com.curiosity.mycalendar.config.FieldDefine;
@@ -137,7 +137,7 @@ public class LoginModel implements ILoginModel {
         HttpUtils.ResultCallback<String> resultCallback = new HttpUtils.ResultCallback<String>() {
             @Override
             public void onSuccess(String response) {
-                CoursesInfo info = new Gson().fromJson(response, CoursesInfo.class);
+                Courses info = new Gson().fromJson(response, Courses.class);
                 Log.d("myd", "fetch: " + info.toString());
                 try {
                     SQLiteHelper.saveCourse(context, info, grade, semester);

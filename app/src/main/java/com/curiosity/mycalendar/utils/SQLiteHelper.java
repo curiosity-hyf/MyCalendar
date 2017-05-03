@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.curiosity.mycalendar.bean.CoursesInfo;
+import com.curiosity.mycalendar.bean.Courses;
 import com.curiosity.mycalendar.bean.StudentInfo;
 
 /**
@@ -289,7 +289,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return res;
     }
 
-    public static void saveCourse(Context context, CoursesInfo info, int grade, int semester) throws Exception {
+    public static void saveCourse(Context context, Courses info, int grade, int semester) throws Exception {
         SQLiteDatabase db = SQLiteHelper.getWritableDatabase(context);
         SQLiteHelper.executeDelete(db, COURSE_INFO_TABLE,
                 SQLiteHelper.C_TYPE + " = ? and " +
@@ -299,7 +299,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         for (int i = 0; i < info.getTotal(); ++i) {
-            CoursesInfo.RowsBean bean = info.getRows().get(i);
+            Courses.RowsBean bean = info.getRows().get(i);
 
             values.put(C_TYPE, 1);
             values.put(C_GRADE, grade);

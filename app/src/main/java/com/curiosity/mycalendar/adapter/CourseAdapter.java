@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.curiosity.mycalendar.R;
-import com.curiosity.mycalendar.bean.CoursesInfo;
+import com.curiosity.mycalendar.bean.Courses;
 
 import java.util.List;
 
@@ -20,10 +20,10 @@ import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHolder> {
 
-    private List<CoursesInfo> mData;
+    private List<Courses> mData;
     private OnItemClickListener mListener;
 
-    public CourseAdapter(List<CoursesInfo> infoBean) {
+    public CourseAdapter(List<Courses> infoBean) {
         mData = infoBean;
     }
 
@@ -36,7 +36,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        CoursesInfo infoBean = mData.get(position);
+        Courses infoBean = mData.get(position);
 //        holder.getId().setText(""+infoBean.getId());
 //        holder.getName().setText(infoBean.getCourseName());
 //        holder.getTeacher().setText(infoBean.getTeacherName());
@@ -64,7 +64,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
         return mData.size();
     }
 
-    public void addData(CoursesInfo infoBean, int position) {
+    public void addData(Courses infoBean, int position) {
         mData.add(position, infoBean);
         notifyItemInserted(position);
     }
@@ -78,7 +78,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
         }
     }
 
-    public CoursesInfo getData(int position) {
+    public Courses getData(int position) {
         return mData.get(position);
     }
 
