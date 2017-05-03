@@ -77,7 +77,7 @@ public class WeekIndicator extends LinearLayout {
         mPaint.setColor(Color.parseColor("#ffffffff"));
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setPathEffect(new CornerPathEffect(3));
-
+        mPaint.setColor(Color.parseColor("#ffff0000"));
         mPath = new Path();
     }
 
@@ -97,10 +97,10 @@ public class WeekIndicator extends LinearLayout {
      */
     private void initTriangle() {
         mPath.reset();
-        mPath.moveTo(mIndicatorX+15, 0);
-        mPath.lineTo(mIndicatorX + mIndicatorWidth-15, 0);
-        mPath.lineTo(mIndicatorX + mIndicatorWidth, 10);
-        mPath.lineTo(mIndicatorX, 10);
+        mPath.moveTo(mIndicatorX + 20, 0);
+        mPath.lineTo(mIndicatorX + mIndicatorWidth - 20, 0);
+        mPath.lineTo(mIndicatorX + mIndicatorWidth - 20, 5);
+        mPath.lineTo(mIndicatorX + 20, 5);
         mPath.close();
     }
 
@@ -108,7 +108,7 @@ public class WeekIndicator extends LinearLayout {
     protected void dispatchDraw(Canvas canvas) {
         initTriangle();
         canvas.save();
-        canvas.translate(mInitTranslationX + mTranslationX, getHeight()-10);
+        canvas.translate(mInitTranslationX + mTranslationX, getHeight()-20);
 
         canvas.drawPath(mPath, mPaint);
         canvas.restore();
@@ -129,26 +129,34 @@ public class WeekIndicator extends LinearLayout {
     public void scroll(int position, float positionOffset) {
         tabWidth = windowWidth / mVisibleCount;
 
-        if(positionOffset < 0.25) {
-            mIndicatorX = (int) (tabWidth*(3.0/8) * positionOffset/0.25);
-            mIndicatorWidth = tabWidth + (int) (tabWidth*(1.0/8) * positionOffset/0.25) - mIndicatorX;
-        } else if(positionOffset < 0.5) {
-            mIndicatorX = (int) (tabWidth*(3.0/8)) + (int) (tabWidth*(1.0/8) * (positionOffset-0.25)/0.25);
-            mIndicatorWidth = (int) (tabWidth*(9.0/8)) + (int) (tabWidth*(3.0/8) * (positionOffset-0.25)/0.25) - mIndicatorX;
-        } else if(positionOffset < 0.75) {
-            mIndicatorX = (int) (tabWidth*(4.0/8)) + (int) (tabWidth*(1.0/8) * (positionOffset-0.5)/0.25);
-            mIndicatorWidth = (int) (tabWidth*(12.0/8)) + (int) (tabWidth*(3.0/8) * (positionOffset-0.5)/0.25) - mIndicatorX;
+//        if(positionOffset < 0.25) {
+//            mIndicatorX = (int) (tabWidth*(3.0/8) * positionOffset/0.25);
+//            mIndicatorWidth = tabWidth + (int) (tabWidth*(1.0/8) * positionOffset/0.25) - mIndicatorX;
+//        } else if(positionOffset < 0.5) {
+//            mIndicatorX = (int) (tabWidth*(3.0/8)) + (int) (tabWidth*(1.0/8) * (positionOffset-0.25)/0.25);
+//            mIndicatorWidth = (int) (tabWidth*(9.0/8)) + (int) (tabWidth*(3.0/8) * (positionOffset-0.25)/0.25) - mIndicatorX;
+//        } else if(positionOffset < 0.75) {
+//            mIndicatorX = (int) (tabWidth*(4.0/8)) + (int) (tabWidth*(1.0/8) * (positionOffset-0.5)/0.25);
+//            mIndicatorWidth = (int) (tabWidth*(12.0/8)) + (int) (tabWidth*(3.0/8) * (positionOffset-0.5)/0.25) - mIndicatorX;
+//        } else {
+//            mIndicatorX = (int) (tabWidth*(5.0/8)) + (int) (tabWidth*(3.0/8) * (positionOffset-0.75)/0.25);
+//            mIndicatorWidth = (int) (tabWidth*(15.0/8)) + (int) (tabWidth*(1.0/8) * (positionOffset-0.75)/0.25) - mIndicatorX;
+//        }
+        if(positionOffset < 0.5) {
+            mIndicatorX = (int) (tabWidth*(0.5)*positionOffset/0.5);
+            mIndicatorWidth = (int) (tabWidth + tabWidth * positionOffset/0.5) - mIndicatorX;
         } else {
-            mIndicatorX = (int) (tabWidth*(5.0/8)) + (int) (tabWidth*(3.0/8) * (positionOffset-0.75)/0.25);
-            mIndicatorWidth = (int) (tabWidth*(15.0/8)) + (int) (tabWidth*(1.0/8) * (positionOffset-0.75)/0.25) - mIndicatorX;
+            mIndicatorX = (int) (tabWidth*0.5 + (tabWidth*0.5*(positionOffset-0.5)/0.5));
+            mIndicatorWidth = tabWidth*2-mIndicatorX;
         }
 
         mTranslationX = tabWidth * position;
 
         if (getChildCount() > mVisibleCount && position >= mVisibleCount - 2 && positionOffset > 0) {
-            if (mVisibleCount != 1) {
+            Log.d("mytt", "position: " + position);
+            if (mVisibleCount != 1 && position != getChildCount() - 2) {
                 this.scrollTo((int) ((position - (mVisibleCount - 2)) * tabWidth + tabWidth * positionOffset), 0);
-            } else {
+            } else if(mVisibleCount == 1){
                 this.scrollTo((int) (tabWidth * position + tabWidth * positionOffset), 0);
             }
         }
