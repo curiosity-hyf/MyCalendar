@@ -9,7 +9,7 @@ import java.util.List;
  * E-mail : curiooosity.h@gmail.com
  */
 
-public class Courses {
+public class CoursesJSON {
 
     private int total;
     private List<RowsBean> rows;
@@ -111,7 +111,7 @@ public class Courses {
 
     @Override
     public String toString() {
-        return "Courses{" +
+        return "CoursesJSON{" +
                 "total=" + total +
                 ", rows=" + rows +
                 '}';
