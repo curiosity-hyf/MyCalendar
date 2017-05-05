@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.curiosity.mycalendar.bean.Course;
+
 import java.util.Set;
 
 /**
@@ -19,10 +21,36 @@ public class SharedPreferenceUtil {
     public static final String curSemester = "curSemester";
     public static final String SAVE_ACCOUNT = "SAVE_ACCOUNT";
     public static final String CHECK_PWD = "CHECK_PWD";
+    public static final String SELECT_GRADE = "SELECT_GRADE";
+    public static final String SELECT_SEMESTER = "SELECT_SEMESTER";
 
     private static final String LOGIN = "LOGIN";
 
     private SharedPreferenceUtil() {
+    }
+
+    public static void setSelectGrade(Context context, int grade) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(SELECT_GRADE, grade);
+        editor.apply();
+    }
+
+    public static int getSelectGrade(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getInt(SELECT_GRADE, 0);
+    }
+
+    public static void setSelectSemester(Context context, int semester) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(SELECT_SEMESTER, semester);
+        editor.apply();
+    }
+
+    public static int getSelectSemester(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getInt(SELECT_SEMESTER, 0);
     }
 
     public static void setLogin(Context context, boolean login) {

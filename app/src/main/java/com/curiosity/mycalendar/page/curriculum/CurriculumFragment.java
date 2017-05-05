@@ -10,17 +10,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.curiosity.mycalendar.R;
+import com.curiosity.mycalendar.bean.Curriculum;
+import com.curiosity.mycalendar.bean.WeekCourses;
 import com.curiosity.mycalendar.config.FieldDefine;
 import com.curiosity.mycalendar.customview.MenuFAB;
 import com.curiosity.mycalendar.customview.WeekIndicator;
 import com.curiosity.mycalendar.info.LoginActivity;
+import com.curiosity.mycalendar.page.curriculum.presenter.IWeekPresenter;
+import com.curiosity.mycalendar.page.curriculum.presenter.WeekPresenter;
+import com.curiosity.mycalendar.page.curriculum.view.IWeekView;
 import com.gordonwong.materialsheetfab.MaterialSheetFab;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,10 +40,12 @@ import butterknife.OnClick;
  * E-mail : curiooosity.h@gmail.com
  */
 
-public class CurriculumFragment extends Fragment {
+public class CurriculumFragment extends Fragment implements IWeekView {
 
     public int REQUEST_ACTIVITY_CODE = 1;
     public int REQUEST_SETTING_CODE = 2;
+    private IWeekPresenter mPresenter;
+
     static MenuFAB fab;
     MaterialSheetFab<MenuFAB> materialSheetFab;
     @BindView(R.id.empty_msg)
@@ -48,6 +57,8 @@ public class CurriculumFragment extends Fragment {
     WeekIndicator indicator;
     @BindView(R.id.curriculum_pager)
     ViewPager pager;
+    @BindView(R.id.curriculum_ll)
+    LinearLayout ll;
 
     View view;
     View sheetView;
@@ -59,7 +70,7 @@ public class CurriculumFragment extends Fragment {
         Log.d("mytest", "Curri -- > onCreateView");
         view = inflater.inflate(R.layout.curriculum_layout, container, false);
         ButterKnife.bind(this, view);
-
+        mPresenter = new WeekPresenter(this.getActivity().getApplicationContext(), this);
         return view;
     }
 
@@ -90,6 +101,8 @@ public class CurriculumFragment extends Fragment {
             materialSheetFab.hideSheet();
     }
 
+    private Curriculum curriculum;
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -111,7 +124,15 @@ public class CurriculumFragment extends Fragment {
         String emptyMsg = bundle.getString(FieldDefine.EMPTY_MSG);
         Log.d("mytest", emptyMsg);
         initFAB();
+        curriculum = mPresenter.getCurriculum();
+        initView();
+    }
 
+    // TODO 不应该直接重新初始化
+    public void dataChange() {
+        empty_msg.setVisibility(View.VISIBLE);
+        ll.setVisibility(View.VISIBLE);
+        curriculum = mPresenter.getCurriculum();
         initView();
     }
 
@@ -119,56 +140,73 @@ public class CurriculumFragment extends Fragment {
     private FragmentPagerAdapter pagerAdapter;
 
     private void initView() {
-        list.add(new WeekFragment());
-        list.add(new WeekFragment());
-        list.add(new WeekFragment());
-        list.add(new WeekFragment());
-        list.add(new WeekFragment());
-        list.add(new WeekFragment());
-
-        List<String> titles = new ArrayList<>();
-
-        titles.add("1");
-        titles.add("2");
-        titles.add("3");
-        titles.add("4");
-        titles.add("5");
-        titles.add("6");
-
-        indicator.setTabItem(titles);
-        pagerAdapter = new FragmentPagerAdapter(getFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
-                return list.get(position);
+        Log.d("myW", "CurriculumFragment initView");
+        if (curriculum != null && curriculum.getCount() != 0) {
+            empty_msg.setVisibility(View.GONE);
+            List<String> titles = new ArrayList<>();
+            int lastWeek = 0;
+            int cur = 1;
+            for (int i = 0; i < curriculum.getCount(); ++i) {
+                WeekCourses weekCourses = curriculum.getWeekCoursesAt(i);
+                if (lastWeek + 1 < weekCourses.getWeekNum()) {
+                    for (int j = lastWeek + 1; j < weekCourses.getWeekNum() - 1; ++j) {
+                        WeekFragment fragment = new WeekFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("msg", "empty");
+                        fragment.setArguments(bundle);
+                        list.add(fragment);
+                        titles.add(String.format(Locale.CHINESE, "第%d周", cur++));
+                    }
+                }
+                WeekFragment fragment = new WeekFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("msg", "data");
+                fragment.setArguments(bundle);
+                fragment.setData(weekCourses);
+                list.add(fragment);
+                titles.add(String.format(Locale.CHINESE, "第%d周", cur++));
+                lastWeek = weekCourses.getWeekNum();
             }
 
-            @Override
-            public int getCount() {
-                return list.size();
-            }
-        };
-        pager.setAdapter(pagerAdapter);
 
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.d("mytest", "CurriculumFragment onPageScrolled\n" +
-                        "position: " + position + " Offset: " + positionOffset + " OffsetPixels: " + positionOffsetPixels);
-                indicator.scroll(position, positionOffset);
-            }
+            indicator.setTabItem(titles);
+            pagerAdapter = new FragmentPagerAdapter(getFragmentManager()) {
+                @Override
+                public Fragment getItem(int position) {
+                    return list.get(position);
+                }
 
-            @Override
-            public void onPageSelected(int position) {
-                Log.d("mytest", "CurriculumFragment onPageSelected\n" +
-                        "position: " + position);
-            }
+                @Override
+                public int getCount() {
+                    return list.size();
+                }
+            };
+            pager.setAdapter(pagerAdapter);
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                Log.d("mytest", "CurriculumFragment onPageScrollStateChanged\n" +
-                        "state: " + state);
-            }
-        });
-        pager.setCurrentItem(0);
+            pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    Log.d("mytest", "CurriculumFragment onPageScrolled\n" +
+                            "position: " + position + " Offset: " + positionOffset + " OffsetPixels: " + positionOffsetPixels);
+                    indicator.scroll(position, positionOffset);
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    Log.d("mytest", "CurriculumFragment onPageSelected\n" +
+                            "position: " + position);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                    Log.d("mytest", "CurriculumFragment onPageScrollStateChanged\n" +
+                            "state: " + state);
+                }
+            });
+            pager.setCurrentItem(0);
+
+        } else {
+            ll.setVisibility(View.GONE);
+        }
     }
 }

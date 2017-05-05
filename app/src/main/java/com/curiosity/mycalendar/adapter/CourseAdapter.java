@@ -7,9 +7,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.curiosity.mycalendar.R;
-import com.curiosity.mycalendar.bean.Courses;
+import com.curiosity.mycalendar.bean.Course;
+import com.curiosity.mycalendar.bean.CoursesJSON;
+import com.curiosity.mycalendar.bean.WeekCourses;
+import com.curiosity.mycalendar.utils.TextUtils;
 
 import java.util.List;
+
+import butterknife.ButterKnife;
 
 /**
  * Description :
@@ -20,11 +25,11 @@ import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHolder> {
 
-    private List<Courses> mData;
+    private WeekCourses mData;
     private OnItemClickListener mListener;
 
-    public CourseAdapter(List<Courses> infoBean) {
-        mData = infoBean;
+    public CourseAdapter(WeekCourses data) {
+        mData = data;
     }
 
     @Override
@@ -36,10 +41,12 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        Courses infoBean = mData.get(position);
-//        holder.getId().setText(""+infoBean.getId());
-//        holder.getName().setText(infoBean.getCourseName());
-//        holder.getTeacher().setText(infoBean.getTeacherName());
+        Course course = mData.getCoursesAt(position);
+        holder.getFullTime().setText(TextUtils.formatDate(course.getFullTime()));
+        String cls_time = TextUtils.formatNumString(TextUtils.spiltString(course.getClsNum(), 2), "、");
+        holder.getClsNum().setText(" 第 " + cls_time + " 节");
+        holder.getName().setText(course.getName());
+        holder.getTeacher().setText(course.getTeacher());
         if (mListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -61,11 +68,11 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return mData.getCount();
     }
 
-    public void addData(Courses infoBean, int position) {
-        mData.add(position, infoBean);
+    public void addData(Course course, int position) {
+        mData.add(course, position);
         notifyItemInserted(position);
     }
 
@@ -73,13 +80,13 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
         mData.remove(position);
         notifyDataSetChanged();
         notifyItemRemoved(position);
-        if (position != mData.size()) {
-            notifyItemRangeChanged(position, mData.size() - position);
+        if (position != mData.getCount()) {
+            notifyItemRangeChanged(position, mData.getCount() - position);
         }
     }
 
-    public Courses getData(int position) {
-        return mData.get(position);
+    public Course getData(int position) {
+        return mData.getCoursesAt(position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -94,19 +101,25 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.MyViewHold
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView course_id;
+        private TextView course_full_time;
+        private TextView course_cls_num;
         private TextView course_name;
         private TextView course_teacher;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            course_id = (TextView) itemView.findViewById(R.id.course_id);
-            course_name = (TextView) itemView.findViewById(R.id.course_name);
-            course_teacher = (TextView) itemView.findViewById(R.id.course_teacher);
+            course_full_time = ButterKnife.findById(itemView, R.id.course_full_time);
+            course_cls_num = ButterKnife.findById(itemView, R.id.course_cls_num);
+            course_name = ButterKnife.findById(itemView, R.id.course_name);
+            course_teacher = ButterKnife.findById(itemView, R.id.course_teacher);
         }
 
-        public TextView getId() {
-            return course_id;
+        public TextView getFullTime() {
+            return course_full_time;
+        }
+
+        public TextView getClsNum() {
+            return course_cls_num;
         }
 
         public TextView getName() {

@@ -15,6 +15,7 @@ import com.curiosity.mycalendar.info.fragment.YearSelectFragment;
 import com.curiosity.mycalendar.info.presenter.FetchPresenter;
 import com.curiosity.mycalendar.info.presenter.IFetchPresenter;
 import com.curiosity.mycalendar.info.view.IFetchView;
+import com.curiosity.mycalendar.utils.SQLiteHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

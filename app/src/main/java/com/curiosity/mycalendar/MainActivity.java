@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
     private IMainPresenter mIMainPresenter;
 
+    private CurriculumFragment curriculumFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         setVisibility(View.GONE, tagName, tagInstitute, tagMajor, tagClass);
 
         ToastUtils.ToastShort(MainActivity.this, R.string.toast_logout);
+        curriculumFragment.dataChange();
     }
 
     /**
@@ -207,11 +209,11 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     @Override
     public void switch2Curriculum() {
         Log.d("mytest", "switch2Curriculum");
-        Fragment fragment = new CurriculumFragment();
+        curriculumFragment = new CurriculumFragment();
         Bundle bundle = new Bundle();
         bundle.putString(FieldDefine.EMPTY_MSG, getString(R.string.emtpy_frag_no_curr));
-        fragment.setArguments(bundle);
-        switchFragment(fragment);
+        curriculumFragment.setArguments(bundle);
+        switchFragment(curriculumFragment);
     }
 
     @Override
@@ -265,6 +267,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         switch (requestCode) {
             case LOGIN_REQUEST_CODE:
                 if (resultCode == LoginActivity.LOGIN_SUCCESS_CODE) {
+                    curriculumFragment.dataChange();
                     mIMainPresenter.getStudentInfo();
                 }
                 break;

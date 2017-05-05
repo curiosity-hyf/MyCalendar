@@ -30,6 +30,8 @@ public class MainModel implements IMainModel {
         SQLiteHelper.executeDelete(db, SQLiteHelper.COURSE_INFO_TABLE, SQLiteHelper.C_TYPE + " = ?", new String[]{SQLiteHelper.C_TYPE_SYSTEM});
 
         SharedPreferenceUtil.setLogin(context, false);
+        SharedPreferenceUtil.setSelectGrade(context, 0);
+        SharedPreferenceUtil.setSelectSemester(context, 0);
         Log.d("mytest", "MainModel logout: delete database");
     }
 

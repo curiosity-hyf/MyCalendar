@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.curiosity.mycalendar.bean.Courses;
+import com.curiosity.mycalendar.bean.CoursesJSON;
 import com.curiosity.mycalendar.bean.LoginInfo;
 import com.curiosity.mycalendar.bean.StudentInfo;
 import com.curiosity.mycalendar.config.FieldDefine;
@@ -81,10 +81,12 @@ public class LoginModel implements ILoginModel {
      * @throws Exception
      */
     @Override
-    public void saveLoginInfo(Context context, String account, String pwd, boolean isCheck) {
+    public void saveLoginInfo(Context context, String account, String pwd, boolean isCheck, int grade, int semester) {
         // 在 SharedPreference 中存入账号 和 是否记住密码
         SharedPreferenceUtil.setSaveAccount(context, account);
         SharedPreferenceUtil.setCheckPwd(context, isCheck);
+        SharedPreferenceUtil.setSelectGrade(context, grade);
+        SharedPreferenceUtil.setSelectSemester(context, semester);
 
         // 设置当前状态为已登录
         SharedPreferenceUtil.setLogin(context, true);
@@ -137,7 +139,7 @@ public class LoginModel implements ILoginModel {
         HttpUtils.ResultCallback<String> resultCallback = new HttpUtils.ResultCallback<String>() {
             @Override
             public void onSuccess(String response) {
-                Courses info = new Gson().fromJson(response, Courses.class);
+                CoursesJSON info = new Gson().fromJson(response, CoursesJSON.class);
                 Log.d("myd", "fetch: " + info.toString());
                 try {
                     SQLiteHelper.saveCourse(context, info, grade, semester);

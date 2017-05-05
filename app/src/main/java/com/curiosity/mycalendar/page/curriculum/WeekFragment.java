@@ -10,13 +10,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.curiosity.mycalendar.R;
 import com.curiosity.mycalendar.adapter.CourseAdapter;
-import com.curiosity.mycalendar.bean.Courses;
+import com.curiosity.mycalendar.bean.Course;
+import com.curiosity.mycalendar.bean.CoursesJSON;
+import com.curiosity.mycalendar.bean.WeekCourses;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Description :
@@ -27,13 +33,17 @@ import java.util.List;
 
 public class WeekFragment extends Fragment {
 
-
-    private RecyclerView rv;
     private CourseAdapter adapter;
-    private List<Courses> mData;
+    private WeekCourses mData;
     private String year, semester, account;
 
     private View view;
+
+    @BindView(R.id.week_empty)
+    TextView msg;
+
+    @BindView(R.id.curriculum_week_rv)
+    RecyclerView rv;
 
     @Nullable
     @Override
@@ -46,9 +56,23 @@ public class WeekFragment extends Fragment {
                 parent.removeView(view);
             }
         }
+        ButterKnife.bind(this, view);
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            String m = bundle.getString("msg");
+            if("empty".equals(m)) {
+                rv.setVisibility(View.GONE);
+            } else if("data".equals(m)) {
+                msg.setVisibility(View.GONE);
+            }
+        }
         return view;
     }
 
+
+    public void setData(WeekCourses data) {
+        this.mData = data;
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -78,7 +102,7 @@ public class WeekFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initData(account, year, semester);
+        initData();
         initView();
     }
 
@@ -103,17 +127,15 @@ public class WeekFragment extends Fragment {
 //                        Toast.LENGTH_SHORT).show();
             }
         });
-        rv.setVisibility(View.GONE);
     }
 
-    private void initData(String account, String year, String semester) {
-        mData = new ArrayList<>();
+    private void initData() {
         adapter = new CourseAdapter(mData);
 
     }
 
-    public void newInfo(Courses info) {
-        int num = mData.size();
+    public void newInfo(Course info) {
+        int num = mData.getCount();
         adapter.addData(info, num);
         //rv.smoothScrollToPosition(num_msg+1);
     }

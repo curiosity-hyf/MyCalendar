@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.curiosity.mycalendar.R;
 import com.curiosity.mycalendar.adapter.CourseAdapter;
-import com.curiosity.mycalendar.bean.Courses;
+import com.curiosity.mycalendar.bean.CoursesJSON;
 import com.curiosity.mycalendar.config.FieldDefine;
 import com.curiosity.mycalendar.customview.MenuFAB;
 import com.curiosity.mycalendar.customview.WeekIndicator;
@@ -60,7 +60,7 @@ public class CurriculumFragment extends Fragment {
     View overlay;
     private RecyclerView rv;
     private CourseAdapter adapter;
-    private List<Courses> mData;
+    private List<CoursesJSON> mData;
     private String year, semester, account;
 
     @Nullable
@@ -130,13 +130,13 @@ public class CurriculumFragment extends Fragment {
 
     private void initData(String account, String year, String semester) {
         mData = new ArrayList<>();
-        adapter = new CourseAdapter(mData);
+//        adapter = new CourseAdapter(mData);
 
     }
 
-    public void newInfo(Courses info) {
+    public void newInfo(CoursesJSON info) {
         int num = mData.size();
-        adapter.addData(info, num);
+//        adapter.addData(info, num);
         //rv.smoothScrollToPosition(num_msg+1);
     }
 

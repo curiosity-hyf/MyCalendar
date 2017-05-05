@@ -1,5 +1,8 @@
 package com.curiosity.mycalendar.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,28 +14,66 @@ import java.util.List;
  */
 
 public class WeekCourses {
-    private List<Courses> weekcourses;
+    private int weekNum;
+    private List<Course> courses;
     private int count;
 
-    public WeekCourses() {
-        this(new ArrayList<Courses>());
+    public int getWeekNum() {
+        return weekNum;
     }
-    public WeekCourses(List<Courses> list) {
-        this(list, list.size());
+
+    public void setWeekNum(int weekNum) {
+        this.weekNum = weekNum;
     }
-    public WeekCourses(List<Courses> list, int count) {
-        this.weekcourses = list;
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
         this.count = count;
     }
-    public void add(Courses courses) {
-        weekcourses.add(courses);
+
+    public WeekCourses(int weekNum) {
+        this.weekNum = weekNum;
+        this.courses = new ArrayList<>();
+        this.count = courses.size();
+    }
+
+    public void add(Course course) {
+        courses.add(course);
         count++;
+    }
+
+    public void add(Course course, int position) {
+        courses.add(position, course);
+        count++;
+    }
+
+    public void remove(int position) {
+        courses.remove(position);
+        count--;
+    }
+
+    public Course getCoursesAt(int index) {
+        if(index >= count) {
+            return null;
+        }
+        return courses.get(index);
     }
 
     @Override
     public String toString() {
         return "WeekCourses{" +
-                "weekcourses=" + weekcourses +
+                "weekCourses=" + courses +
                 ", count=" + count +
                 '}';
     }

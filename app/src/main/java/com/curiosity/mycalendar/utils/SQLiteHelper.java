@@ -8,8 +8,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.curiosity.mycalendar.bean.Courses;
+import com.curiosity.mycalendar.bean.Course;
+import com.curiosity.mycalendar.bean.CoursesJSON;
+import com.curiosity.mycalendar.bean.Curriculum;
 import com.curiosity.mycalendar.bean.StudentInfo;
+import com.curiosity.mycalendar.bean.WeekCourses;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description :
@@ -67,8 +73,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                     C_TYPE + " integer not null, " + /*类型 : 1 系统 2 自定义*/
                     C_GRADE + " integer not null, " + /*学年*/
                     C_SEMESTER + " integer not null, " + /*学期*/
-                    C_WEEK_NUM + " text not null, " + /*周次*/
-                    C_DAY_NUM + " text not null, " + /*星期*/
+                    C_WEEK_NUM + " integer not null, " + /*周次*/
+                    C_DAY_NUM + " integer not null, " + /*星期*/
                     C_CLS_NUM + " text not null, " + /*节次*/
                     C_NAME + " text not null, " + /*课程名称*/
                     C_TEACHER + " text not null, " + /*教师名称*/
@@ -237,24 +243,24 @@ public class SQLiteHelper extends SQLiteOpenHelper {
      * @throws Exception
      */
     public static void saveStudentInfo(Context context, StudentInfo info) throws Exception {
-        SQLiteDatabase db = SQLiteHelper.getWritableDatabase(context);
-        SQLiteHelper.executeDelete(db, STUDENT_INFO_TABLE, null, null);
+        SQLiteDatabase db = getWritableDatabase(context);
+        executeDelete(db, STUDENT_INFO_TABLE, null, null);
 
         ContentValues values = new ContentValues();
-        values.put(SQLiteHelper.S_NUM, info.getStuNum());
-        values.put(SQLiteHelper.S_ADMISSION, info.getAdmission());
-        values.put(SQLiteHelper.S_NAME, info.getName());
-        values.put(SQLiteHelper.S_INSTITUTE, info.getInstitute());
-        values.put(SQLiteHelper.S_MAJOR, info.getMajor());
-        values.put(SQLiteHelper.S_CLASS, info.getClas());
-        SQLiteHelper.executeInsertWithCheck(context, SQLiteHelper.STUDENT_INFO_TABLE, SQLiteHelper.S_NUM, values);
+        values.put(S_NUM, info.getStuNum());
+        values.put(S_ADMISSION, info.getAdmission());
+        values.put(S_NAME, info.getName());
+        values.put(S_INSTITUTE, info.getInstitute());
+        values.put(S_MAJOR, info.getMajor());
+        values.put(S_CLASS, info.getClas());
+        SQLiteHelper.executeInsertWithCheck(context, STUDENT_INFO_TABLE, S_NUM, values);
         values.clear();
         closeDatabase(db);
     }
 
     public static StudentInfo getStudentInfo(Context context, String stuNum) {
-        SQLiteDatabase db = SQLiteHelper.getReadableDatabase(context);
-        Cursor cursor = SQLiteHelper.executeQuery(db,
+        SQLiteDatabase db = getReadableDatabase(context);
+        Cursor cursor = executeQuery(db,
                 "select * from " + STUDENT_INFO_TABLE +
                         " where " + S_NUM + " = ?", new String[]{stuNum});
         StudentInfo info = null;
@@ -275,8 +281,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public static String getStudentInfo(Context context, String stuNum, String columnName) {
-        SQLiteDatabase db = SQLiteHelper.getReadableDatabase(context);
-        Cursor cursor = SQLiteHelper.executeQuery(db,
+        SQLiteDatabase db = getReadableDatabase(context);
+        Cursor cursor = executeQuery(db,
                 "select * from " + STUDENT_INFO_TABLE +
                         " where " + S_NUM + " = ?", new String[]{stuNum});
         String res = "";
@@ -289,19 +295,19 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return res;
     }
 
-    public static void saveCourse(Context context, Courses info, int grade, int semester) throws Exception {
-        SQLiteDatabase db = SQLiteHelper.getWritableDatabase(context);
-        SQLiteHelper.executeDelete(db, COURSE_INFO_TABLE,
-                SQLiteHelper.C_TYPE + " = ? and " +
-                        SQLiteHelper.C_GRADE + " = ? and " +
-                        SQLiteHelper.C_SEMESTER + " = ?",
-                new String[]{"1", String.valueOf(grade), String.valueOf(semester)});
+    public static void saveCourse(Context context, CoursesJSON info, int grade, int semester) throws Exception {
+        SQLiteDatabase db = getWritableDatabase(context);
+        executeDelete(db, COURSE_INFO_TABLE,
+                C_TYPE + " = ? and " +
+                        C_GRADE + " = ? and " +
+                        C_SEMESTER + " = ?",
+                new String[]{String.valueOf(Course.TYPE.SYSTEM.ordinal()), String.valueOf(grade), String.valueOf(semester)});
 
         ContentValues values = new ContentValues();
         for (int i = 0; i < info.getTotal(); ++i) {
-            Courses.RowsBean bean = info.getRows().get(i);
+            CoursesJSON.RowsBean bean = info.getRows().get(i);
 
-            values.put(C_TYPE, 1);
+            values.put(C_TYPE, Course.TYPE.SYSTEM.ordinal());
             values.put(C_GRADE, grade);
             values.put(C_SEMESTER, semester);
             values.put(C_WEEK_NUM, bean.getZc());
@@ -318,24 +324,75 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 //        getCourse(context, grade, semester);
     }
 
-    public static void getCourse(Context context, int grade, int semester) {
-        SQLiteDatabase db = SQLiteHelper.getReadableDatabase(context);
-        Cursor cursor =
-                SQLiteHelper.executeQuery(db, "select * from " + SQLiteHelper.COURSE_INFO_TABLE, null);
+    private static List<Integer> getWeekNumList(Context context, int grade, int semester) {
+        SQLiteDatabase db = getReadableDatabase(context);
+        Cursor cursor = executeQuery(db,
+                "select distinct " + C_WEEK_NUM +
+                        " from " + COURSE_INFO_TABLE +
+                        " where " + C_GRADE + " = ?" +
+                        " and " + C_SEMESTER + " = ?" +
+                        " order by " + C_WEEK_NUM + " asc",
+                new String[]{String.valueOf(grade), String.valueOf(semester)});
+        List<Integer> weekNum = new ArrayList<>();
         while (cursor.moveToNext()) {
-            Log.d("myd", SQLiteHelper.C_TYPE + " = " + cursor.getInt(cursor.getColumnIndex(SQLiteHelper.C_TYPE)) +
-                    SQLiteHelper.C_GRADE + " = " + cursor.getInt(cursor.getColumnIndex(SQLiteHelper.C_GRADE)) +
-                    SQLiteHelper.C_SEMESTER + " = " + cursor.getInt(cursor.getColumnIndex(SQLiteHelper.C_SEMESTER)) +
-                    SQLiteHelper.C_CLS_NUM + " = " + cursor.getString(cursor.getColumnIndex(SQLiteHelper.C_CLS_NUM)) +
-                    SQLiteHelper.C_NAME + " = " + cursor.getString(cursor.getColumnIndex(SQLiteHelper.C_NAME)) +
-                    SQLiteHelper.C_TEACHER + " = " + cursor.getString(cursor.getColumnIndex(SQLiteHelper.C_TEACHER)) +
-                    SQLiteHelper.C_ADDR + " = " + cursor.getString(cursor.getColumnIndex(SQLiteHelper.C_ADDR)) +
-                    SQLiteHelper.C_FULL_TIME + " = " + cursor.getString(cursor.getColumnIndex(SQLiteHelper.C_FULL_TIME)) +
-                    SQLiteHelper.C_OTHER + " = " + cursor.getString(cursor.getColumnIndex(SQLiteHelper.C_OTHER)));
+            int week = cursor.getInt(cursor.getColumnIndex(C_WEEK_NUM));
+            weekNum.add(week);
         }
         cursor.close();
-        closeDatabase(db);
+        db.close();
+        return weekNum;
+    }
 
-        // TODO
+    public static Curriculum getCourse(Context context, int grade, int semester) {
+        List<Integer> list = getWeekNumList(context, grade, semester);
+
+        Curriculum curriculum = new Curriculum(grade, semester);
+        SQLiteDatabase db = SQLiteHelper.getReadableDatabase(context);
+        Cursor cursor = null;
+        for (int i = 0; i < list.size(); ++i) {
+
+            cursor = executeQuery(db,
+                    "select *" +
+                            " from " + COURSE_INFO_TABLE +
+                            " where " + C_WEEK_NUM + " = ?" +
+                            " and " + C_GRADE + " = ?" +
+                            " and " + C_SEMESTER + " = ?" +
+                            " order by " + C_DAY_NUM + ", " + C_CLS_NUM +
+                    " asc", new String[]{String.valueOf(list.get(i)), String.valueOf(grade), String.valueOf(semester)});
+            WeekCourses courses = new WeekCourses(list.get(i));
+            while(cursor.moveToNext()) {
+                Course.TYPE type = cursor.getInt(cursor.getColumnIndex(C_TYPE)) == 0 ? Course.TYPE.SYSTEM : Course.TYPE.CUSTOM;
+                int weekNum = cursor.getInt(cursor.getColumnIndex(C_WEEK_NUM));
+                int dayNum = cursor.getInt(cursor.getColumnIndex(C_DAY_NUM));
+                String clsNum = cursor.getString(cursor.getColumnIndex(C_CLS_NUM));
+                String name = cursor.getString(cursor.getColumnIndex(C_NAME));
+                String teacher = cursor.getString(cursor.getColumnIndex(C_TEACHER));
+                String addr = cursor.getString(cursor.getColumnIndex(C_ADDR));
+                String fullTime = cursor.getString(cursor.getColumnIndex(C_FULL_TIME));
+                String other = cursor.getString(cursor.getColumnIndex(C_OTHER));
+
+                Course course = new Course();
+                course.setType(type);
+                course.setGrade(grade);
+                course.setSemester(semester);
+                course.setWeekNum(weekNum);
+                course.setDayNum(dayNum);
+                course.setClsNum(clsNum);
+                course.setName(name);
+                course.setTeacher(teacher);
+                course.setAddr(addr);
+                course.setFullTime(fullTime);
+                course.setFullTime(fullTime);
+                course.setOther(other);
+
+                courses.add(course);
+            }
+            curriculum.add(courses);
+        }
+        if(cursor != null) {
+            cursor.close();
+        }
+        db.close();
+        return curriculum;
     }
 }

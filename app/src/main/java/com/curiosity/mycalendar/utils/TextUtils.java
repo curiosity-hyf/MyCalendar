@@ -1,6 +1,7 @@
 package com.curiosity.mycalendar.utils;
 
 
+import android.util.Log;
 import android.widget.EditText;
 
 import java.io.BufferedReader;
@@ -8,7 +9,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
+import java.util.logging.SimpleFormatter;
 
 /**
  * Description : 该工具类用于文本的处理
@@ -29,6 +35,49 @@ public class TextUtils {
 
     public static boolean isEmpty(String s) {
         return s == null || s.equals("");
+    }
+
+    public static String[] spiltString(String s, int range) {
+        Log.d("myW", "spiltString: " + s);
+        int pieceNum = (int)Math.ceil(s.length()*1.0/range);
+        Log.d("myW", "spiltString: " + pieceNum);
+        if(pieceNum == 0) {
+            return new String[]{s};
+        } else {
+            int lastIndex = 0;
+            String [] res = new String[pieceNum];
+            for(int i = 0; i < pieceNum; ++i) {
+                int tail = Math.min(s.length(), lastIndex+range);
+                res[i] = s.substring(lastIndex, tail);
+                lastIndex+=range;
+            }
+            return res;
+        }
+    }
+
+    public static String formatNumString(String[] num, String spec) {
+        StringBuilder sb = new StringBuilder();
+        if(num.length == 0) {
+            return "";
+        }
+        sb.append(Integer.valueOf(num[0]));
+        for(int i = 1; i < num.length; ++i) {
+            Log.d("myW", "formatNumString: " + num[i]);
+            sb.append(spec);
+            sb.append(Integer.valueOf(num[i]));
+        }
+        return sb.toString();
+    }
+
+    public static String formatDate(String date) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(date.substring(0, 4));
+        sb.append("年");
+        sb.append(date.substring(5,7));
+        sb.append("月");
+        sb.append(date.substring(8, 10));
+        sb.append("日");
+        return sb.toString();
     }
 
     public static String getYear() {

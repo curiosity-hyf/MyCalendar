@@ -25,6 +25,23 @@ public class Course {
     private String fullTime; /*完整时间 yyyy-MM-dd*/
     private String other; /*其他*/
 
+    @Override
+    public String toString() {
+        return "Course{" +
+                "type=" + type +
+                ", grade=" + grade +
+                ", semester=" + semester +
+                ", weekNum=" + weekNum +
+                ", dayNum=" + dayNum +
+                ", clsNum='" + clsNum + '\'' +
+                ", name='" + name + '\'' +
+                ", teacher='" + teacher + '\'' +
+                ", addr='" + addr + '\'' +
+                ", fullTime='" + fullTime + '\'' +
+                ", other='" + other + '\'' +
+                '}';
+    }
+
     public Course() {
     }
 
