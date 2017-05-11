@@ -187,10 +187,11 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
         Bundle b  = new Bundle();
         b.putSerializable("week", curriculumMaxWeek);
         mFetchPresenter.switchNavigation(1, b);
-//        Intent loginIntent = new Intent();
-//        loginIntent.setClass(LoginActivity.this, MainActivity.class);
-//        setResult(LOGIN_SUCCESS_CODE, loginIntent);
-//        removeFragment();
-//        finish();
+        mYearSelectFragment.saveSelect();
+        Intent loginIntent = new Intent();
+        loginIntent.setClass(LoginActivity.this, MainActivity.class);
+        setResult(LOGIN_SUCCESS_CODE, loginIntent);
+        removeFragment();
+        finish();
     }
 }
