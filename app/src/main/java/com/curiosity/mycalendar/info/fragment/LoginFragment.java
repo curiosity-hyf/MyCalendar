@@ -20,9 +20,12 @@ import com.curiosity.mycalendar.R;
 import com.curiosity.mycalendar.config.FieldDefine;
 import com.curiosity.mycalendar.info.presenter.ILoginPresenter;
 import com.curiosity.mycalendar.info.presenter.LoginPresenter;
-import com.curiosity.mycalendar.info.view.ILoginView;
+import com.curiosity.mycalendar.info.view.IFragLoginView;
 import com.curiosity.mycalendar.utils.TextUtils;
 import com.curiosity.mycalendar.utils.ToastUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +38,7 @@ import butterknife.OnClick;
  * E-mail : curiooosity.h@gmail.com
  */
 
-public class LoginFragment extends Fragment implements ILoginView {
+public class LoginFragment extends Fragment implements IFragLoginView {
     private static final String TAG = "mytest";
     @BindView(R.id.accountWrapper)
     TextInputLayout accountWrapper;
@@ -137,9 +140,9 @@ public class LoginFragment extends Fragment implements ILoginView {
     }
 
     @Override
-    public void onLoadSuccess() {
+    public void onLoadSuccess(HashMap<String, Integer> curriculumMaxWeek) {
+        activity.onLoadSuccess(curriculumMaxWeek);
         setEnabled(true);
-        activity.onSuccess();
     }
 
     @Override
@@ -247,7 +250,7 @@ public class LoginFragment extends Fragment implements ILoginView {
     }
 
     public interface OnLoadListener {
-        void onSuccess();
+        void onLoadSuccess(HashMap<String, Integer> curriculumMaxWeek);
     }
 
     @Override

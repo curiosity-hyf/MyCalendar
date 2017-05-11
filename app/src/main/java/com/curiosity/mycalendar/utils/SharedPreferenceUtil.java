@@ -19,6 +19,8 @@ public class SharedPreferenceUtil {
     public static final String hasClassFromSys = "hasClassFromSys";
     public static final String curYear = "curYear";
     public static final String curSemester = "curSemester";
+    public static final String curWeekOrder = "curWeekOrder"; // 周次
+    public static final String lastWeekTime = "lastWeekTime"; // 上一次设置周次时的时间
     public static final String SAVE_ACCOUNT = "SAVE_ACCOUNT";
     public static final String CHECK_PWD = "CHECK_PWD";
     public static final String SELECT_GRADE = "SELECT_GRADE";
@@ -51,6 +53,30 @@ public class SharedPreferenceUtil {
     public static int getSelectSemester(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getInt(SELECT_SEMESTER, 0);
+    }
+
+    public static void setWeekOrder(Context context, int weekOrder) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(curWeekOrder, weekOrder);
+        editor.apply();
+    }
+
+    public static int getWeekOrder(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getInt(curWeekOrder, 0);
+    }
+
+    public static void setWeekTime(Context context, String weekTime) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(lastWeekTime, weekTime);
+        editor.apply();
+    }
+
+    public static String getWeekTime(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString(lastWeekTime, "");
     }
 
     public static void setLogin(Context context, boolean login) {

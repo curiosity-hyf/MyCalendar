@@ -30,25 +30,24 @@ public class FetchPresenter implements IFetchPresenter {
         currentFragIdx = id;
         switch (id) {
             case 0:
-                mLoginView.switchYearFragment(bundle);
-                mLoginView.showNextStep(true);
+                mLoginView.switchLoginFragment(bundle);
                 break;
             case 1:
-                mLoginView.switchLoginFragment(bundle);
-                mLoginView.showNextStep(false);
+                mLoginView.switchYearFragment(bundle);
+                mLoginView.showCompleted(true);
                 break;
         }
     }
 
     @Override
     public boolean navigationBack() {
-        mLoginView.showNextStep(true);
+        mLoginView.showCompleted(false);
         if (currentFragIdx == 0) {
             ((LoginActivity) mContext).onNavigateUp();
             return true;
         } else {
             currentFragIdx = 0;
-            mLoginView.switchYearFragment(null);
+            mLoginView.switchLoginFragment(null);
             return false;
         }
     }

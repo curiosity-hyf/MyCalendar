@@ -1,5 +1,8 @@
 package com.curiosity.mycalendar.info.view;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Description :
  * Author : curiosity-hyf
@@ -13,7 +16,7 @@ public interface IFragLoginView {
 
     void showProgress(boolean show);
 
-    void onLoadSuccess();
+    void onLoadSuccess(HashMap<String, Integer> curriculumMaxWeek);
 
     void onLoadFailure();
 

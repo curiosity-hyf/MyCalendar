@@ -14,6 +14,15 @@ public class CoursesJSON {
     private int total;
     private List<RowsBean> rows;
 
+    public int getMaxWeek() {
+        int max = 0;
+        for(int i = 0; i < rows.size(); ++i) {
+            RowsBean bean = rows.get(i);
+            max = Math.max(max, Integer.valueOf(bean.getZc()));
+        }
+        return max;
+    }
+
     public int getTotal() {
         return total;
     }

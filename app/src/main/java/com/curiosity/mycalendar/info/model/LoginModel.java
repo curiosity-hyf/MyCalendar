@@ -59,7 +59,7 @@ public class LoginModel implements ILoginModel {
     public String getLoginInfo(Context context, String account) {
         SQLiteDatabase db = SQLiteHelper.getReadableDatabase(context);
         Cursor cursor = SQLiteHelper.executeQuery(db,
-                "select "+ SQLiteHelper.U_PWD + " from " +
+                "select " + SQLiteHelper.U_PWD + " from " +
                         SQLiteHelper.USER_LOGIN_TABLE +
                         " where " + SQLiteHelper.U_ACCOUNT + " = ?",
                 new String[]{account});
@@ -72,14 +72,40 @@ public class LoginModel implements ILoginModel {
         return pwd;
     }
 
+    @Override
+    public void saveLoginInfo(Context context, String account, String pwd, boolean isCheck) {
+        // 在 SharedPreference 中存入账号 和 是否记住密码
+        SharedPreferenceUtil.setSaveAccount(context, account);
+        SharedPreferenceUtil.setCheckPwd(context, isCheck);
+
+        // 设置当前状态为已登录
+        SharedPreferenceUtil.setLogin(context, true);
+        // TODO 这里待加入 加密，防止泄露信息
+        // 在数据库中存入登录的账号/密码
+        ContentValues values = new ContentValues();
+        values.put(SQLiteHelper.U_ACCOUNT, account);
+
+        if (isCheck) {
+            values.put(SQLiteHelper.U_PWD, pwd);
+        } else {
+            values.put(SQLiteHelper.U_PWD, "");
+        }
+
+        SQLiteHelper.executeInsertWithCheck(context, SQLiteHelper.USER_LOGIN_TABLE, SQLiteHelper.U_ACCOUNT, values);
+
+        values.clear();
+    }
+
     /**
      * 保存登录的表单
+     *
      * @param context 上下文
      * @param account 账号
-     * @param pwd 密码
-     * @param isCheck  记住密码
+     * @param pwd     密码
+     * @param isCheck 记住密码
      * @throws Exception
      */
+    @Deprecated
     @Override
     public void saveLoginInfo(Context context, String account, String pwd, boolean isCheck, int grade, int semester) {
         // 在 SharedPreference 中存入账号 和 是否记住密码
@@ -95,7 +121,7 @@ public class LoginModel implements ILoginModel {
         ContentValues values = new ContentValues();
         values.put(SQLiteHelper.U_ACCOUNT, account);
 
-        if(isCheck) {
+        if (isCheck) {
             values.put(SQLiteHelper.U_PWD, pwd);
         } else {
             values.put(SQLiteHelper.U_PWD, "");
@@ -133,27 +159,76 @@ public class LoginModel implements ILoginModel {
     }
 
     @Override
-    public void fetchCurriculum(final Context context, String admission, final int grade, final int semester, final OnLoginListener listener) {
+    public void fetchAllCurriculum(Context context, String admission, OnLoginListener listener) {
+        for(int grade = 1; grade <= 4; ++grade) {
+            for(int semester = 1; semester <= 2; ++semester) {
+                fetchSingleCurriculum(context, admission, grade, semester, listener);
+            }
+        }
+    }
+
+    private void fetchSingleCurriculum(final Context context, String admission, final int grade, final int semester, final OnLoginListener listener) {
         String curriculumYear = getCurriculumYear(admission, grade, semester);
 
         HttpUtils.ResultCallback<String> resultCallback = new HttpUtils.ResultCallback<String>() {
             @Override
             public void onSuccess(String response) {
+                Log.d("myA", "fetch: response: " + response);
                 CoursesJSON info = new Gson().fromJson(response, CoursesJSON.class);
-                Log.d("myd", "fetch: " + info.toString());
+                int maxWeek = info.getMaxWeek();
+                Log.d("myA", "fetch: maxWeek: " + maxWeek);
                 try {
                     SQLiteHelper.saveCourse(context, info, grade, semester);
-                    Log.d("myd", "total = " + info.getTotal());
-                    listener.onLoadCurriculumSuccess();
+                    Log.d("myA", "total = " + info.getTotal());
+                    listener.onLoadCurriculumSuccess(grade, semester, maxWeek);
                 } catch (Exception e) {
-                    Log.d("myd", "fetchCurriculum: " + e.getMessage());
+                    Log.d("myA", "fetchCurriculum: " + e.getMessage());
                     listener.onLoadCurriculumFailure("A database error occurred");
                 }
             }
 
             @Override
             public void onFailure(Exception e) {
-                Log.d("myd", "fetchCurriculum failed:" + e.getMessage());
+                Log.d("myA", "fetchCurriculum failed:" + e.getMessage());
+                listener.onLoadCurriculumFailure("A server error occurred");
+            }
+        };
+
+        HttpUtils.Param param = new HttpUtils.Param();
+        param.addParam("xnxqdm", curriculumYear);
+        param.addParam("zc", "");
+        param.addParam("page", "1");
+        param.addParam("rows", "1000");
+        param.addParam("sort", "zc");
+        param.addParam("order", "asc");
+        HttpUtils.getCurriculum(param, resultCallback);
+    }
+
+    @Deprecated
+    @Override
+    public void fetchCurriculum(final Context context, String admission, final int grade, final int semester, final OnLoginListener listener) {
+        String curriculumYear = getCurriculumYear(admission, grade, semester);
+
+        HttpUtils.ResultCallback<String> resultCallback = new HttpUtils.ResultCallback<String>() {
+            @Override
+            public void onSuccess(String response) {
+                Log.d("myA", "fetch: response: " + response);
+                CoursesJSON info = new Gson().fromJson(response, CoursesJSON.class);
+                int maxWeek = info.getMaxWeek();
+                Log.d("myA", "fetch: maxWeek: " + maxWeek);
+                try {
+                    SQLiteHelper.saveCourse(context, info, grade, semester);
+                    Log.d("myA", "total = " + info.getTotal());
+                    listener.onLoadCurriculumSuccess(grade, semester, maxWeek);
+                } catch (Exception e) {
+                    Log.d("myA", "fetchCurriculum: " + e.getMessage());
+                    listener.onLoadCurriculumFailure("A database error occurred");
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d("myA", "fetchCurriculum failed:" + e.getMessage());
                 listener.onLoadCurriculumFailure("A server error occurred");
             }
         };
@@ -174,24 +249,28 @@ public class LoginModel implements ILoginModel {
     public interface OnLoginListener {
         /**
          * 登录成功回调
+         *
          * @param msg
          */
         void onLoginSuccess(String msg);
 
         /**
          * 登录失败回调
+         *
          * @param msg
          */
         void onLoginFailure(String msg);
 
         /**
          * 加载学生信息成功回调
+         *
          * @param info
          */
         void onLoadStuInfoSuccess(StudentInfo info);
 
         /**
          * 加载学生信息失败回调
+         *
          * @param msg
          */
         void onLoadStuInfoFailure(String msg);
@@ -199,15 +278,23 @@ public class LoginModel implements ILoginModel {
         /**
          * 加载课程信息成功回调
          */
-        void onLoadCurriculumSuccess();
+        void onLoadCurriculumSuccess(int grade, int semester, int maxWeek);
 
         /**
          * 加载课程信息失败回调
+         *
          * @param msg
          */
         void onLoadCurriculumFailure(String msg);
     }
 
+    /**
+     * 获取学期代码
+     * @param admission 入学年份
+     * @param grade 年级
+     * @param semester 学期
+     * @return 代码编号
+     */
     private String getCurriculumYear(String admission, int grade, int semester) {
         return String.valueOf(Integer.valueOf(admission) + grade - 1) + "0" + String.valueOf(semester);
     }

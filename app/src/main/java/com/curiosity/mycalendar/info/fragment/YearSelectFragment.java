@@ -10,9 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.curiosity.mycalendar.R;
 import com.curiosity.mycalendar.config.FieldDefine;
+import com.curiosity.mycalendar.utils.SharedPreferenceUtil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,8 +37,12 @@ public class YearSelectFragment extends Fragment {
     @BindView(R.id.semester)
     AppCompatSpinner semesterSpinner;
 
-    private int gradePos;
-    private int semesterPos;
+    @BindView(R.id.week)
+    AppCompatSpinner weekSpinner;
+
+    private int gradePos = 0;
+    private int semesterPos = 0;
+    private int weekPos = 0;
 
     private View view;
 
@@ -54,12 +63,27 @@ public class YearSelectFragment extends Fragment {
         return view;
     }
 
+    private HashMap<String, Integer> curriculumMaxWeek;
+    private ArrayAdapter<String> arrayAdapter;
+    public void setWeekMax(HashMap<String, Integer> curriculumMaxWeek) {
+        this.curriculumMaxWeek = curriculumMaxWeek;
+        resetWeekList("0101");
+    }
+
     private void initListener() {
+
+        arrayAdapter = new ArrayAdapter<>(this.getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, new ArrayList<String>());
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        weekSpinner.setAdapter(arrayAdapter);
 
         gradeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 gradePos = position;
+                semesterSpinner.setSelection(0);
+                semesterPos = 0;
+                resetWeekList("0"+(gradePos+1)+"0"+(semesterPos+1));
+                weekSpinner.setSelection(0);
             }
 
             @Override
@@ -71,45 +95,59 @@ public class YearSelectFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 semesterPos = position;
+                resetWeekList("0"+(gradePos+1)+"0"+(semesterPos+1));
+                weekSpinner.setSelection(0);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        weekSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                weekPos = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void resetWeekList(String yearCode) {
+        Log.d("myA", "resetWeekList: " + yearCode);
+        int num = arrayAdapter.getCount();
+        for(int i = 0; i < num; ++i) {
+            arrayAdapter.remove(arrayAdapter.getItem(0));
+        }
+
+        num = curriculumMaxWeek.get(yearCode);
+        for(int i = 1; i <= num; ++i) {
+            arrayAdapter.add("第" + i + "周");
+        }
+        arrayAdapter.notifyDataSetChanged();
+        weekPos = 0;
     }
 
     private int getGradeValue() {
-        switch (gradePos) {
-            case 0:
-                return 1;
-            case 1:
-                return 2;
-            case 2:
-                return 3;
-            case 3:
-                return 4;
-            default:
-                return 1;
-        }
+        return gradePos + 1;
     }
 
     private int getSemesterValue() {
-        switch (semesterPos) {
-            case 0:
-                return 1;
-            case 1:
-                return 2;
-            default:
-                return 1;
-        }
+        return semesterPos + 1;
     }
 
-    public Bundle getSelect() {
-        Bundle bundle = new Bundle();
-        bundle.putInt(FieldDefine.L_GRADE, getGradeValue());
-        bundle.putInt(FieldDefine.L_SEMESTER, getSemesterValue());
-        return bundle;
+    private int getWeekValue() {
+        return weekPos + 1;
+    }
+
+    public void saveSelect() {
+        SharedPreferenceUtil.setSelectGrade(getActivity().getApplicationContext(),  getGradeValue());
+        SharedPreferenceUtil.setSelectSemester(getActivity().getApplicationContext(), getSemesterValue());
+        SharedPreferenceUtil.setWeekOrder(getActivity().getApplicationContext(), getWeekValue());
     }
 
     @Override

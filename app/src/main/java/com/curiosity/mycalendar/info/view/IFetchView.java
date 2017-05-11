@@ -11,7 +11,7 @@ import android.os.Bundle;
 
 public interface IFetchView {
 
-    void showNextStep(boolean show);
+    void showCompleted(boolean show);
 
     void switchYearFragment(Bundle bundle);
 

@@ -35,6 +35,8 @@ public interface ILoginModel {
      */
     void fetchStudentInfo(Context context, final LoginModel.OnLoginListener listener);
 
+    void fetchAllCurriculum(Context context, String admission, LoginModel.OnLoginListener listener);
+
     /**
      * 获取指定课表信息
      *
@@ -43,7 +45,11 @@ public interface ILoginModel {
      * @param grade
      * @param semester  学期
      */
+    @Deprecated
     void fetchCurriculum(Context context, String admission, int grade, int semester, LoginModel.OnLoginListener listener);
 
+    void saveLoginInfo(Context context, String account, String pwd, boolean isCheck);
+
+    @Deprecated
     void saveLoginInfo(Context context, String account, String pwd, boolean isCheck, int grade, int semester);
 }

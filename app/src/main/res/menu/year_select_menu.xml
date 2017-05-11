@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".info.LoginActivity">
-    <item android:id="@+id/next_step"
-        android:title="@string/next_step"
+    <item android:id="@+id/select_completed"
+        android:title="@string/select_completed"
+        android:visible="false"
         app:showAsAction="always" />
 </menu>

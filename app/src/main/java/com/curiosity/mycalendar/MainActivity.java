@@ -26,7 +26,11 @@ import com.curiosity.mycalendar.main.view.IMainView;
 import com.curiosity.mycalendar.page.curriculum.CurriculumFragment;
 import com.curiosity.mycalendar.info.LoginActivity;
 import com.curiosity.mycalendar.utils.BitmapUtils;
+import com.curiosity.mycalendar.utils.TextUtils;
+import com.curiosity.mycalendar.utils.TimeUtil;
 import com.curiosity.mycalendar.utils.ToastUtils;
+
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("mytest", "onCreate");
-
+        TimeUtil.weekDiff(Calendar.getInstance().getTimeInMillis());
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);

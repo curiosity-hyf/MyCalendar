@@ -1,10 +1,12 @@
 package com.curiosity.mycalendar.info;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -15,7 +17,9 @@ import com.curiosity.mycalendar.info.fragment.YearSelectFragment;
 import com.curiosity.mycalendar.info.presenter.FetchPresenter;
 import com.curiosity.mycalendar.info.presenter.IFetchPresenter;
 import com.curiosity.mycalendar.info.view.IFetchView;
-import com.curiosity.mycalendar.utils.SQLiteHelper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,13 +52,12 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
         //设置是否有返回箭头
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(R.string.action_bar_semester);
+            getSupportActionBar().setTitle(R.string.action_bar_login);
         }
 
         mFetchPresenter = new FetchPresenter(this, this);
 
         switchInitFragment();
-
     }
 
     private void switchInitFragment() {
@@ -62,11 +65,14 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
         mLoginFragment = new LoginFragment();
         getFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragment_container, mYearSelectFragment)
                 .add(R.id.fragment_container, mLoginFragment)
+                .add(R.id.fragment_container, mYearSelectFragment)
+                .hide(mYearSelectFragment)
                 .hide(mLoginFragment)
                 .commit();
-        currentFragment = mYearSelectFragment;
+//        currentFragment = mYearSelectFragment;
+//        currentFragment = mLoginFragment;
+        mFetchPresenter.switchNavigation(0, null);
     }
 
     /**
@@ -75,27 +81,33 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
      * @param fragment 需要的Fragment
      */
     private void switchLastFragment(Fragment fragment) {
-        getFragmentManager()
+        FragmentTransaction fragmentTransaction = getFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(R.animator.frag_last_in, R.animator.frag_last_out)
-                .hide(currentFragment)
+                .setCustomAnimations(R.animator.frag_last_in, R.animator.frag_last_out);
+        if (currentFragment != null) {
+            fragmentTransaction.hide(currentFragment);
+        }
+        fragmentTransaction
                 .show(fragment)
                 .commit();
         currentFragment = fragment;
     }
 
     private void switchNextFragment(Fragment fragment) {
-        getFragmentManager()
+        FragmentTransaction fragmentTransaction = getFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(R.animator.frag_next_in, R.animator.frag_next_out)
-                .hide(currentFragment)
+                .setCustomAnimations(R.animator.frag_last_in, R.animator.frag_last_out);
+        if (currentFragment != null) {
+            fragmentTransaction.hide(currentFragment);
+        }
+        fragmentTransaction
                 .show(fragment)
                 .commit();
         currentFragment = fragment;
     }
 
     @Override
-    public void showNextStep(boolean show) {
+    public void showCompleted(boolean show) {
         menu.getItem(0).setVisible(show);
     }
 
@@ -105,9 +117,12 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
             mYearSelectFragment = new YearSelectFragment();
         }
         if (bundle != null) {
-//            mYearSelectFragment.setArguments(bundle);
+            mYearSelectFragment.setWeekMax((HashMap<String, Integer>) bundle.getSerializable("week"));
         }
         switchLastFragment(mYearSelectFragment);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.action_bar_semester);
+        }
     }
 
     @Override
@@ -119,11 +134,16 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
             mLoginFragment.setGradeSemester(bundle);
         }
         switchNextFragment(mLoginFragment);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.action_bar_login);
+        }
+//        switchLastFragment(mLoginFragment);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d("myA", "onCreateOptionsMenu");
         getMenuInflater().inflate(R.menu.year_select_menu, menu);
         this.menu = menu;
         return true;
@@ -132,19 +152,15 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.next_step:
-                Bundle bundle = mYearSelectFragment.getSelect();
-                mFetchPresenter.switchNavigation(1, bundle);
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().setTitle(R.string.action_bar_login);
-                }
+            case R.id.select_completed:
+
                 break;
             case android.R.id.home:
                 boolean res = mFetchPresenter.navigationBack();
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().setTitle(R.string.action_bar_semester);
-                }
                 if (!res) return true;
+                if (getSupportActionBar() != null) {
+                    getSupportActionBar().setTitle(R.string.action_bar_login);
+                }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -167,11 +183,14 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
     }
 
     @Override
-    public void onSuccess() {
-        Intent loginIntent = new Intent();
-        loginIntent.setClass(LoginActivity.this, MainActivity.class);
-        setResult(LOGIN_SUCCESS_CODE, loginIntent);
-        removeFragment();
-        finish();
+    public void onLoadSuccess(HashMap<String, Integer> curriculumMaxWeek) {
+        Bundle b  = new Bundle();
+        b.putSerializable("week", curriculumMaxWeek);
+        mFetchPresenter.switchNavigation(1, b);
+//        Intent loginIntent = new Intent();
+//        loginIntent.setClass(LoginActivity.this, MainActivity.class);
+//        setResult(LOGIN_SUCCESS_CODE, loginIntent);
+//        removeFragment();
+//        finish();
     }
 }
