@@ -7,7 +7,7 @@ package com.curiosity.mycalendar.info.view;
  * E-mail : curiooosity.h@gmail.com
  */
 
-public interface ILoginView {
+public interface IFragLoginView {
 
     void makeToast(String msg);
 
