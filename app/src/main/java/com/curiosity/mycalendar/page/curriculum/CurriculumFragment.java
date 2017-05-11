@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.curiosity.mycalendar.R;
 import com.curiosity.mycalendar.bean.Curriculum;
@@ -23,7 +24,10 @@ import com.curiosity.mycalendar.info.LoginActivity;
 import com.curiosity.mycalendar.page.curriculum.presenter.IWeekPresenter;
 import com.curiosity.mycalendar.page.curriculum.presenter.WeekPresenter;
 import com.curiosity.mycalendar.page.curriculum.view.IWeekView;
+import com.curiosity.mycalendar.utils.SQLiteHelper;
+import com.curiosity.mycalendar.utils.SharedPreferenceUtil;
 import com.gordonwong.materialsheetfab.MaterialSheetFab;
+import com.gordonwong.materialsheetfab.MaterialSheetFabEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +85,31 @@ public class CurriculumFragment extends Fragment implements IWeekView {
             materialSheetFab.hideSheet();
     }
 
+    public static final int REQUEST_RESET = 0;
+    public static final int REQUEST_CHANGE = 1;
+
+    @OnClick(R.id.btn_change)
+    public void onChangeCurriculum() {
+        if (!view.findViewById(R.id.btn_change).isEnabled()) {
+            Toast.makeText(this.getActivity().getApplicationContext(), R.string.curriculum_login_msg, Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent();
+            intent.putExtra("curriculum", "change");
+            intent.setClass(this.getContext(), LoginActivity.class);
+            startActivityForResult(intent, REQUEST_CHANGE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_RESET) {
+
+        } else if(requestCode == REQUEST_CHANGE) {
+            dataChange();
+        }
+    }
+
     private void initFAB() {
         fab = (MenuFAB) view.findViewById(R.id.fab);
         sheetView = view.findViewById(R.id.fab_sheet);
@@ -91,6 +120,19 @@ public class CurriculumFragment extends Fragment implements IWeekView {
         // Initialize material sheet FAB
         materialSheetFab = new MaterialSheetFab<>(fab, sheetView, overlay,
                 sheetColor, fabColor);
+
+        materialSheetFab.setEventListener(new MaterialSheetFabEventListener() {
+            @Override
+            public void onShowSheet() {
+                super.onShowSheet();
+                if (!SharedPreferenceUtil.getLogin(CurriculumFragment.this.getActivity().getApplicationContext())) {
+                    view.findViewById(R.id.btn_change).setEnabled(false);
+                } else {
+                    view.findViewById(R.id.btn_change).setEnabled(true);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -104,7 +146,7 @@ public class CurriculumFragment extends Fragment implements IWeekView {
     private Curriculum curriculum;
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.d("mytest", "Curriculum Frag-->onActivityCreated");
 
@@ -122,7 +164,6 @@ public class CurriculumFragment extends Fragment implements IWeekView {
 
         Bundle bundle = getArguments();
         String emptyMsg = bundle.getString(FieldDefine.EMPTY_MSG);
-        Log.d("mytest", emptyMsg);
         initFAB();
         curriculum = mPresenter.getCurriculum();
         initView();
@@ -140,7 +181,6 @@ public class CurriculumFragment extends Fragment implements IWeekView {
     private FragmentPagerAdapter pagerAdapter;
 
     private void initView() {
-        Log.d("myW", "CurriculumFragment initView");
         if (curriculum != null && curriculum.getCount() != 0) {
             empty_msg.setVisibility(View.GONE);
             List<String> titles = new ArrayList<>();
@@ -186,24 +226,20 @@ public class CurriculumFragment extends Fragment implements IWeekView {
             pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                    Log.d("mytest", "CurriculumFragment onPageScrolled\n" +
-                            "position: " + position + " Offset: " + positionOffset + " OffsetPixels: " + positionOffsetPixels);
                     indicator.scroll(position, positionOffset);
                 }
 
                 @Override
                 public void onPageSelected(int position) {
-                    Log.d("mytest", "CurriculumFragment onPageSelected\n" +
-                            "position: " + position);
                 }
 
                 @Override
                 public void onPageScrollStateChanged(int state) {
-                    Log.d("mytest", "CurriculumFragment onPageScrollStateChanged\n" +
-                            "state: " + state);
                 }
             });
-            pager.setCurrentItem(0);
+            int curWeek = SharedPreferenceUtil.getWeekOrder(this.getActivity().getApplicationContext());
+            pager.setCurrentItem(curWeek - 1);
+            indicator.setCurTab(curWeek - 1);
 
         } else {
             ll.setVisibility(View.GONE);

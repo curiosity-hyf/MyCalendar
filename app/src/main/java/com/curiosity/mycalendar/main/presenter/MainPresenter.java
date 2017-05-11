@@ -7,7 +7,6 @@ import com.curiosity.mycalendar.bean.StudentInfo;
 import com.curiosity.mycalendar.main.model.IMainModel;
 import com.curiosity.mycalendar.main.model.MainModel;
 import com.curiosity.mycalendar.main.view.IMainView;
-import com.curiosity.mycalendar.utils.TextUtils;
 
 /**
  * Description :
@@ -42,12 +41,12 @@ public class MainPresenter implements IMainPresenter {
     @Override
     public void switchNavigation(int id) {
         switch (id) {
-            case R.id.calendar_info:
-                mIMainView.switch2Calender();
-                break;
-            case R.id.test:
-                mIMainView.switch2Test();
-                break;
+//            case R.id.calendar_info:
+//                mIMainView.switch2Calender();
+//                break;
+//            case R.id.test:
+//                mIMainView.switch2Exam();
+//                break;
             case R.id.curriculum_info:
                 mIMainView.switch2Curriculum();
                 break;

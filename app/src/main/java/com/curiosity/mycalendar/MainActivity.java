@@ -25,6 +25,7 @@ import com.curiosity.mycalendar.main.presenter.MainPresenter;
 import com.curiosity.mycalendar.main.view.IMainView;
 import com.curiosity.mycalendar.page.curriculum.CurriculumFragment;
 import com.curiosity.mycalendar.info.LoginActivity;
+import com.curiosity.mycalendar.page.exam.ExamActivity;
 import com.curiosity.mycalendar.utils.BitmapUtils;
 import com.curiosity.mycalendar.utils.TextUtils;
 import com.curiosity.mycalendar.utils.TimeUtil;
@@ -123,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements IMainView {
             @Override
             public void onClick(View v) {
                 boolean isLogin = mIMainPresenter.getLoginStatus();
-                Log.d("mytest", "MainActivity civ.setOnClickListener: " + isLogin);
                 if (isLogin) {
                     showLogoutAlert();
                 } else {
@@ -200,14 +200,19 @@ public class MainActivity extends AppCompatActivity implements IMainView {
                 .commit();
     }
 
+    public static final int REQUEST_EXAM = 1;
+
     @Override
-    public void switch2Test() {
-        Log.d("mytest", "switch2Test");
-        Fragment fragment = new EmptyFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(FieldDefine.EMPTY_MSG, "测试");
-        fragment.setArguments(bundle);
-        switchFragment(fragment);
+    public void switch2Exam() {
+        Log.d("mytest", "switch2Exam");
+        Intent intent = new Intent();
+        intent.setClass(MainActivity.this, ExamActivity.class);
+        startActivityForResult(intent, REQUEST_EXAM);
+//        Fragment fragment = new EmptyFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putString(FieldDefine.EMPTY_MSG, "测试");
+//        fragment.setArguments(bundle);
+//        switchFragment(fragment);
     }
 
     @Override
@@ -268,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        drawerLayout.closeDrawers();
         switch (requestCode) {
             case LOGIN_REQUEST_CODE:
                 if (resultCode == LoginActivity.LOGIN_SUCCESS_CODE) {
@@ -282,7 +288,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.curriculum_menu, menu);
+//        getMenuInflater().inflate(R.menu.curriculum_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

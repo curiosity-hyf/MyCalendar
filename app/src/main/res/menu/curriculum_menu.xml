@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <!--<item-->
-        <!--android:id="@+id/add_sys"-->
-        <!--android:icon="@drawable/ic_date_range_black_18dp"-->
-        <!--app:showAsAction="never"-->
-        <!--android:title="教务系统导入" />-->
-    <!--<item-->
-        <!--android:id="@+id/add_custom"-->
-        <!--android:icon="@drawable/ic_date_range_black_18dp"-->
-        <!--app:showAsAction="never"-->
-        <!--android:title="添加课程" />-->
+    <item
+        android:id="@+id/add_sys"
+        android:icon="@drawable/ic_date_range_black_18dp"
+        app:showAsAction="never"
+        android:title="教务系统导入" />
+    <item
+        android:id="@+id/add_custom"
+        android:icon="@drawable/ic_date_range_black_18dp"
+        app:showAsAction="never"
+        android:title="添加课程" />
 </menu>

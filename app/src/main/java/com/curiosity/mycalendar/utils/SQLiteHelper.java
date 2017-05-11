@@ -15,6 +15,7 @@ import com.curiosity.mycalendar.bean.StudentInfo;
 import com.curiosity.mycalendar.bean.WeekCourses;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -321,7 +322,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             values.clear();
         }
         closeDatabase(db);
-//        getCourse(context, grade, semester);
     }
 
     private static List<Integer> getWeekNumList(Context context, int grade, int semester) {
@@ -334,6 +334,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                         " order by " + C_WEEK_NUM + " asc",
                 new String[]{String.valueOf(grade), String.valueOf(semester)});
         List<Integer> weekNum = new ArrayList<>();
+
         while (cursor.moveToNext()) {
             int week = cursor.getInt(cursor.getColumnIndex(C_WEEK_NUM));
             weekNum.add(week);
@@ -343,6 +344,24 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return weekNum;
     }
 
+    public static int getMaxWeekNum(Context context, int grade, int semester) {
+        SQLiteDatabase db = getReadableDatabase(context);
+        Cursor cursor = executeQuery(db,
+                "select max(" + C_WEEK_NUM + ")" +
+                        " from " + COURSE_INFO_TABLE +
+                        " where " + C_GRADE + " = ?" +
+                        " and " + C_SEMESTER + " = ?",
+                new String[]{String.valueOf(grade), String.valueOf(semester)});
+
+        int res = 1;
+        if (cursor.moveToNext()) {
+            res = cursor.getInt(cursor.getColumnIndex("max("+C_WEEK_NUM+")"));
+        }
+        cursor.close();
+        db.close();
+        return res;
+    }
+
     public static Curriculum getCourse(Context context, int grade, int semester) {
         List<Integer> list = getWeekNumList(context, grade, semester);
 
@@ -350,7 +369,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = SQLiteHelper.getReadableDatabase(context);
         Cursor cursor = null;
         for (int i = 0; i < list.size(); ++i) {
-
             cursor = executeQuery(db,
                     "select *" +
                             " from " + COURSE_INFO_TABLE +
@@ -358,9 +376,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                             " and " + C_GRADE + " = ?" +
                             " and " + C_SEMESTER + " = ?" +
                             " order by " + C_DAY_NUM + ", " + C_CLS_NUM +
-                    " asc", new String[]{String.valueOf(list.get(i)), String.valueOf(grade), String.valueOf(semester)});
+                            " asc", new String[]{String.valueOf(list.get(i)), String.valueOf(grade), String.valueOf(semester)});
             WeekCourses courses = new WeekCourses(list.get(i));
-            while(cursor.moveToNext()) {
+            while (cursor.moveToNext()) {
                 Course.TYPE type = cursor.getInt(cursor.getColumnIndex(C_TYPE)) == 0 ? Course.TYPE.SYSTEM : Course.TYPE.CUSTOM;
                 int weekNum = cursor.getInt(cursor.getColumnIndex(C_WEEK_NUM));
                 int dayNum = cursor.getInt(cursor.getColumnIndex(C_DAY_NUM));
@@ -389,7 +407,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             }
             curriculum.add(courses);
         }
-        if(cursor != null) {
+        if (cursor != null) {
             cursor.close();
         }
         db.close();

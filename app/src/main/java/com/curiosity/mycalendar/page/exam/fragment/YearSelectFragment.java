@@ -1,4 +1,4 @@
-package com.curiosity.mycalendar.info.fragment;
+package com.curiosity.mycalendar.page.exam.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.curiosity.mycalendar.R;
-import com.curiosity.mycalendar.config.FieldDefine;
 import com.curiosity.mycalendar.utils.SQLiteHelper;
 import com.curiosity.mycalendar.utils.SharedPreferenceUtil;
 
@@ -39,12 +38,8 @@ public class YearSelectFragment extends Fragment {
     @BindView(R.id.semester)
     AppCompatSpinner semesterSpinner;
 
-    @BindView(R.id.week)
-    AppCompatSpinner weekSpinner;
-
     private int gradePos = 0;
     private int semesterPos = 0;
-    private int weekPos = 0;
 
     private View view;
 
@@ -53,7 +48,7 @@ public class YearSelectFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "YearSelect onCreateView: ");
         if (view == null) {
-            view = inflater.inflate(R.layout.year_select_layout, container, false);
+            view = inflater.inflate(R.layout.exam_select_layout, container, false);
         } else {
             ViewGroup parent = (ViewGroup) view.getParent();
             if (parent != null) {
@@ -63,7 +58,6 @@ public class YearSelectFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         initListener();
-        setWeekMax();
         return view;
     }
 
@@ -73,23 +67,7 @@ public class YearSelectFragment extends Fragment {
 
     }
 
-    private Map<String, Integer> curriculumMaxWeek;
-    private ArrayAdapter<String> arrayAdapter;
-    public void setWeekMax() {
-        curriculumMaxWeek = new HashMap<>();
-        for(int i = 1; i <= 4; ++i) {
-            for(int j = 1; j <= 2; ++j) {
-                curriculumMaxWeek.put("0"+i+"0"+j, SQLiteHelper.getMaxWeekNum(this.getActivity().getApplicationContext(), i, j));
-            }
-        }
-        resetWeekList("0101");
-    }
-
     private void initListener() {
-
-        arrayAdapter = new ArrayAdapter<>(this.getActivity().getApplicationContext(), android.R.layout.simple_spinner_item, new ArrayList<String>());
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        weekSpinner.setAdapter(arrayAdapter);
 
         gradeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -97,8 +75,6 @@ public class YearSelectFragment extends Fragment {
                 gradePos = position;
                 semesterSpinner.setSelection(0);
                 semesterPos = 0;
-                resetWeekList("0"+(gradePos+1)+"0"+(semesterPos+1));
-                weekSpinner.setSelection(0);
             }
 
             @Override
@@ -110,41 +86,12 @@ public class YearSelectFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 semesterPos = position;
-                resetWeekList("0"+(gradePos+1)+"0"+(semesterPos+1));
-                weekSpinner.setSelection(0);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
-        weekSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                weekPos = position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-
-    private void resetWeekList(String yearCode) {
-        Log.d("myA", "resetWeekList: " + yearCode);
-        int num = arrayAdapter.getCount();
-        for(int i = 0; i < num; ++i) {
-            arrayAdapter.remove(arrayAdapter.getItem(0));
-        }
-
-        num = curriculumMaxWeek.get(yearCode);
-        for(int i = 1; i <= num; ++i) {
-            arrayAdapter.add("第" + i + "周");
-        }
-        arrayAdapter.notifyDataSetChanged();
-        weekPos = 0;
     }
 
     private int getGradeValue() {
@@ -155,14 +102,8 @@ public class YearSelectFragment extends Fragment {
         return semesterPos + 1;
     }
 
-    private int getWeekValue() {
-        return weekPos + 1;
-    }
-
     public void saveSelect() {
-        SharedPreferenceUtil.setSelectGrade(getActivity().getApplicationContext(),  getGradeValue());
-        SharedPreferenceUtil.setSelectSemester(getActivity().getApplicationContext(), getSemesterValue());
-        SharedPreferenceUtil.setWeekOrder(getActivity().getApplicationContext(), getWeekValue());
+
     }
 
     @Override

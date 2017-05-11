@@ -33,9 +33,7 @@ public class TextUtils {
     }
 
     public static String[] spiltString(String s, int range) {
-        Log.d("myW", "spiltString: " + s);
         int pieceNum = (int)Math.ceil(s.length()*1.0/range);
-        Log.d("myW", "spiltString: " + pieceNum);
         if(pieceNum == 0) {
             return new String[]{s};
         } else {
@@ -57,7 +55,6 @@ public class TextUtils {
         }
         sb.append(Integer.valueOf(num[0]));
         for(int i = 1; i < num.length; ++i) {
-            Log.d("myW", "formatNumString: " + num[i]);
             sb.append(spec);
             sb.append(Integer.valueOf(num[i]));
         }

@@ -1,0 +1,19 @@
+package com.curiosity.mycalendar.page.exam.view;
+
+import android.os.Bundle;
+
+/**
+ * Description :
+ * Author : curiosity-hyf
+ * Date : 2017-3-12
+ * E-mail : curiooosity.h@gmail.com
+ */
+
+public interface IFetchView {
+
+    void showCompleted(boolean show);
+
+    void switchYearFragment(Bundle bundle);
+
+    void switchLoginFragment(Bundle bundle);
+}

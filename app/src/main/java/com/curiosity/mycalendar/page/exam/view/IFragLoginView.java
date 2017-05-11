@@ -1,7 +1,4 @@
-package com.curiosity.mycalendar.info.view;
-
-import java.util.HashMap;
-import java.util.Map;
+package com.curiosity.mycalendar.page.exam.view;
 
 /**
  * Description :
@@ -20,5 +17,5 @@ public interface IFragLoginView {
 
     void onLoadFailure();
 
-    void initLoginForm(String account, String pwd, boolean isCheck);
+    void initLoginForm(String account, String pwd);
 }

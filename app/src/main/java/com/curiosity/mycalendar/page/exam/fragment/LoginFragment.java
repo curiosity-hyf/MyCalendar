@@ -1,4 +1,4 @@
-package com.curiosity.mycalendar.info.fragment;
+package com.curiosity.mycalendar.page.exam.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -18,14 +18,11 @@ import android.widget.EditText;
 
 import com.curiosity.mycalendar.R;
 import com.curiosity.mycalendar.config.FieldDefine;
-import com.curiosity.mycalendar.info.presenter.ILoginPresenter;
-import com.curiosity.mycalendar.info.presenter.LoginPresenter;
-import com.curiosity.mycalendar.info.view.IFragLoginView;
+import com.curiosity.mycalendar.page.exam.presenter.ILoginPresenter;
+import com.curiosity.mycalendar.page.exam.presenter.LoginPresenter;
+import com.curiosity.mycalendar.page.exam.view.IFragLoginView;
 import com.curiosity.mycalendar.utils.TextUtils;
 import com.curiosity.mycalendar.utils.ToastUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,8 +52,6 @@ public class LoginFragment extends Fragment implements IFragLoginView {
     @BindView(R.id.login_btn)
     Button login_btn;
 
-    @BindView(R.id.check_pwd)
-    CheckBox check_pwd;
 
     @BindView(R.id.loading_progress)
     ContentLoadingProgressBar clp;
@@ -70,7 +65,7 @@ public class LoginFragment extends Fragment implements IFragLoginView {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "LoginFragment onCreateView: ");
         if (view == null) {
-            view = inflater.inflate(R.layout.curri_login_layout, container, false);
+            view = inflater.inflate(R.layout.exam_login_layout, container, false);
         } else {
             ViewGroup parent = (ViewGroup) view.getParent();
             if (parent != null) {
@@ -84,8 +79,6 @@ public class LoginFragment extends Fragment implements IFragLoginView {
         clp.hide();
         mLoginPresenter = new LoginPresenter(this, getActivity().getApplicationContext());
 
-        mLoginPresenter.initForm();
-
         return view;
     }
 
@@ -94,7 +87,6 @@ public class LoginFragment extends Fragment implements IFragLoginView {
         login_pwd.setEnabled(enabled);
         login_account.setClickable(enabled);
         login_btn.setEnabled(enabled);
-        check_pwd.setEnabled(enabled);
     }
 
     private int grade, semester;
@@ -108,7 +100,6 @@ public class LoginFragment extends Fragment implements IFragLoginView {
             setEnabled(false);
             mLoginPresenter.login(TextUtils.getText(login_account),
                     TextUtils.getText(login_pwd),
-                    check_pwd.isChecked(),
                     grade,
                     semester);
         }
@@ -151,8 +142,7 @@ public class LoginFragment extends Fragment implements IFragLoginView {
     }
 
     @Override
-    public void initLoginForm(String account, String pwd, boolean isCheck) {
-        check_pwd.setChecked(isCheck);
+    public void initLoginForm(String account, String pwd) {
         login_account.setText(account);
         login_pwd.setText(pwd);
     }

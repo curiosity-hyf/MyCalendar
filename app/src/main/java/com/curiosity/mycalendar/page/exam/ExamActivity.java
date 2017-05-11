@@ -1,4 +1,4 @@
-package com.curiosity.mycalendar.info;
+package com.curiosity.mycalendar.page.exam;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -12,14 +12,11 @@ import android.view.MenuItem;
 
 import com.curiosity.mycalendar.MainActivity;
 import com.curiosity.mycalendar.R;
-import com.curiosity.mycalendar.info.fragment.LoginFragment;
-import com.curiosity.mycalendar.info.fragment.YearSelectFragment;
-import com.curiosity.mycalendar.info.presenter.FetchPresenter;
-import com.curiosity.mycalendar.info.presenter.IFetchPresenter;
-import com.curiosity.mycalendar.info.view.IFetchView;
-import com.curiosity.mycalendar.page.curriculum.CurriculumFragment;
-
-import java.util.HashMap;
+import com.curiosity.mycalendar.page.exam.fragment.LoginFragment;
+import com.curiosity.mycalendar.page.exam.fragment.YearSelectFragment;
+import com.curiosity.mycalendar.page.exam.presenter.FetchPresenter;
+import com.curiosity.mycalendar.page.exam.presenter.IFetchPresenter;
+import com.curiosity.mycalendar.page.exam.view.IFetchView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +28,7 @@ import butterknife.ButterKnife;
  * E-mail : curiooosity.h@gmail.com
  */
 
-public class LoginActivity extends AppCompatActivity implements IFetchView, LoginFragment.OnLoadListener {
+public class ExamActivity extends AppCompatActivity implements IFetchView, LoginFragment.OnLoadListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -43,12 +40,10 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
 
     private Fragment currentFragment;
 
-    private int runMode = 1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fetch_layout);
+        setContentView(R.layout.exam_layout);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         //设置是否有返回箭头
@@ -60,18 +55,6 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
         mFetchPresenter = new FetchPresenter(this, this);
 
         switchInitFragment();
-
-        Intent intent = getIntent();
-        if(intent != null) {
-            String s = intent.getStringExtra("curriculum");
-            if("change".equals(s)) {
-                runMode = 2;
-                mFetchPresenter.switchNavigation(1, null);
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                }
-            }
-        }
     }
 
     private void switchInitFragment() {
@@ -84,8 +67,7 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
                 .hide(mYearSelectFragment)
                 .hide(mLoginFragment)
                 .commit();
-//        currentFragment = mYearSelectFragment;
-//        currentFragment = mLoginFragment;
+
         mFetchPresenter.switchNavigation(0, null);
     }
 
@@ -122,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
 
     @Override
     public void showCompleted(boolean show) {
-        if(menu != null) {
+        if (menu != null) {
             menu.getItem(0).setVisible(show);
         }
     }
@@ -163,13 +145,6 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
         getMenuInflater().inflate(R.menu.year_select_menu, menu);
         this.menu = menu;
 
-        if(runMode == 2) {
-            if (getSupportActionBar() != null) {
-                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            }
-            showCompleted(true);
-        }
-
         return true;
     }
 
@@ -178,19 +153,13 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
         switch (item.getItemId()) {
             case R.id.select_completed:
                 mYearSelectFragment.saveSelect();
-                if(runMode == 2) {
-                    Intent loginIntent = new Intent();
-                    loginIntent.setClass(LoginActivity.this, CurriculumFragment.class);
-                    setResult(LOGIN_SUCCESS_CODE, loginIntent);
-                    removeFragment();
-                    finish();
-                } else {
-                    Intent loginIntent = new Intent();
-                    loginIntent.setClass(LoginActivity.this, MainActivity.class);
-                    setResult(LOGIN_SUCCESS_CODE, loginIntent);
-                    removeFragment();
-                    finish();
-                }
+
+                Intent loginIntent = new Intent();
+                loginIntent.setClass(ExamActivity.this, MainActivity.class);
+                setResult(LOGIN_SUCCESS_CODE, loginIntent);
+                removeFragment();
+                finish();
+
                 break;
             case android.R.id.home:
                 boolean res = mFetchPresenter.navigationBack();
@@ -204,12 +173,7 @@ public class LoginActivity extends AppCompatActivity implements IFetchView, Logi
 
     @Override
     public void onBackPressed() {
-        if(runMode == 2) {
-            super.onBackPressed();
-        } else {
-            mFetchPresenter.navigationBack();
-        }
-//        super.onBackPressed();
+        mFetchPresenter.navigationBack();
     }
 
     public static final int LOGIN_SUCCESS_CODE = 1;

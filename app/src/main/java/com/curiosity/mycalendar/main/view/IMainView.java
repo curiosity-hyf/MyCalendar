@@ -13,7 +13,7 @@ public interface IMainView {
 
     void logout();
 
-    void switch2Test();
+    void switch2Exam();
 
     void switch2Curriculum();
 

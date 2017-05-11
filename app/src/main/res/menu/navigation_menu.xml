@@ -8,17 +8,17 @@
         <item
             android:id="@+id/curriculum_info"
             android:checked="true"
-            android:title="@string/curriculum"
+            android:title="@string/label_curriculum"
             android.support.design:itemTextColor="@color/nev_item"/>
-        <item
-            android:id="@+id/test"
-            android:title="测试"
-            android.support.design:itemTextColor="@color/nev_item"/>
-        <item
-            android:id="@+id/calendar_info"
-            android:title="@string/calendar"
-            android.support.design:itemTextColor="@color/nev_item"
-            />
+        <!--<item-->
+            <!--android:id="@+id/test"-->
+            <!--android:title="@string/label_exam"-->
+            <!--android.support.design:itemTextColor="@color/nev_item"/>-->
+        <!--<item-->
+            <!--android:id="@+id/calendar_info"-->
+            <!--android:title="@string/calendar"-->
+            <!--android.support.design:itemTextColor="@color/nev_item"-->
+            <!--/>-->
     </group>
 
 </menu>

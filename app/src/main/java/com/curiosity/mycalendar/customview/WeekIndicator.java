@@ -106,6 +106,7 @@ public class WeekIndicator extends LinearLayout {
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
+        Log.d("myW", "dispatchDraw");
         initTriangle();
         canvas.save();
         canvas.translate(mInitTranslationX + mTranslationX, getHeight()-20);
@@ -128,20 +129,8 @@ public class WeekIndicator extends LinearLayout {
      */
     public void scroll(int position, float positionOffset) {
         tabWidth = windowWidth / mVisibleCount;
+        Log.d("myW", "scroll: " + position + " " + positionOffset);
 
-//        if(positionOffset < 0.25) {
-//            mIndicatorX = (int) (tabWidth*(3.0/8) * positionOffset/0.25);
-//            mIndicatorWidth = tabWidth + (int) (tabWidth*(1.0/8) * positionOffset/0.25) - mIndicatorX;
-//        } else if(positionOffset < 0.5) {
-//            mIndicatorX = (int) (tabWidth*(3.0/8)) + (int) (tabWidth*(1.0/8) * (positionOffset-0.25)/0.25);
-//            mIndicatorWidth = (int) (tabWidth*(9.0/8)) + (int) (tabWidth*(3.0/8) * (positionOffset-0.25)/0.25) - mIndicatorX;
-//        } else if(positionOffset < 0.75) {
-//            mIndicatorX = (int) (tabWidth*(4.0/8)) + (int) (tabWidth*(1.0/8) * (positionOffset-0.5)/0.25);
-//            mIndicatorWidth = (int) (tabWidth*(12.0/8)) + (int) (tabWidth*(3.0/8) * (positionOffset-0.5)/0.25) - mIndicatorX;
-//        } else {
-//            mIndicatorX = (int) (tabWidth*(5.0/8)) + (int) (tabWidth*(3.0/8) * (positionOffset-0.75)/0.25);
-//            mIndicatorWidth = (int) (tabWidth*(15.0/8)) + (int) (tabWidth*(1.0/8) * (positionOffset-0.75)/0.25) - mIndicatorX;
-//        }
         if(positionOffset < 0.5) {
             mIndicatorX = (int) (tabWidth*(0.5)*positionOffset/0.5);
             mIndicatorWidth = (int) (tabWidth + tabWidth * positionOffset/0.5) - mIndicatorX;
@@ -153,11 +142,26 @@ public class WeekIndicator extends LinearLayout {
         mTranslationX = tabWidth * position;
 
         if (getChildCount() > mVisibleCount && position >= mVisibleCount - 2 && positionOffset > 0) {
-            Log.d("mytt", "position: " + position);
+            Log.d("myW", "position: " + position);
             if (mVisibleCount != 1 && position != getChildCount() - 2) {
                 this.scrollTo((int) ((position - (mVisibleCount - 2)) * tabWidth + tabWidth * positionOffset), 0);
             } else if(mVisibleCount == 1){
                 this.scrollTo((int) (tabWidth * position + tabWidth * positionOffset), 0);
+            }
+        }
+        invalidate(); // 重绘
+    }
+
+    public void setCurTab(int position) {
+        tabWidth = windowWidth / mVisibleCount;
+        if (getChildCount() > mVisibleCount && position >= mVisibleCount - 2) {
+            Log.d("myW", "position: " + position);
+            if (mVisibleCount != 1 && position != getChildCount() - 2) {
+                Log.d("myW", "position1: ");
+                this.scrollTo((int) ((position - (mVisibleCount - 2)) * tabWidth), 0);
+            } else if(mVisibleCount == 1){
+                Log.d("myW", "position2: ");
+                this.scrollTo((int) (tabWidth * position), 0);
             }
         }
         invalidate(); // 重绘
